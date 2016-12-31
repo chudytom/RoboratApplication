@@ -9,7 +9,11 @@ namespace Directions
 
     class DirectionData
     {
-        public int Speed
+        public int LinearSpeed1
+        {
+            get; set;       
+        }
+        public int AngularSpeed1
         {
             get; set;
         }
@@ -23,11 +27,11 @@ namespace Directions
         }
         public int LinearSpeed
         {
-            get { return Speed * LinearDirection; }
+            get { return LinearSpeed1 * LinearDirection; }
         }
         public int RotationSpeed
         {
-            get { return Speed * RotationDirection; }
+            get { return AngularSpeed1 * RotationDirection; }
         }
     }
 }

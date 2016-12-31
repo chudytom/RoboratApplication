@@ -2,19 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
-namespace TCP
+namespace IP
 {
     
-    class TCPClient
+    class IPClient
     {
+        private Socket _clientSocket;
+        public enum Protocol {  TCP, UDP}
+        public IPClient(Protocol protocolType)
+        {
+            switch(protocolType)
+            {
+                case Protocol.TCP:
+                    _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    break;
+                case Protocol.UDP:
+                    _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    break;
+            }
+        }
         public bool IsConnected { get; set; }
         public string IP { get; set; }
         public int PortNumber { get; set; }
-        private static Socket _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        
         const int PORT = 100;
         const int BUFFER_SIZE = 1024;
         byte[] incomingBuffer = new byte[BUFFER_SIZE];
@@ -38,7 +53,7 @@ namespace TCP
             }
             catch(Exception)
             {
-                OutputText = "Couldn't  connect to the server";
+                OutputText = "Couldn't  connect to the server (begin)";
                 CloseConnection();
                 return;
             }
@@ -87,18 +102,38 @@ namespace TCP
             }
             catch(SocketException)
             {
-                OutputText = "Cannot connect to the server";
+                OutputText = "Cannot connect to the server (end, SocketException)";
                 return;
             }
             catch(ArgumentException)
             {
-                OutputText = "Cannot connect to the server";
+                OutputText = "Cannot connect to the server(end, ArgumentException)";
                 return;
             }
-            
-            IsConnected = true;
+            if(_clientSocket.Connected)
+            {
+                IsConnected = true;
+            }
             //ReceiveResponse();
-            _clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+            try
+            {
+                _clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+                Thread.Sleep(200);
+            }
+            catch (SocketException)
+            {
+                CloseConnection();
+                InputText = "This error";
+                OutputText = "This error";
+                ConnectToServer();
+                Thread.Sleep(3000);
+                OutputText = "This error";
+            }
+            catch (Exception)
+            {
+                CloseConnection();
+                OutputText = "Sudden connection lost";
+            }
             OutputText = "ConnectedC";
         }
 
@@ -112,11 +147,13 @@ namespace TCP
             catch(SocketException)
             {
                 //_clientSocket.Shutdown(SocketShutdown.Both);
+                OutputText = "Unable to send string (SocketException)";
                 _clientSocket.Close();
                 return;
             }
             catch(ObjectDisposedException)
             {
+                OutputText = "Unable to send string (ObjectDisposedException)";
                 CloseConnection();
                 return;
             }
@@ -124,10 +161,28 @@ namespace TCP
             //OutputText += " Message sent";
         }
 
-        public void ReceiveResponse()
-        {
-            _clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);    
-        }
+       // public void ReceiveResponse()
+       //{ 
+       //     try
+       //     {
+       //         _clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+       //         Thread.Sleep(200);
+       //     }
+       //     catch (SocketException)
+       //     {
+       //         CloseConnection();
+       //         InputText = "This error";
+       //         OutputText = "This error";
+       //         ConnectToServer();
+       //         Thread.Sleep(3000);
+       //         OutputText = "This error";
+       //     }
+       //     catch (Exception)
+       //     {
+       //         CloseConnection();
+       //         OutputText = "Sudden connection lost";
+       //     }
+       // }
 
         private void ReceiveCallback(IAsyncResult AR)
         {
@@ -140,7 +195,14 @@ namespace TCP
             catch(SocketException)
             {
                 //_clientSocket.Shutdown(SocketShutdown.Both);
+                OutputText = "Couldn't receive the message(SocketException)";
                 _clientSocket.Close();
+                return;
+            }
+            catch(ObjectDisposedException)
+            {
+                OutputText = "Couldn't receive the message(ObjDisposed)";
+                CloseConnection();
                 return;
             }
             
@@ -149,7 +211,25 @@ namespace TCP
             Array.Copy(incomingBuffer, tempBuffer, received);
             string text = Encoding.ASCII.GetString(tempBuffer);
             OutputText += ("R:" + text);
-            socket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
+            try
+            { 
+                socket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
+                Thread.Sleep(200);
+            }
+            catch(SocketException)
+            {
+                CloseConnection();
+                InputText = "This error";
+                OutputText = "This error";
+                ConnectToServer();
+                Thread.Sleep(3000);
+                OutputText = "This error";
+            }
+            catch (Exception)
+            {
+                CloseConnection();
+                OutputText = "Suddenly connection lost";
+            }           
         }
 
         public static bool ValidateIPV4(string ipString)
@@ -170,7 +250,7 @@ namespace TCP
         public void CloseConnection()
         {
             IsConnected = false;
-            OutputText = "Connection lost";
+            _clientSocket.Close();
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
     }

@@ -9,52 +9,81 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Directions;
-using TCP;
-//using System.Runtime.InteropServices;
+using IP;
+using UDP;
+using Newtonsoft.Json;
 
 namespace RatClientApplication
 {
     public partial class Form1 : Form
     {
+        private bool keyDownPressed = false;
+        private bool keyUpPressed = false;
+        private bool keyLeftPressed = false;
+        private bool keyRightPressed = false;
         DirectionData directions = new DirectionData();
-        TCPClient client = new TCPClient();
+        // Interesting thing. When you connect UDP after TCP, TCP gets autoamtically connected with whatever
+        IPClient tcpClient = new IPClient(IPClient.Protocol.TCP);
+        UDPServer udpServer = new UDPServer();
+        ImageDisplay imageToDisplay = new ImageDisplay(300, 175);
+        speed speedOfRat = new speed();
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent();           
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             KeyPreview = true;
-            speedHScrollBar.Value = directions.Speed = 123;
+            linearSpeedHScrollBar.Value = directions.LinearSpeed1 = 123;
+            angularSpeedHScrollBar.Value = directions.AngularSpeed1 = 30;
+            //ipTextBox.Text = "192.168.1.3";
+            //portTextBox.Text = "50000"; 
+            ipTextBox.Text = "192.168.0.108";
+            portTextBox.Text = "100";
+
             UpdateForm();
-        }
+
+    }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyData==Keys.Up)
+            if(e.KeyData==Keys.Up && !keyUpPressed)
             {
+                keyUpPressed = true;
                 upBox.BackColor = Color.Green;
                 directions.LinearDirection = 1;
                 UpdateForm();
                 SendSpeed();
             }
-            if (e.KeyData == Keys.Down)
+            if (e.KeyData == Keys.Down && !keyDownPressed)
             {
+                keyDownPressed = true;
                 downBox.BackColor = Color.Green;
                 directions.LinearDirection = -1;
+
                 SendSpeed();
             }
-            if (e.KeyData == Keys.Left)
+            if (e.KeyData == Keys.Left && !keyLeftPressed)
             {
+                keyLeftPressed = true;
                 leftBox.BackColor = Color.Green;
                 directions.RotationDirection = -1;
+                if (directions.LinearDirection < 0)
+                {
+                    directions.RotationDirection *= -1;
+                }
                 SendSpeed();
             }
-            if (e.KeyData == Keys.Right)
+            if (e.KeyData == Keys.Right && !keyRightPressed)
             {
+                keyRightPressed = true;
                 rightBox.BackColor = Color.Green;
                 directions.RotationDirection = 1;
+                if (directions.LinearDirection < 0)
+                {
+                    directions.RotationDirection *= -1;
+                }
                 SendSpeed();
             }
             UpdateForm();
@@ -64,24 +93,28 @@ namespace RatClientApplication
         {
             if (e.KeyData == Keys.Up)
             {
+                keyUpPressed = false;
                 upBox.BackColor = Color.Gray;
                 directions.LinearDirection = 0;
                 SendSpeed();
             }
             if (e.KeyData == Keys.Down)
             {
+                keyDownPressed = false;
                 downBox.BackColor = Color.Gray;
                 directions.LinearDirection = 0;
                 SendSpeed();
             }
             if (e.KeyData == Keys.Left)
             {
+                keyLeftPressed = false;
                 leftBox.BackColor = Color.Gray;
                 directions.RotationDirection = 0;
                 SendSpeed();
             }
             if (e.KeyData == Keys.Right)
             {
+                keyRightPressed = false;
                 rightBox.BackColor = Color.Gray;
                 directions.RotationDirection = 0;
                 SendSpeed();
@@ -93,7 +126,13 @@ namespace RatClientApplication
         private void speedHScrollBar_ValueChanged(object sender, EventArgs e)
         {
             
-            directions.Speed = speedHScrollBar.Value;
+            directions.LinearSpeed1 = linearSpeedHScrollBar.Value;
+            UpdateForm();
+        }
+
+        private void angularSpeedHScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            directions.AngularSpeed1 = angularSpeedHScrollBar.Value;
             UpdateForm();
         }
 
@@ -109,79 +148,75 @@ namespace RatClientApplication
         {
             e.Handled = true;
         }
-        private void UpdateForm()
+
+        private void angularSpeedHScrollBar_KeyDown(object sender, KeyEventArgs e)
         {
-            linearSpeedLabel.Text = directions.LinearSpeed.ToString();
-            rotationSpeedLabel.Text = directions.RotationSpeed.ToString();
-            speedLabel.Text = directions.Speed.ToString();
-            UpdateConnectionLabel();
+            e.Handled = true;
         }
 
-        private void UpdateConnectionLabel()
+        private void UpdateForm()
         {
-            if(client.IsConnected)
+            linearSpeedLabel2.Text = directions.LinearSpeed.ToString();
+            angularSpeedLabel2.Text = directions.RotationSpeed.ToString();
+            linearSpeedLabel1.Text = directions.LinearSpeed1.ToString();
+            angularSpeedLabel1.Text = directions.AngularSpeed1.ToString();
+            UpdateConnectionLabels();
+        }
+
+        private void UpdateConnectionLabels()
+        {
+            if (tcpClient.IsConnected)
             {
-                connectionLabel.BackColor = Color.Green;
-                connectionLabel.Text = "ON";
+                tcpConnectionLabel.BackColor = Color.Green;
+                tcpConnectionLabel.Text = "ON";
             }
             else
             {
-                connectionLabel.BackColor = Color.Red;
-                connectionLabel.Text = "OFF";
+                tcpConnectionLabel.BackColor = Color.Red;
+                tcpConnectionLabel.Text = "OFF";
             }
         }
 
-        private void connectButton_Click(object sender, EventArgs e)
+        private void tcpConnectButton_Click(object sender, EventArgs e)
         {
-            client.Start();
+            tcpClient.Start();
+            udpServer.Start();
             timer100.Enabled = true;
-            timer2000.Enabled = true;
-
+            timer3000.Enabled = true;
             UpdateForm();
-            connectButton.Enabled = false;
         }
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            if (client.IsConnected)
+            if (tcpClient.IsConnected)
             {
-                client.SendString(inputTextBox.Text);
+                tcpClient.SendString(inputTextBox.Text);
             }
+
             else
             {
-                outputTextBox.Text = "You must be connected to send text";
+                outputTCPTextBox.Text = "You must be connected to send text";
             }
-            outputTextBox.Clear();
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            outputTextBox.Text = client.OutputText;
-            //if(client.IsConnected)
-            //{
-            //    connectButton.Enabled = false;
-            //}
-            //else
-            //{
-            //    connectButton.Enabled = true;
-            //}
-            UpdateForm();
         }
 
         private void clearButton_Click(object sender, EventArgs e)
         {
-            outputTextBox.Clear();
+            outputTCPTextBox.Clear();
         }
         
         private void SendSpeed()
         {
-            if(client.IsConnected)
+            speedOfRat.linear = directions.LinearSpeed;
+            speedOfRat.angular = directions.RotationSpeed;
+            if(tcpClient.IsConnected)
             {
-                 client.SendString(String.Format("{0} {1}", directions.LinearSpeed, directions.RotationSpeed));
+                string jsonSpeed = JsonConvert.SerializeObject(speedOfRat);
+                //client.SendString(String.Format("{0} {1}", directions.LinearSpeed, directions.RotationSpeed));
+                tcpClient.SendString(jsonSpeed);
             }
             else
             {
-                outputTextBox.Text = "You must be connected to steer the robot";
+                outputTCPTextBox.Text = "You must be connected to steer the robot";
             }
         }
 
@@ -191,51 +226,84 @@ namespace RatClientApplication
             string portNumberString = portTextBox.Text;
             if (ipTextBox.Text.Contains(" ") || portTextBox.Text.Contains(" "))
             {
-                outputTextBox.Text = "There are white spaces in IPAddress or Port number";
+                outputTCPTextBox.Text = "There are white spaces in IPAddress or Port number";
                 return;
             }
 
-            if (!TCPClient.ValidateIPV4(ipString))
+            if (!IPClient.ValidateIPV4(ipString))
             {
-                outputTextBox.Text = "Incorrect IP Address";
+                outputTCPTextBox.Text = "Incorrect IP Address";
                 return;
             }
             if(string.IsNullOrWhiteSpace(portNumberString))
             {
-                outputTextBox.Text = "Incorrect Port number";
+                outputTCPTextBox.Text = "Incorrect Port number";
                 return;
             }
             else
             {
-                client.IP = ipTextBox.Text;
-                client.PortNumber = int.Parse(portTextBox.Text);
-                connectButton.Enabled = true;
-                outputTextBox.Text = "Correct format of IPAddres and Port number. Ready to connect.";
+                tcpClient.IP = ipTextBox.Text;
+                tcpClient.PortNumber = int.Parse(portTextBox.Text);
+                tcpConnectButton.Enabled = true;
+                udpServer.PortNumber = int.Parse(portTextBox.Text) + 100;
+//                udpClient.IP = ipTextBox.Text;
+//                udpClient.PortNumber = int.Parse(portTextBox.Text);
+                outputTCPTextBox.Text = "Correct format of IPAddres and Port number. Ready to connect.";
             }
         }
 
-        private void timer2000_Tick(object sender, EventArgs e)
+        private void disconnectButton_Click(object sender, EventArgs e)
+        {
+            outputTCPTextBox.Text = "User pressed disconnect button";
+            tcpClient.CloseConnection();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            outputTCPTextBox.Text = tcpClient.OutputText;
+            outputUDPTextBox.Text = udpServer.OutputText;
+            disconnectButton.Enabled = !tcpConnectButton.Enabled;
+            if (udpServer.ImageToDisplay != null)
+            {
+                displayImage(udpServer.ImageToDisplay);
+            }
+            UpdateForm();
+        }
+
+        private void displayImage(Bitmap imageToDisplay)
+        {
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.Image = (Image)imageToDisplay;
+        }
+
+        private void timer3000_Tick(object sender, EventArgs e)
         {
             //client.SendString("test");
-            if (client.IsConnected)
+            if (tcpClient.IsConnected)
             {
-                connectButton.Enabled = false;
+                tcpConnectButton.Enabled = false;
             }
             else
             {
-                connectButton.Enabled = true;
+                tcpConnectButton.Enabled = true;
             }
-            try
+            if (tcpClient.IsConnected)
             {
-                client.SendString("");
+                try
+                {
+                    tcpClient.SendString("");
+                }
+                catch
+                {
+                    outputTCPTextBox.Text = "Connection lost (timer event)";
+                    tcpClient.CloseConnection();
+                }
             }
-            catch
-            {
-                client.CloseConnection();
-            }
-
         }
-
-
+    }
+    public class speed
+    {
+        public int linear;
+        public int angular;
     }
 }
