@@ -9,11 +9,16 @@ namespace RatClientApplication
 {
     class ImageDisplay
     {
-        public Bitmap imageToDisplay { get; set; }
+        public Bitmap CurrentImage { get; set; }
         public int xPictureBoxSize { get; set; }
         public int yPictureBoxSize { get; set; }
         private List<Bitmap> listOfImages = new List<Bitmap>();
         public String fileToDisplay = @"D:\OneDrive\Szczur\szczur.jpg";
+
+        public virtual void OnImageReceived(EventArgs e)
+        {
+            ImageReceived?.Invoke(this, e);
+        }
 
         public ImageDisplay(int xPictureBoxSize, int yPictureBoxSize)
         {
@@ -29,12 +34,19 @@ namespace RatClientApplication
 
         public Bitmap getImage()
         {
-            if (imageToDisplay !=null)
-            {
-                imageToDisplay.Dispose();
-            }
-            imageToDisplay = new Bitmap(fileToDisplay);
-            return imageToDisplay;
+            CurrentImage?.Dispose();
+            //if (imageToDisplay !=null)
+            //{
+            //    imageToDisplay.Dispose();
+            //}
+            CurrentImage = new Bitmap(fileToDisplay);
+            return CurrentImage;
         }
+        public int GetCountOfImages()
+        {
+            return listOfImages.Count;
+        }
+
+        public event EventHandler ImageReceived;
     }
 }

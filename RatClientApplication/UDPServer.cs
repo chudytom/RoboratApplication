@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Drawing;
 using System.IO;
+using RatClientApplication;
 
 namespace UDP
 {
@@ -14,15 +15,22 @@ namespace UDP
     {
         private Socket serverSocket;
         public int PortNumber { get; set; }
-        public string OutputText { get; private set; }
+        public string OutputText { get; set; }
         public string InputText { get; private set; }
         private int bytesReceived { get; set; }
         private string ipAddress = "192.168.0.108";
         //private int bufferSize = 16384;
-        private int bufferSize = 131072;
+        //private int bufferSize = 131072;
+        private int bufferSize = 262144;
         private byte[] incomingBuffer;
         private EndPoint remoteEndPoint;
         public Bitmap ImageToDisplay { get; set; }
+        private ImageDisplay displayObject;
+
+        public UDPServer(ImageDisplay passedObject)
+        {
+            displayObject = passedObject;
+        }
 
         //static void Main(string[] args)
         //{
@@ -99,6 +107,7 @@ namespace UDP
             MemoryStream memoryStream = new MemoryStream(incomingBuffer);
             //NetworkStream networkStream = new NetworkStream(socket);
             ImageToDisplay = new Bitmap(Image.FromStream(memoryStream));
+            displayObject.OnImageReceived(EventArgs.Empty);
             //OutputText = String.Format(Encoding.ASCII.GetString(incomingBuffer, 0, bytesReceived));
             //Console.WriteLine("Message from {0}", remoteEndPoint.ToString());
             //Console.WriteLine(Encoding.ASCII.GetString(receivedData, 0, bytesReceived));

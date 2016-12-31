@@ -24,8 +24,8 @@ namespace RatClientApplication
         DirectionData directions = new DirectionData();
         // Interesting thing. When you connect UDP after TCP, TCP gets autoamtically connected with whatever
         IPClient tcpClient = new IPClient(IPClient.Protocol.TCP);
-        UDPServer udpServer = new UDPServer();
         ImageDisplay imageToDisplay = new ImageDisplay(300, 175);
+        UDPServer udpServer;
         speed speedOfRat = new speed();
         public Form1()
         {
@@ -41,10 +41,17 @@ namespace RatClientApplication
             //portTextBox.Text = "50000"; 
             ipTextBox.Text = "192.168.0.108";
             portTextBox.Text = "100";
-
+            imageToDisplay.ImageReceived += ImageToDisplay_ImageReceived;
+            udpServer = new UDPServer(imageToDisplay);
             UpdateForm();
+        }
 
-    }
+        private void ImageToDisplay_ImageReceived(object sender, EventArgs e)
+        {
+            imageToDisplay.addImage(udpServer.ImageToDisplay);
+            displayImage(udpServer.ImageToDisplay);
+            udpServer.OutputText = String.Format("Images displayed: {0}", imageToDisplay.GetCountOfImages());
+        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -263,10 +270,10 @@ namespace RatClientApplication
             outputTCPTextBox.Text = tcpClient.OutputText;
             outputUDPTextBox.Text = udpServer.OutputText;
             disconnectButton.Enabled = !tcpConnectButton.Enabled;
-            if (udpServer.ImageToDisplay != null)
-            {
-                displayImage(udpServer.ImageToDisplay);
-            }
+            //if (udpServer.ImageToDisplay != null)
+            //{
+            //    displayImage(udpServer.ImageToDisplay);
+            //}
             UpdateForm();
         }
 
