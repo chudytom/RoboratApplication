@@ -41,7 +41,7 @@
             this.angularSpeedLabel2 = new System.Windows.Forms.Label();
             this.linearSpeedLabel1 = new System.Windows.Forms.Label();
             this.inputTextBox = new System.Windows.Forms.TextBox();
-            this.tcpConnectButton = new System.Windows.Forms.Button();
+            this.connectButton = new System.Windows.Forms.Button();
             this.sendButton = new System.Windows.Forms.Button();
             this.timer100 = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
@@ -185,17 +185,17 @@
             this.inputTextBox.Size = new System.Drawing.Size(150, 75);
             this.inputTextBox.TabIndex = 12;
             // 
-            // tcpConnectButton
+            // connectButton
             // 
-            this.tcpConnectButton.Enabled = false;
-            this.tcpConnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tcpConnectButton.Location = new System.Drawing.Point(176, 102);
-            this.tcpConnectButton.Name = "tcpConnectButton";
-            this.tcpConnectButton.Size = new System.Drawing.Size(79, 30);
-            this.tcpConnectButton.TabIndex = 13;
-            this.tcpConnectButton.Text = "Connect";
-            this.tcpConnectButton.UseVisualStyleBackColor = true;
-            this.tcpConnectButton.Click += new System.EventHandler(this.tcpConnectButton_Click);
+            this.connectButton.Enabled = false;
+            this.connectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.connectButton.Location = new System.Drawing.Point(176, 102);
+            this.connectButton.Name = "connectButton";
+            this.connectButton.Size = new System.Drawing.Size(79, 30);
+            this.connectButton.TabIndex = 13;
+            this.connectButton.Text = "Connect";
+            this.connectButton.UseVisualStyleBackColor = true;
+            this.connectButton.Click += new System.EventHandler(this.connectButton_Click);
             // 
             // sendButton
             // 
@@ -410,7 +410,7 @@
             this.Controls.Add(this.outputTCPTextBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.sendButton);
-            this.Controls.Add(this.tcpConnectButton);
+            this.Controls.Add(this.connectButton);
             this.Controls.Add(this.inputTextBox);
             this.Controls.Add(this.linearSpeedLabel1);
             this.Controls.Add(this.angularSpeedLabel2);
@@ -451,7 +451,7 @@
         private System.Windows.Forms.Label angularSpeedLabel2;
         private System.Windows.Forms.Label linearSpeedLabel1;
         private System.Windows.Forms.TextBox inputTextBox;
-        private System.Windows.Forms.Button tcpConnectButton;
+        private System.Windows.Forms.Button connectButton;
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.Timer timer100;
         private System.Windows.Forms.Label label3;

@@ -13,15 +13,15 @@ namespace UDP
 {
     class UDPServer
     {
+        public bool IsConnected { get; set; }
         private Socket serverSocket;
         public int PortNumber { get; set; }
         public string OutputText { get; set; }
         public string InputText { get; private set; }
         private int bytesReceived { get; set; }
         private string ipAddress = "192.168.0.108";
-        //private int bufferSize = 16384;
-        //private int bufferSize = 131072;
-        private int bufferSize = 262144;
+        private readonly int bufferSize = 262144;
+        //private readonly int bufferSize = 16384;
         private byte[] incomingBuffer;
         private EndPoint remoteEndPoint;
         public Bitmap ImageToDisplay { get; set; }
@@ -29,16 +29,9 @@ namespace UDP
 
         public UDPServer(ImageDisplay passedObject)
         {
+            IsConnected = false;
             displayObject = passedObject;
         }
-
-        //static void Main(string[] args)
-        //{
-        //    UDPServer server = new UDPServer();
-        //    server.Start();
-        //    System.Threading.Thread.Sleep(20000);
-        //    server.CloseConnection();
-        //}
 
         public void Start()
         {
@@ -59,32 +52,35 @@ namespace UDP
             {
                 serverSocket.Bind(endPoint);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                OutputText = "Wrong Bind";
-                //Console.WriteLine("Wrong Bind");
+                string txt = "Wrong bind";
+                CloseConnection(txt + e.Message);
                 return;
             }
-            //serverSocket.Connect(endPoint);
+            IsConnected = true;
             OutputText = "Waiting for a client...";
-            //Console.WriteLine("Waiting for a client...");
         }
 
         private void StartReceiving()
         {
             IPEndPoint sender = new IPEndPoint(IPAddress.Parse(ipAddress), PortNumber);
-            //serverSocket.Connect(sender);
             remoteEndPoint = (EndPoint)sender;
             try
             {
                 serverSocket.BeginReceiveFrom(incomingBuffer, 0, incomingBuffer.Length, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(ReceiveCallback), serverSocket);
-                //serverSocket.BeginReceive(incomingBuffer, 0, incomingBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), serverSocket);
             }
-            catch (Exception)
+            catch (OutOfMemoryException e)
             {
-                OutputText = "Begin Receive Exception";
-                //Console.WriteLine("Begin Receive Exception");
-                CloseConnection();
+                string txt = "Handled4 ";
+                CloseConnection(txt + e.Message);
+                return;
+            }
+            catch (Exception e)
+            {
+                string txt = "Begin Receive Exception";
+                CloseConnection(txt + e.Message);
+                return;
             }
         }
 
@@ -94,58 +90,81 @@ namespace UDP
             try
             {
                 bytesReceived = socket.EndReceiveFrom(AR, ref remoteEndPoint);
-                //bytesReceived = socket.EndReceive(AR);
             }
-            catch (Exception)
+            catch(SocketException)
             {
-                //Console.WriteLine("End Receive Exception");
-                OutputText = "End Receive Exception";
-                CloseConnection();
+                string closeMessage = "The image received is incorrect. Try decresing its resolution and connect again";
+                CloseConnection(closeMessage);
+                return;
             }
-            //socket = (Socket)AR.AsyncState;
-            OutputText = String.Format("Message from {0}", remoteEndPoint.ToString());
+            catch(OutOfMemoryException e)
+            {
+                string txt = "Handled1 ";
+                CloseConnection(txt + e.Message);
+                return;
+            }
+            catch (Exception e)
+            {
+                string txt = "End Receive Exception";
+                CloseConnection(txt + e.Message);
+                return;
+            }
+            //OutputText = String.Format("Message from {0}", remoteEndPoint.ToString());
             MemoryStream memoryStream = new MemoryStream(incomingBuffer);
-            //NetworkStream networkStream = new NetworkStream(socket);
-            ImageToDisplay = new Bitmap(Image.FromStream(memoryStream));
+            //Here an exception when to large an image received or the buffer is too small
+            try
+            {
+                ImageToDisplay = new Bitmap(Image.FromStream(memoryStream));
+            }
+            catch (ArgumentException)
+            {
+                string closeMessage = "The image received is incorrect. Try decresing its resolution and connect again";
+                CloseConnection(closeMessage);
+                return;
+            }
+            catch (OutOfMemoryException e)
+            {
+                string txt = String.Format("Memory is full. Restart the application");
+                CloseConnection(txt + e.Message);
+                return;
+            }
+            catch (Exception e)
+            {
+                CloseConnection(e.Message);
+                return;
+            }
             displayObject.OnImageReceived(EventArgs.Empty);
-            //OutputText = String.Format(Encoding.ASCII.GetString(incomingBuffer, 0, bytesReceived));
-            //Console.WriteLine("Message from {0}", remoteEndPoint.ToString());
-            //Console.WriteLine(Encoding.ASCII.GetString(receivedData, 0, bytesReceived));
 
-            //string welcome = "Welcome to my server!";
-            //incomingBuffer = Encoding.ASCII.GetBytes(welcome);
             incomingBuffer = new byte[bufferSize];
             try
             {
                 socket.BeginReceiveFrom(incomingBuffer, 0, incomingBuffer.Length, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(ReceiveCallback), serverSocket);
-                //serverSocket.BeginReceive(incomingBuffer, 0, incomingBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), serverSocket);
             }
             catch(ArgumentOutOfRangeException e)
             {
-                //Console.Beep();
-                //Console.WriteLine("Begin Receive Exception - Repetition");
-                //Console.WriteLine("Message: {0}", e.Message);
-                OutputText = String.Format("Begin Receive Exception - Repetition");
-                OutputText = String.Format("Message: {0}", e.Message);
-                CloseConnection();
+                string txt = String.Format("Begin Receive Exception - Repetition");
+                CloseConnection(txt + e.Message);
+            }
+            catch (OutOfMemoryException e)
+            {
+                string txt = "Handled2 ";
+                CloseConnection(txt + e.Message);
+                return;
             }
             catch (Exception e)
             {
-                //Console.WriteLine("Begin Receive Exception - Repetition");
-                //Console.WriteLine("Message {0}", e.Message);
-                OutputText = String.Format("Begin Receive Exception - Repetition");
-                OutputText = String.Format("Message: {0}", e.Message);
-                CloseConnection();
+                string txt = String.Format("Begin Receive Exception - Repetition");
+                CloseConnection(txt + e.Message);
             }
         }
 
-
-
-        private void CloseConnection()
+        private void CloseConnection(string reasonForClosure, bool startConnection = false)
         {
+            OutputText = String.Format(" {0}", reasonForClosure);
+            IsConnected = false;
             serverSocket.Close();
-            //    serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            Start();
+            if (startConnection)
+                Start();
         }
     }
 }

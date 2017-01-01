@@ -184,10 +184,13 @@ namespace RatClientApplication
             }
         }
 
-        private void tcpConnectButton_Click(object sender, EventArgs e)
+        private void connectButton_Click(object sender, EventArgs e)
         {
             tcpClient.Start();
-            udpServer.Start();
+            if (!udpServer.IsConnected)
+            {
+                udpServer.Start();
+            }
             timer100.Enabled = true;
             timer3000.Enabled = true;
             UpdateForm();
@@ -251,7 +254,7 @@ namespace RatClientApplication
             {
                 tcpClient.IP = ipTextBox.Text;
                 tcpClient.PortNumber = int.Parse(portTextBox.Text);
-                tcpConnectButton.Enabled = true;
+                connectButton.Enabled = true;
                 udpServer.PortNumber = int.Parse(portTextBox.Text) + 100;
 //                udpClient.IP = ipTextBox.Text;
 //                udpClient.PortNumber = int.Parse(portTextBox.Text);
@@ -269,7 +272,7 @@ namespace RatClientApplication
         {
             outputTCPTextBox.Text = tcpClient.OutputText;
             outputUDPTextBox.Text = udpServer.OutputText;
-            disconnectButton.Enabled = !tcpConnectButton.Enabled;
+            disconnectButton.Enabled = !connectButton.Enabled;
             //if (udpServer.ImageToDisplay != null)
             //{
             //    displayImage(udpServer.ImageToDisplay);
@@ -288,11 +291,11 @@ namespace RatClientApplication
             //client.SendString("test");
             if (tcpClient.IsConnected)
             {
-                tcpConnectButton.Enabled = false;
+                connectButton.Enabled = false;
             }
             else
             {
-                tcpConnectButton.Enabled = true;
+                connectButton.Enabled = true;
             }
             if (tcpClient.IsConnected)
             {
