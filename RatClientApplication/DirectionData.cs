@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Directions
+namespace RatClientApplication
 {
-
     class DirectionData
     {
         public int LinearSpeed1
@@ -32,6 +31,10 @@ namespace Directions
         public int RotationSpeed
         {
             get { return AngularSpeed1 * RotationDirection; }
+        }
+        public enum RobotMode
+        {
+            Manual, Automatic, Random
         }
     }
 }

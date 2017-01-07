@@ -3,44 +3,50 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Windows.Input;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Directions;
-using IP;
-using UDP;
 using Newtonsoft.Json;
-
 namespace RatClientApplication
 {
-    public partial class Form1 : Form
+    public partial class FormRat : Form
     {
+        Keys[] keysPressed = new Keys[4];
         private bool keyDownPressed = false;
         private bool keyUpPressed = false;
         private bool keyLeftPressed = false;
         private bool keyRightPressed = false;
+
         DirectionData directions = new DirectionData();
         // Interesting thing. When you connect UDP after TCP, TCP gets autoamtically connected with whatever
-        IPClient tcpClient = new IPClient(IPClient.Protocol.TCP);
+        IPClient tcpClient = new IPClient();
         ImageDisplay imageToDisplay = new ImageDisplay(300, 175);
         UDPServer udpServer;
         speed speedOfRat = new speed();
-        public Form1()
+        private ColorfulProgressBar progressBar;
+        private ProgressBarController batteryController;
+
+        public FormRat()
         {
             InitializeComponent();           
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //timer100.Enabled = true;
+            timer3000.Enabled = true;
+            progressBar = new ColorfulProgressBar(new Point(30, 90), Color.Yellow);
+            this.Controls.Add(progressBar);
+            batteryController = new ProgressBarController(progressBar);
+            this.Text = "Rat application";
             KeyPreview = true;
             linearSpeedHScrollBar.Value = directions.LinearSpeed1 = 123;
             angularSpeedHScrollBar.Value = directions.AngularSpeed1 = 30;
-            //ipTextBox.Text = "192.168.1.3";
-            //portTextBox.Text = "50000"; 
-            ipTextBox.Text = "192.168.0.108";
-            portTextBox.Text = "100";
+            ipTextBox.Text = "192.168.1.3";
+            portTextBox.Text = "50000";
             imageToDisplay.ImageReceived += ImageToDisplay_ImageReceived;
             udpServer = new UDPServer(imageToDisplay);
             UpdateForm();
@@ -57,6 +63,7 @@ namespace RatClientApplication
         {
             if(e.KeyData==Keys.Up && !keyUpPressed)
             {
+                
                 keyUpPressed = true;
                 upBox.BackColor = Color.Green;
                 directions.LinearDirection = 1;
@@ -68,7 +75,10 @@ namespace RatClientApplication
                 keyDownPressed = true;
                 downBox.BackColor = Color.Green;
                 directions.LinearDirection = -1;
-
+                if (keyLeftPressed || keyRightPressed)
+                {
+                    directions.RotationDirection *= -1;
+                }
                 SendSpeed();
             }
             if (e.KeyData == Keys.Left && !keyLeftPressed)
@@ -92,6 +102,11 @@ namespace RatClientApplication
                     directions.RotationDirection *= -1;
                 }
                 SendSpeed();
+            }
+            if (e.KeyData == Keys.Space)
+            {
+                directions.LinearDirection = 0;
+                directions.RotationDirection = 0;
             }
             UpdateForm();
         }
@@ -211,6 +226,7 @@ namespace RatClientApplication
 
         private void clearButton_Click(object sender, EventArgs e)
         {
+            tcpClient.OutputText = "";
             outputTCPTextBox.Clear();
         }
         
@@ -256,8 +272,8 @@ namespace RatClientApplication
                 tcpClient.PortNumber = int.Parse(portTextBox.Text);
                 connectButton.Enabled = true;
                 udpServer.PortNumber = int.Parse(portTextBox.Text) + 100;
-//                udpClient.IP = ipTextBox.Text;
-//                udpClient.PortNumber = int.Parse(portTextBox.Text);
+                udpServer.IpAddress = ipTextBox.Text;
+                //                udpClient.PortNumber = int.Parse(portTextBox.Text);
                 outputTCPTextBox.Text = "Correct format of IPAddres and Port number. Ready to connect.";
             }
         }
@@ -268,22 +284,21 @@ namespace RatClientApplication
             tcpClient.CloseConnection();
         }
 
+        private void displayImage(Bitmap imageToDisplay)
+        {
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.Image = (Image)imageToDisplay;
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             outputTCPTextBox.Text = tcpClient.OutputText;
             outputUDPTextBox.Text = udpServer.OutputText;
             disconnectButton.Enabled = !connectButton.Enabled;
-            //if (udpServer.ImageToDisplay != null)
-            //{
-            //    displayImage(udpServer.ImageToDisplay);
-            //}
-            UpdateForm();
-        }
 
-        private void displayImage(Bitmap imageToDisplay)
-        {
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.Image = (Image)imageToDisplay;
+            UpdateForm();
+            if (progressBar.Value > 0)
+                progressBar.Value--;
         }
 
         private void timer3000_Tick(object sender, EventArgs e)
@@ -309,8 +324,16 @@ namespace RatClientApplication
                     tcpClient.CloseConnection();
                 }
             }
+            UpdateBatteryProgressBar();
         }
-    }
+
+        private void UpdateBatteryProgressBar()
+        {
+            batteryController.Voltage = tcpClient.IncomingParams.voltage;
+            batteryController.CalculateValues();
+        }
+    }                                       
+
     public class speed
     {
         public int linear;

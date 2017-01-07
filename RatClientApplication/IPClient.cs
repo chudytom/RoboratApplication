@@ -7,24 +7,16 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
-namespace IP
+namespace RatClientApplication
 {
     
     class IPClient
     {
         private Socket _clientSocket;
-        public enum Protocol {  TCP, UDP}
-        public IPClient(Protocol protocolType)
+        public IPClient()
         {
-            switch(protocolType)
-            {
-                case Protocol.TCP:
-                    _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    break;
-                case Protocol.UDP:
-                    _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                    break;
-            }
+            _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IncomingParams.voltage = 800;
         }
         public bool IsConnected { get; set; }
         public string IP { get; set; }
@@ -35,6 +27,7 @@ namespace IP
         byte[] incomingBuffer = new byte[BUFFER_SIZE];
         public string OutputText { get; set; }    
         public string InputText { get; set; }
+        public IncomingParameters IncomingParams;
 
         public void Start()
         {
@@ -252,6 +245,11 @@ namespace IP
             IsConnected = false;
             _clientSocket.Close();
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        }
+        public struct IncomingParameters
+        {
+            public int voltage;
+            public DirectionData.RobotMode mode;
         }
     }
 }

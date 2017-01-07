@@ -1,6 +1,6 @@
 ﻿namespace RatClientApplication
 {
-    partial class Form1
+    partial class FormRat
     {
         /// <summary>
         /// Required designer variable.
@@ -63,6 +63,11 @@
             this.label7 = new System.Windows.Forms.Label();
             this.outputUDPTextBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,7 +75,7 @@
             // 
             this.upBox.AutoSize = true;
             this.upBox.BackColor = System.Drawing.SystemColors.GrayText;
-            this.upBox.Location = new System.Drawing.Point(107, 263);
+            this.upBox.Location = new System.Drawing.Point(62, 295);
             this.upBox.MinimumSize = new System.Drawing.Size(30, 10);
             this.upBox.Name = "upBox";
             this.upBox.Size = new System.Drawing.Size(30, 13);
@@ -80,7 +85,7 @@
             // 
             this.rightBox.AutoSize = true;
             this.rightBox.BackColor = System.Drawing.SystemColors.GrayText;
-            this.rightBox.Location = new System.Drawing.Point(143, 285);
+            this.rightBox.Location = new System.Drawing.Point(98, 317);
             this.rightBox.MinimumSize = new System.Drawing.Size(30, 10);
             this.rightBox.Name = "rightBox";
             this.rightBox.Size = new System.Drawing.Size(30, 13);
@@ -90,7 +95,7 @@
             // 
             this.leftBox.AutoSize = true;
             this.leftBox.BackColor = System.Drawing.SystemColors.GrayText;
-            this.leftBox.Location = new System.Drawing.Point(71, 285);
+            this.leftBox.Location = new System.Drawing.Point(26, 317);
             this.leftBox.MinimumSize = new System.Drawing.Size(30, 10);
             this.leftBox.Name = "leftBox";
             this.leftBox.Size = new System.Drawing.Size(30, 13);
@@ -100,7 +105,7 @@
             // 
             this.downBox.AutoSize = true;
             this.downBox.BackColor = System.Drawing.SystemColors.GrayText;
-            this.downBox.Location = new System.Drawing.Point(107, 285);
+            this.downBox.Location = new System.Drawing.Point(62, 317);
             this.downBox.MinimumSize = new System.Drawing.Size(30, 10);
             this.downBox.Name = "downBox";
             this.downBox.Size = new System.Drawing.Size(30, 13);
@@ -108,7 +113,7 @@
             // 
             // linearSpeedHScrollBar
             // 
-            this.linearSpeedHScrollBar.Location = new System.Drawing.Point(15, 323);
+            this.linearSpeedHScrollBar.Location = new System.Drawing.Point(15, 355);
             this.linearSpeedHScrollBar.Maximum = 270;
             this.linearSpeedHScrollBar.Minimum = 1;
             this.linearSpeedHScrollBar.Name = "linearSpeedHScrollBar";
@@ -123,7 +128,7 @@
             // speedLabel2
             // 
             this.speedLabel2.AutoSize = true;
-            this.speedLabel2.Location = new System.Drawing.Point(71, 303);
+            this.speedLabel2.Location = new System.Drawing.Point(71, 335);
             this.speedLabel2.Name = "speedLabel2";
             this.speedLabel2.Size = new System.Drawing.Size(73, 13);
             this.speedLabel2.TabIndex = 5;
@@ -132,7 +137,7 @@
             // Label1
             // 
             this.Label1.AutoSize = true;
-            this.Label1.Location = new System.Drawing.Point(281, 283);
+            this.Label1.Location = new System.Drawing.Point(179, 290);
             this.Label1.Name = "Label1";
             this.Label1.Size = new System.Drawing.Size(75, 13);
             this.Label1.TabIndex = 6;
@@ -141,7 +146,7 @@
             // Label2
             // 
             this.Label2.AutoSize = true;
-            this.Label2.Location = new System.Drawing.Point(281, 306);
+            this.Label2.Location = new System.Drawing.Point(179, 313);
             this.Label2.Name = "Label2";
             this.Label2.Size = new System.Drawing.Size(78, 13);
             this.Label2.TabIndex = 7;
@@ -151,7 +156,7 @@
             // 
             this.linearSpeedLabel2.AutoSize = true;
             this.linearSpeedLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.linearSpeedLabel2.Location = new System.Drawing.Point(365, 283);
+            this.linearSpeedLabel2.Location = new System.Drawing.Point(263, 290);
             this.linearSpeedLabel2.Name = "linearSpeedLabel2";
             this.linearSpeedLabel2.Size = new System.Drawing.Size(14, 13);
             this.linearSpeedLabel2.TabIndex = 8;
@@ -161,7 +166,7 @@
             // 
             this.angularSpeedLabel2.AutoSize = true;
             this.angularSpeedLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.angularSpeedLabel2.Location = new System.Drawing.Point(365, 306);
+            this.angularSpeedLabel2.Location = new System.Drawing.Point(263, 313);
             this.angularSpeedLabel2.Name = "angularSpeedLabel2";
             this.angularSpeedLabel2.Size = new System.Drawing.Size(14, 13);
             this.angularSpeedLabel2.TabIndex = 9;
@@ -171,7 +176,7 @@
             // 
             this.linearSpeedLabel1.AutoSize = true;
             this.linearSpeedLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.linearSpeedLabel1.Location = new System.Drawing.Point(157, 303);
+            this.linearSpeedLabel1.Location = new System.Drawing.Point(157, 335);
             this.linearSpeedLabel1.Name = "linearSpeedLabel1";
             this.linearSpeedLabel1.Size = new System.Drawing.Size(28, 13);
             this.linearSpeedLabel1.TabIndex = 10;
@@ -179,7 +184,7 @@
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Location = new System.Drawing.Point(175, 151);
+            this.inputTextBox.Location = new System.Drawing.Point(166, 161);
             this.inputTextBox.Multiline = true;
             this.inputTextBox.Name = "inputTextBox";
             this.inputTextBox.Size = new System.Drawing.Size(150, 75);
@@ -189,7 +194,7 @@
             // 
             this.connectButton.Enabled = false;
             this.connectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.connectButton.Location = new System.Drawing.Point(176, 102);
+            this.connectButton.Location = new System.Drawing.Point(197, 110);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(79, 30);
             this.connectButton.TabIndex = 13;
@@ -199,7 +204,7 @@
             // 
             // sendButton
             // 
-            this.sendButton.Location = new System.Drawing.Point(208, 231);
+            this.sendButton.Location = new System.Drawing.Point(208, 243);
             this.sendButton.Name = "sendButton";
             this.sendButton.Size = new System.Drawing.Size(75, 23);
             this.sendButton.TabIndex = 14;
@@ -214,7 +219,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 136);
+            this.label3.Location = new System.Drawing.Point(8, 146);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(137, 13);
             this.label3.TabIndex = 15;
@@ -222,7 +227,7 @@
             // 
             // outputTCPTextBox
             // 
-            this.outputTCPTextBox.Location = new System.Drawing.Point(9, 152);
+            this.outputTCPTextBox.Location = new System.Drawing.Point(0, 162);
             this.outputTCPTextBox.Multiline = true;
             this.outputTCPTextBox.Name = "outputTCPTextBox";
             this.outputTCPTextBox.Size = new System.Drawing.Size(150, 75);
@@ -231,7 +236,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(179, 135);
+            this.label4.Location = new System.Drawing.Point(170, 145);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(146, 13);
             this.label4.TabIndex = 17;
@@ -240,7 +245,7 @@
             // clearButton
             // 
             this.clearButton.AutoSize = true;
-            this.clearButton.Location = new System.Drawing.Point(38, 232);
+            this.clearButton.Location = new System.Drawing.Point(38, 244);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(79, 23);
             this.clearButton.TabIndex = 18;
@@ -299,7 +304,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label8.Location = new System.Drawing.Point(163, 42);
+            this.label8.Location = new System.Drawing.Point(174, 44);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(113, 17);
             this.label8.TabIndex = 26;
@@ -309,7 +314,7 @@
             // 
             this.tcpConnectionLabel.BackColor = System.Drawing.SystemColors.GrayText;
             this.tcpConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tcpConnectionLabel.Location = new System.Drawing.Point(205, 63);
+            this.tcpConnectionLabel.Location = new System.Drawing.Point(216, 71);
             this.tcpConnectionLabel.MinimumSize = new System.Drawing.Size(30, 10);
             this.tcpConnectionLabel.Name = "tcpConnectionLabel";
             this.tcpConnectionLabel.Size = new System.Drawing.Size(40, 30);
@@ -320,7 +325,7 @@
             // disconnectButton
             // 
             this.disconnectButton.Enabled = false;
-            this.disconnectButton.Location = new System.Drawing.Point(317, 62);
+            this.disconnectButton.Location = new System.Drawing.Point(317, 69);
             this.disconnectButton.Name = "disconnectButton";
             this.disconnectButton.Size = new System.Drawing.Size(75, 23);
             this.disconnectButton.TabIndex = 28;
@@ -330,7 +335,7 @@
             // 
             // angularSpeedHScrollBar
             // 
-            this.angularSpeedHScrollBar.Location = new System.Drawing.Point(15, 374);
+            this.angularSpeedHScrollBar.Location = new System.Drawing.Point(15, 406);
             this.angularSpeedHScrollBar.Maximum = 50;
             this.angularSpeedHScrollBar.Minimum = 1;
             this.angularSpeedHScrollBar.Name = "angularSpeedHScrollBar";
@@ -345,7 +350,7 @@
             // 
             this.angularSpeedLabel1.AutoSize = true;
             this.angularSpeedLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.angularSpeedLabel1.Location = new System.Drawing.Point(157, 351);
+            this.angularSpeedLabel1.Location = new System.Drawing.Point(157, 383);
             this.angularSpeedLabel1.Name = "angularSpeedLabel1";
             this.angularSpeedLabel1.Size = new System.Drawing.Size(28, 13);
             this.angularSpeedLabel1.TabIndex = 31;
@@ -354,7 +359,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(71, 351);
+            this.label9.Location = new System.Drawing.Point(71, 383);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(80, 13);
             this.label9.TabIndex = 30;
@@ -363,7 +368,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(342, 136);
+            this.label7.Location = new System.Drawing.Point(333, 146);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(132, 13);
             this.label7.TabIndex = 33;
@@ -371,7 +376,7 @@
             // 
             // outputUDPTextBox
             // 
-            this.outputUDPTextBox.Location = new System.Drawing.Point(338, 152);
+            this.outputUDPTextBox.Location = new System.Drawing.Point(329, 162);
             this.outputUDPTextBox.Multiline = true;
             this.outputUDPTextBox.Name = "outputUDPTextBox";
             this.outputUDPTextBox.Size = new System.Drawing.Size(150, 75);
@@ -379,18 +384,70 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(401, 233);
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(293, 282);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(300, 175);
             this.pictureBox1.TabIndex = 34;
             this.pictureBox1.TabStop = false;
             // 
-            // Form1
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label10.Location = new System.Drawing.Point(393, 251);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(106, 20);
+            this.label10.TabIndex = 35;
+            this.label10.Text = "Video Stream";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(469, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 30);
+            this.button1.TabIndex = 36;
+            this.button1.Text = "Automatic mode";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(469, 58);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(100, 30);
+            this.button2.TabIndex = 37;
+            this.button2.Text = "Manual mode";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(469, 106);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(100, 30);
+            this.button3.TabIndex = 38;
+            this.button3.Text = "Random moving";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(40, 71);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(69, 13);
+            this.label11.TabIndex = 39;
+            this.label11.Text = "Battery Level";
+            // 
+            // FormRat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Menu;
-            this.ClientSize = new System.Drawing.Size(704, 418);
+            this.ClientSize = new System.Drawing.Size(835, 457);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.outputUDPTextBox);
@@ -426,7 +483,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form1";
+            this.Name = "FormRat";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
@@ -473,6 +530,11 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox outputUDPTextBox;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label11;
     }
 }
 
