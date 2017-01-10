@@ -16,7 +16,7 @@ namespace RatClientApplication
         public IPClient()
         {
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IncomingParams.voltage = 800;
+            IncomingParams.voltage = 50;
         }
         public bool IsConnected { get; set; }
         public string IP { get; set; }

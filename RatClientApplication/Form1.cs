@@ -23,9 +23,9 @@ namespace RatClientApplication
         DirectionData directions = new DirectionData();
         // Interesting thing. When you connect UDP after TCP, TCP gets autoamtically connected with whatever
         IPClient tcpClient = new IPClient();
-        ImageDisplay imageToDisplay = new ImageDisplay(300, 175);
+        ImageDisplay imageHandler = new ImageDisplay(300, 175);
         UDPServer udpServer;
-        speed speedOfRat = new speed();
+        Speed speedOfRat = new Speed();
         private ColorfulProgressBar progressBar;
         private ProgressBarController batteryController;
 
@@ -35,39 +35,39 @@ namespace RatClientApplication
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
+        {   
             //timer100.Enabled = true;
             timer3000.Enabled = true;
             progressBar = new ColorfulProgressBar(new Point(30, 90), Color.Yellow);
             this.Controls.Add(progressBar);
             batteryController = new ProgressBarController(progressBar);
             this.Text = "Rat application";
-            KeyPreview = true;
+            this.KeyPreview = true;
             linearSpeedHScrollBar.Value = directions.LinearSpeed1 = 123;
             angularSpeedHScrollBar.Value = directions.AngularSpeed1 = 30;
             ipTextBox.Text = "192.168.1.3";
             portTextBox.Text = "50000";
-            imageToDisplay.ImageReceived += ImageToDisplay_ImageReceived;
-            udpServer = new UDPServer(imageToDisplay);
+            imageHandler.ImageReceived += ImageToDisplay_ImageReceived;
+            udpServer = new UDPServer(imageHandler);
             UpdateForm();
         }
 
         private void ImageToDisplay_ImageReceived(object sender, EventArgs e)
         {
-            imageToDisplay.addImage(udpServer.ImageToDisplay);
-            displayImage(udpServer.ImageToDisplay);
-            udpServer.OutputText = String.Format("Images displayed: {0}", imageToDisplay.GetCountOfImages());
+            imageHandler.AddImage(udpServer.JpegImageBytes);
+            displayImage(udpServer.ImageBitMap);
+            udpServer.OutputText = String.Format("Images displayed: {0}", imageHandler.GetCountOfImages());
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            //inputTextBox.Text += "Down Event";
+            UpdateForm();
             if(e.KeyData==Keys.Up && !keyUpPressed)
-            {
-                
+            { 
                 keyUpPressed = true;
                 upBox.BackColor = Color.Green;
                 directions.LinearDirection = 1;
-                UpdateForm();
                 SendSpeed();
             }
             if (e.KeyData == Keys.Down && !keyDownPressed)
@@ -113,6 +113,8 @@ namespace RatClientApplication
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
+            //inputTextBox.Text += "Up Event";
+            UpdateForm();
             if (e.KeyData == Keys.Up)
             {
                 keyUpPressed = false;
@@ -142,7 +144,6 @@ namespace RatClientApplication
                 SendSpeed();
             }
             UpdateForm();
-            
         }
 
         private void speedHScrollBar_ValueChanged(object sender, EventArgs e)
@@ -156,14 +157,6 @@ namespace RatClientApplication
         {
             directions.AngularSpeed1 = angularSpeedHScrollBar.Value;
             UpdateForm();
-        }
-
-        private void speedHScrollBar_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            if(e.KeyCode==Keys.Down)
-            {
-                e.IsInputKey = false;
-            }
         }
 
         private void speedHScrollBar_KeyDown(object sender, KeyEventArgs e)
@@ -197,6 +190,13 @@ namespace RatClientApplication
                 tcpConnectionLabel.BackColor = Color.Red;
                 tcpConnectionLabel.Text = "OFF";
             }
+        }
+
+        private void UpdateBatteryProgressBar()
+        {
+            batteryController.Voltage = tcpClient.IncomingParams.voltage;
+            batteryController.CalculateValues();
+            progressBar.Update();
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -278,6 +278,21 @@ namespace RatClientApplication
             }
         }
 
+        private void automaticModeButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void manualModeButton_Click(object sender, EventArgs e)
+        {
+            this.Focus();
+        }
+
+        private void randomMovingButton_Click(object sender, EventArgs e)
+        {
+            this.Focus();
+        }
+
         private void disconnectButton_Click(object sender, EventArgs e)
         {
             outputTCPTextBox.Text = "User pressed disconnect button";
@@ -293,12 +308,14 @@ namespace RatClientApplication
         private void timer1_Tick(object sender, EventArgs e)
         {
             outputTCPTextBox.Text = tcpClient.OutputText;
-            outputUDPTextBox.Text = udpServer.OutputText;
+            outputUDPTextBox.Text = udpServer.OutputText + imageHandler.OutputText;
+            //if (imageHandler.OutputText.Length > 0)
+            //    outputUDPTextBox.Text = imageHandler.OutputText;
             disconnectButton.Enabled = !connectButton.Enabled;
 
             UpdateForm();
-            if (progressBar.Value > 0)
-                progressBar.Value--;
+            //if (progressBar.Value > 0)
+            //    progressBar.Value--;
         }
 
         private void timer3000_Tick(object sender, EventArgs e)
@@ -327,14 +344,30 @@ namespace RatClientApplication
             UpdateBatteryProgressBar();
         }
 
-        private void UpdateBatteryProgressBar()
+        private void saveVideoButton_Click(object sender, EventArgs e)
         {
-            batteryController.Voltage = tcpClient.IncomingParams.voltage;
-            batteryController.CalculateValues();
+            if (udpServer.ContinueSavingAndDisplayingImages)
+                MessageBox.Show("Stop streaming before you save frames");
+            else
+                imageHandler.SaveAllImages();
         }
-    }                                       
 
-    public class speed
+        private void continueStreamingButton_Click(object sender, EventArgs e)
+        {
+            if (udpServer.ContinueSavingAndDisplayingImages)
+            {
+                udpServer.ContinueSavingAndDisplayingImages = false;
+                continueStreamingButton.Text = "Resume streaming";
+            }
+            else
+            {
+                udpServer.ContinueSavingAndDisplayingImages = true;
+                continueStreamingButton.Text = "Stop streaming";
+            }
+        }
+    }
+
+    public class Speed
     {
         public int linear;
         public int angular;

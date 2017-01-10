@@ -26,7 +26,10 @@ namespace RatClientApplication
         //private readonly int bufferSize = 16384;
         private byte[] incomingBuffer;
         private EndPoint remoteEndPoint;
-        public Bitmap ImageToDisplay { get; set; }
+        public Bitmap ImageBitMap { get; set; }
+        public byte[] JpegImageBytes { get; private set; }
+        public bool ContinueSavingAndDisplayingImages { get; set; }
+
         private ImageDisplay displayObject;
         private UInt16 totalPack = 1;
         private UInt16 remainingPackages = 1;
@@ -38,8 +41,7 @@ namespace RatClientApplication
         {
             IsConnected = false;
             displayObject = passedObject;
-            //longBuffer = new byte[totalPack * packageSize];
-            //longBuffer = new byte[262144];
+            ContinueSavingAndDisplayingImages = true;
         }
 
         public void Start()
@@ -100,7 +102,7 @@ namespace RatClientApplication
             try
             {
                 bytesReceived = socket.EndReceiveFrom(AR, ref remoteEndPoint);
-                OutputText += String.Format("Received {0} bytes in {1}", bytesReceived, totalPack);
+                //OutputText += String.Format("Received {0} bytes in {1}", bytesReceived, totalPack);
             }
             catch(SocketException)
             {
@@ -120,11 +122,11 @@ namespace RatClientApplication
                 CloseConnection(txt + e.Message);
                 return;
             }
-            try
-            {
-                if (bytesReceived == 4)
+            //try
+            //{
+                if (bytesReceived == 4 && !isReadyToReceiveImage)
                 {
-                    OutputText = "Single byte received";
+                    //OutputText = "Single byte received";
                     totalPack = BitConverter.ToUInt16(incomingBuffer, 0);
                     remainingPackages = totalPack;
                     packageSize = BitConverter.ToUInt16(incomingBuffer, 2);
@@ -149,12 +151,12 @@ namespace RatClientApplication
                         TryDisplayImage();
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                CloseConnection(e.Message);
-                return;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    CloseConnection(e.Message);
+            //    return;
+            //}
 
             //BeginReceiving(socket, remoteEndPoint);
 
@@ -216,10 +218,10 @@ namespace RatClientApplication
 
         private void TryDisplayImage()
         {
-            MemoryStream memoryStream = new MemoryStream(longBuffer);
+            JpegImageBytes = longBuffer;
             try
             {
-                ImageToDisplay = new Bitmap(Image.FromStream(memoryStream));
+                ImageBitMap = new Bitmap(Image.FromStream(new MemoryStream(JpegImageBytes)));
             }
             catch (ArgumentException)
             {
@@ -238,7 +240,8 @@ namespace RatClientApplication
                 CloseConnection(e.Message);
                 return;
             }
-            displayObject.OnImageReceived(EventArgs.Empty);
+            if(ContinueSavingAndDisplayingImages)
+                displayObject.OnImageReceived(EventArgs.Empty);
         }
 
         private void BeginReceiving(Socket socket, EndPoint remoteEndPoint)

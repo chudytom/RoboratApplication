@@ -64,10 +64,12 @@
             this.outputUDPTextBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.automaticModeButton = new System.Windows.Forms.Button();
+            this.manualModeButton = new System.Windows.Forms.Button();
+            this.randomMovingButton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
+            this.saveVideoButton = new System.Windows.Forms.Button();
+            this.continueStreamingButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -123,7 +125,6 @@
             this.linearSpeedHScrollBar.Value = 100;
             this.linearSpeedHScrollBar.ValueChanged += new System.EventHandler(this.speedHScrollBar_ValueChanged);
             this.linearSpeedHScrollBar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.speedHScrollBar_KeyDown);
-            this.linearSpeedHScrollBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.speedHScrollBar_PreviewKeyDown);
             // 
             // speedLabel2
             // 
@@ -395,38 +396,44 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label10.Location = new System.Drawing.Point(393, 251);
+            this.label10.Location = new System.Drawing.Point(403, 253);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(106, 20);
             this.label10.TabIndex = 35;
             this.label10.Text = "Video Stream";
             // 
-            // button1
+            // automaticModeButton
             // 
-            this.button1.Location = new System.Drawing.Point(469, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 30);
-            this.button1.TabIndex = 36;
-            this.button1.Text = "Automatic mode";
-            this.button1.UseVisualStyleBackColor = true;
+            this.automaticModeButton.Location = new System.Drawing.Point(469, 12);
+            this.automaticModeButton.Name = "automaticModeButton";
+            this.automaticModeButton.Size = new System.Drawing.Size(100, 30);
+            this.automaticModeButton.TabIndex = 36;
+            this.automaticModeButton.TabStop = false;
+            this.automaticModeButton.Text = "Automatic mode";
+            this.automaticModeButton.UseVisualStyleBackColor = true;
+            this.automaticModeButton.Click += new System.EventHandler(this.automaticModeButton_Click);
             // 
-            // button2
+            // manualModeButton
             // 
-            this.button2.Location = new System.Drawing.Point(469, 58);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 30);
-            this.button2.TabIndex = 37;
-            this.button2.Text = "Manual mode";
-            this.button2.UseVisualStyleBackColor = true;
+            this.manualModeButton.Location = new System.Drawing.Point(469, 58);
+            this.manualModeButton.Name = "manualModeButton";
+            this.manualModeButton.Size = new System.Drawing.Size(100, 30);
+            this.manualModeButton.TabIndex = 37;
+            this.manualModeButton.TabStop = false;
+            this.manualModeButton.Text = "Manual mode";
+            this.manualModeButton.UseVisualStyleBackColor = true;
+            this.manualModeButton.Click += new System.EventHandler(this.manualModeButton_Click);
             // 
-            // button3
+            // randomMovingButton
             // 
-            this.button3.Location = new System.Drawing.Point(469, 106);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 30);
-            this.button3.TabIndex = 38;
-            this.button3.Text = "Random moving";
-            this.button3.UseVisualStyleBackColor = true;
+            this.randomMovingButton.Location = new System.Drawing.Point(469, 106);
+            this.randomMovingButton.Name = "randomMovingButton";
+            this.randomMovingButton.Size = new System.Drawing.Size(100, 30);
+            this.randomMovingButton.TabIndex = 38;
+            this.randomMovingButton.TabStop = false;
+            this.randomMovingButton.Text = "Random moving";
+            this.randomMovingButton.UseVisualStyleBackColor = true;
+            this.randomMovingButton.Click += new System.EventHandler(this.randomMovingButton_Click);
             // 
             // label11
             // 
@@ -437,16 +444,38 @@
             this.label11.TabIndex = 39;
             this.label11.Text = "Battery Level";
             // 
+            // saveVideoButton
+            // 
+            this.saveVideoButton.Location = new System.Drawing.Point(514, 251);
+            this.saveVideoButton.Name = "saveVideoButton";
+            this.saveVideoButton.Size = new System.Drawing.Size(75, 23);
+            this.saveVideoButton.TabIndex = 40;
+            this.saveVideoButton.Text = "Save frames";
+            this.saveVideoButton.UseVisualStyleBackColor = true;
+            this.saveVideoButton.Click += new System.EventHandler(this.saveVideoButton_Click);
+            // 
+            // continueStreamingButton
+            // 
+            this.continueStreamingButton.Location = new System.Drawing.Point(293, 251);
+            this.continueStreamingButton.Name = "continueStreamingButton";
+            this.continueStreamingButton.Size = new System.Drawing.Size(104, 23);
+            this.continueStreamingButton.TabIndex = 41;
+            this.continueStreamingButton.Text = "Stop streaming";
+            this.continueStreamingButton.UseVisualStyleBackColor = true;
+            this.continueStreamingButton.Click += new System.EventHandler(this.continueStreamingButton_Click);
+            // 
             // FormRat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Menu;
-            this.ClientSize = new System.Drawing.Size(835, 457);
+            this.ClientSize = new System.Drawing.Size(607, 457);
+            this.Controls.Add(this.continueStreamingButton);
+            this.Controls.Add(this.saveVideoButton);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.randomMovingButton);
+            this.Controls.Add(this.manualModeButton);
+            this.Controls.Add(this.automaticModeButton);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label7);
@@ -531,10 +560,12 @@
         private System.Windows.Forms.TextBox outputUDPTextBox;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button manualModeButton;
+        private System.Windows.Forms.Button randomMovingButton;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button automaticModeButton;
+        private System.Windows.Forms.Button saveVideoButton;
+        private System.Windows.Forms.Button continueStreamingButton;
     }
 }
 
