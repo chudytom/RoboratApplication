@@ -25,9 +25,29 @@ namespace RatClientApplication
         IPClient tcpClient = new IPClient();
         ImageDisplay imageHandler = new ImageDisplay(300, 175);
         UDPServer udpServer;
-        Speed speedOfRat = new Speed();
+
         private ColorfulProgressBar progressBar;
         private ProgressBarController batteryController;
+        private int outgoingMode;
+        private Speed outgoingSpeed;
+        private bool panic;
+        private Camera outgoingCamera;
+        private bool shouldStream;
+        private CameraAddress outgoingCameraAddress;
+        private Pheromones outgoingPhermonoes;
+        private float stress_pheromone_volume_out;
+        private Ultrasound outgoingUltrasound;
+        private int frequency;
+        private OutgoingMessage outgoingMessage;
+        private OutgoingMessage outgoingParameters;
+        //private string incomingDiagnostics;
+        //private int incomingMode;
+        //private Battery_state incomingBattery_state;
+        //private int percentage;
+        //private IncomingPheromones incoming_pheromones;
+        //private float stress_pheromone_volume_left;
+        private IncomingMessage incomingMessage;
+        private IncomingMessage incomingParameters;
 
         public FormRat()
         {
@@ -35,8 +55,9 @@ namespace RatClientApplication
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {   
+        {
             //timer100.Enabled = true;
+
             timer3000.Enabled = true;
             progressBar = new ColorfulProgressBar(new Point(30, 90), Color.Yellow);
             this.Controls.Add(progressBar);
@@ -48,8 +69,38 @@ namespace RatClientApplication
             ipTextBox.Text = "192.168.1.3";
             portTextBox.Text = "50000";
             imageHandler.ImageReceived += ImageToDisplay_ImageReceived;
+            tcpClient.MessageReceived += TcpClient_MessageReceived;
             udpServer = new UDPServer(imageHandler);
+            //outgoingMode = 32;
+            //outgoingSpeed = new Speed(panic, directions.LinearSpeed, directions.RotationSpeed);
+            //outgoingCameraAddress = new CameraAddress(udpServer.IpAddress, udpServer.PortNumber);
+            //outgoingCamera = new Camera(shouldStream, outgoingCameraAddress);
+            //outgoingPhermonoes = new Pheromones(stress_pheromone_volume_out);
+            //outgoingUltrasound = new Ultrasound(frequency);
+            //outgoingMessage = new OutgoingMessage(outgoingMode, outgoingSpeed, outgoingCamera, outgoingPhermonoes, outgoingUltrasound);
+
+            //incomingBattery_state = new Battery_state(percentage);
+            //incoming_pheromones = new IncomingPheromones(stress_pheromone_volume_left);
+            //incomingMessage = new IncomingMessage(incomingDiagnostics, incomingMode, incomingBattery_state, incoming_pheromones);
+            incomingParameters = new IncomingMessage();
+            outgoingParameters = new OutgoingMessage();
             UpdateForm();
+        }
+
+        private void TcpClient_MessageReceived(object sender, EventArgs e)
+        {
+            //Here might be problem with the instance of IncomingMessage
+            incomingMessage = JsonConvert.DeserializeObject<IncomingMessage>(tcpClient.IncomingText);
+            ResolveIncomingMessage(incomingMessage);
+
+        }
+
+        private void ResolveIncomingMessage(IncomingMessage incomingMessage)
+        {
+            incomingParameters.diagnostics = incomingMessage.diagnostics;
+            incomingParameters.mode = incomingMessage.mode;
+            incomingParameters.battery_state = incomingMessage.battery_state;
+            incomingParameters.incoming_pheromones = incomingMessage.incoming_pheromones;
         }
 
         private void ImageToDisplay_ImageReceived(object sender, EventArgs e)
@@ -68,7 +119,7 @@ namespace RatClientApplication
                 keyUpPressed = true;
                 upBox.BackColor = Color.Green;
                 directions.LinearDirection = 1;
-                SendSpeed();
+                SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Down && !keyDownPressed)
             {
@@ -79,7 +130,7 @@ namespace RatClientApplication
                 {
                     directions.RotationDirection *= -1;
                 }
-                SendSpeed();
+                SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Left && !keyLeftPressed)
             {
@@ -90,7 +141,7 @@ namespace RatClientApplication
                 {
                     directions.RotationDirection *= -1;
                 }
-                SendSpeed();
+                SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Right && !keyRightPressed)
             {
@@ -101,14 +152,21 @@ namespace RatClientApplication
                 {
                     directions.RotationDirection *= -1;
                 }
-                SendSpeed();
+                SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Space)
             {
                 directions.LinearDirection = 0;
                 directions.RotationDirection = 0;
+                PanicStop();
             }
             UpdateForm();
+        }
+
+        private void PanicStop()
+        {
+            outgoingParameters.speed.panic = true;
+            SendOutgoingMessage();
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -120,28 +178,28 @@ namespace RatClientApplication
                 keyUpPressed = false;
                 upBox.BackColor = Color.Gray;
                 directions.LinearDirection = 0;
-                SendSpeed();
+                SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Down)
             {
                 keyDownPressed = false;
                 downBox.BackColor = Color.Gray;
                 directions.LinearDirection = 0;
-                SendSpeed();
+                SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Left)
             {
                 keyLeftPressed = false;
                 leftBox.BackColor = Color.Gray;
                 directions.RotationDirection = 0;
-                SendSpeed();
+                SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Right)
             {
                 keyRightPressed = false;
                 rightBox.BackColor = Color.Gray;
                 directions.RotationDirection = 0;
-                SendSpeed();
+                SendOutgoingMessage();
             }
             UpdateForm();
         }
@@ -194,7 +252,8 @@ namespace RatClientApplication
 
         private void UpdateBatteryProgressBar()
         {
-            batteryController.Voltage = tcpClient.IncomingParams.voltage;
+            //batteryController.Voltage = tcpClient.IncomingParams.voltage;
+            batteryController.Voltage = incomingParameters.battery_state.percentage;
             batteryController.CalculateValues();
             progressBar.Update();
         }
@@ -230,13 +289,12 @@ namespace RatClientApplication
             outputTCPTextBox.Clear();
         }
         
-        private void SendSpeed()
+        private void SendOutgoingMessage()
         {
-            speedOfRat.linear = directions.LinearSpeed;
-            speedOfRat.angular = directions.RotationSpeed;
-            if(tcpClient.IsConnected)
+            PrepareOutgoingMessage();
+            if (tcpClient.IsConnected)
             {
-                string jsonSpeed = JsonConvert.SerializeObject(speedOfRat);
+                string jsonSpeed = JsonConvert.SerializeObject(outgoingMessage);
                 //client.SendString(String.Format("{0} {1}", directions.LinearSpeed, directions.RotationSpeed));
                 tcpClient.SendString(jsonSpeed);
             }
@@ -244,6 +302,15 @@ namespace RatClientApplication
             {
                 outputTCPTextBox.Text = "You must be connected to steer the robot";
             }
+        }
+
+        private void PrepareOutgoingMessage()
+        {
+            outgoingMessage = new OutgoingMessage();
+            outgoingMessage.speed.linear = directions.LinearSpeed;
+            outgoingMessage.speed.angular = directions.RotationSpeed;
+            outgoingMessage.speed.panic = outgoingParameters.speed.panic;
+
         }
 
         private void setIPButton_Click(object sender, EventArgs e)
@@ -365,11 +432,10 @@ namespace RatClientApplication
                 continueStreamingButton.Text = "Stop streaming";
             }
         }
-    }
 
-    public class Speed
-    {
-        public int linear;
-        public int angular;
+        private void panicStopButton_Click(object sender, EventArgs e)
+        {
+            PanicStop();
+        }
     }
 }

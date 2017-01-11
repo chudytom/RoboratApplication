@@ -70,6 +70,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.saveVideoButton = new System.Windows.Forms.Button();
             this.continueStreamingButton = new System.Windows.Forms.Button();
+            this.colorfulProgressBar1 = new RatClientApplication.ColorfulProgressBar();
+            this.panicStopButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -464,12 +466,35 @@
             this.continueStreamingButton.UseVisualStyleBackColor = true;
             this.continueStreamingButton.Click += new System.EventHandler(this.continueStreamingButton_Click);
             // 
+            // colorfulProgressBar1
+            // 
+            this.colorfulProgressBar1.Color = System.Drawing.Color.Yellow;
+            this.colorfulProgressBar1.Location = new System.Drawing.Point(493, 146);
+            this.colorfulProgressBar1.Name = "colorfulProgressBar1";
+            this.colorfulProgressBar1.Size = new System.Drawing.Size(100, 23);
+            this.colorfulProgressBar1.TabIndex = 42;
+            this.colorfulProgressBar1.Value = 100;
+            // 
+            // panicStopButton
+            // 
+            this.panicStopButton.BackColor = System.Drawing.Color.Red;
+            this.panicStopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.panicStopButton.Location = new System.Drawing.Point(494, 175);
+            this.panicStopButton.Name = "panicStopButton";
+            this.panicStopButton.Size = new System.Drawing.Size(99, 62);
+            this.panicStopButton.TabIndex = 43;
+            this.panicStopButton.Text = "Panic Stop";
+            this.panicStopButton.UseVisualStyleBackColor = false;
+            this.panicStopButton.Click += new System.EventHandler(this.panicStopButton_Click);
+            // 
             // FormRat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Menu;
             this.ClientSize = new System.Drawing.Size(607, 457);
+            this.Controls.Add(this.panicStopButton);
+            this.Controls.Add(this.colorfulProgressBar1);
             this.Controls.Add(this.continueStreamingButton);
             this.Controls.Add(this.saveVideoButton);
             this.Controls.Add(this.label11);
@@ -566,6 +591,8 @@
         private System.Windows.Forms.Button automaticModeButton;
         private System.Windows.Forms.Button saveVideoButton;
         private System.Windows.Forms.Button continueStreamingButton;
+        private ColorfulProgressBar colorfulProgressBar1;
+        private System.Windows.Forms.Button panicStopButton;
     }
 }
 

@@ -16,7 +16,7 @@ namespace RatClientApplication
         public IPClient()
         {
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IncomingParams.voltage = 50;
+            //IncomingParams.voltage = 50;
         }
         public bool IsConnected { get; set; }
         public string IP { get; set; }
@@ -25,9 +25,15 @@ namespace RatClientApplication
         const int PORT = 100;
         const int BUFFER_SIZE = 1024;
         byte[] incomingBuffer = new byte[BUFFER_SIZE];
-        public string OutputText { get; set; }    
+        public string OutputText { get; set; }
+        public string IncomingText { get; set; }
         public string InputText { get; set; }
-        public IncomingParameters IncomingParams;
+        //public IncomingParameters IncomingParams;
+
+        public virtual void OnMessageReceived(EventArgs e)
+        {
+            MessageReceived?.Invoke(this, e);
+        }
 
         public void Start()
         {
@@ -52,39 +58,6 @@ namespace RatClientApplication
             }
             
             OutputText = "Client setup complete. Waiting for a server";
-            //while (!_clientSocket.Connected)
-            //{
-            //    try
-            //    {
-            //        attemptsToConnect++;
-            //        OutputText = " Connecting to server...";
-            //        ////////////////////////////////////////////////////
-            //        try
-            //        {
-            //            _clientSocket.Connect(IPAddress.Parse(IP), PortNumber ); 
-            //        }
-            //            catch(Exception)
-            //        {
-            //            OutputText = "Wrong IP number";
-            //        }                     
-            //        //_clientSocket.Connect(IPAddress.Loopback, PORT);
-            //        /////////////////////////////////////////////////////
-            //    }
-            //    catch (SocketException)
-            //    {
-            //        OutputText = " Connection attempts: " + attemptsToConnect.ToString();
-            //    }
-            //    catch(InvalidOperationException)
-            //    {
-            //        OutputText = "Couldn't connect to the server";
-            //        return;
-            //    }
-            //
-            //}
-            //IsConnected = true;
-            //OutputText = "";
-            ////ReceiveResponse();
-            //OutputText += "ConnectedC ";
         }
 
         private void ConnectCallback(IAsyncResult AR)
@@ -154,28 +127,28 @@ namespace RatClientApplication
             //OutputText += " Message sent";
         }
 
-       // public void ReceiveResponse()
-       //{ 
-       //     try
-       //     {
-       //         _clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
-       //         Thread.Sleep(200);
-       //     }
-       //     catch (SocketException)
-       //     {
-       //         CloseConnection();
-       //         InputText = "This error";
-       //         OutputText = "This error";
-       //         ConnectToServer();
-       //         Thread.Sleep(3000);
-       //         OutputText = "This error";
-       //     }
-       //     catch (Exception)
-       //     {
-       //         CloseConnection();
-       //         OutputText = "Sudden connection lost";
-       //     }
-       // }
+        public void ReceiveResponse()
+        {
+            try
+            {
+                _clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+                Thread.Sleep(200);
+            }
+            catch (SocketException)
+            {
+                CloseConnection();
+                InputText = "This error";
+                OutputText = "This error";
+                ConnectToServer();
+                Thread.Sleep(3000);
+                OutputText = "This error";
+            }
+            catch (Exception)
+            {
+                CloseConnection();
+                OutputText = "Sudden connection lost";
+            }
+        }
 
         private void ReceiveCallback(IAsyncResult AR)
         {
@@ -203,7 +176,8 @@ namespace RatClientApplication
             byte[] tempBuffer = new byte[received];
             Array.Copy(incomingBuffer, tempBuffer, received);
             string text = Encoding.ASCII.GetString(tempBuffer);
-            OutputText += ("R:" + text);
+            IncomingText = text;
+            OnMessageReceived(EventArgs.Empty);
             try
             { 
                 socket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
@@ -246,10 +220,12 @@ namespace RatClientApplication
             _clientSocket.Close();
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
-        public struct IncomingParameters
-        {
-            public int voltage;
-            public DirectionData.RobotMode mode;
-        }
+        //public struct IncomingParameters
+        //{
+        //    public int voltage;
+        //    public DirectionData.RobotMode mode;
+        //}
+
+        public event EventHandler MessageReceived;
     }
 }

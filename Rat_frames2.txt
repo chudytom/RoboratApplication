@@ -1,0 +1,49 @@
+public class OutgoingMessage
+    {
+        public int mode;                   //# 0 - manual # 1 - automatic # 2 - random
+        public Speed speed;
+        public Camera camera;
+        public Pheromones pheromones;
+        public Ultrasound ultrasound;
+    }
+    public class Speed
+    {
+        public bool panic;             //: #bool # true to stop
+        public int linear;             //: #int !! od -100 do 100 !!
+        public int angular;            //: #int !! od -100 do 100 !!
+    }
+    public class Camera
+    {
+        public bool should_stream;
+        public CameraAddress address;
+    }
+    public class CameraAddress
+    {
+        public string ip;
+        public int port;
+    }
+    public class Pheromones
+    {
+        public float stress_pheromone_volume_out;
+    }
+    public class Ultrasound
+    {
+        public int frequency;
+    }
+
+    public class IncomingMessage
+    {
+        public string diagnostics;
+        public int mode;                   //: tryb #int # 0 - manual # 1 - automatic # 2 - random
+        public Battery_state battery_state;
+        public IncomingPheromones incoming_pheromones;
+    }
+    public class Battery_state
+    {
+        public int percentage;
+    }
+    public class IncomingPheromones         //Here is a difference in naming + Everywhere class name begins with a capital letter
+    {
+        public float stress_pheromone_volume_left;
+    }
+}

@@ -1,0 +1,41 @@
+Od szczura:
+{
+battery_state:
+	{
+	percentage: % #int
+	}
+pheromones:
+	{
+	stress_pheromone_volume_left: ml #float
+	}
+diagnostics: #string
+mode: tryb #int # 0 - manual # 1 - automatic # 2 - random
+}
+
+Do szczura:
+{
+speed:
+	{
+	panic: #bool # true to stop
+	linear: #int !! od -100 do 100 !!
+	angular: #int !! od -100 do 100 !!
+	}
+mode: tryb #int # 0 - manual # 1 - automatic # 2 - random
+camera:
+	{
+	should_stream: #bool
+	address:
+		{
+		IP: #string
+		port: #int
+		}
+	}
+pheromones:
+	{
+	stress_pheromone_volume_out: ml #float
+	}
+ultrasound:
+	{
+	frequency: Hz #int
+	}
+}
