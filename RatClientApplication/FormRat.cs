@@ -10,6 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using System.Net;
+
 namespace RatClientApplication
 {
     public partial class FormRat : Form
@@ -20,70 +22,48 @@ namespace RatClientApplication
         private bool keyLeftPressed = false;
         private bool keyRightPressed = false;
 
-        DirectionData directions = new DirectionData();
+        RobotData robotData = new RobotData();
         // Interesting thing. When you connect UDP after TCP, TCP gets autoamtically connected with whatever
         IPClient tcpClient = new IPClient();
         ImageDisplay imageHandler = new ImageDisplay(300, 175);
         UDPServer udpServer;
 
-        private ColorfulProgressBar progressBar;
+        //private ColorfulProgressBar batteryProgressBar;
         private ProgressBarController batteryController;
-        private int outgoingMode;
-        private Speed outgoingSpeed;
-        private bool panic;
-        private Camera outgoingCamera;
-        private bool shouldStream;
-        private CameraAddress outgoingCameraAddress;
-        private Pheromones outgoingPhermonoes;
-        private float stress_pheromone_volume_out;
-        private Ultrasound outgoingUltrasound;
-        private int frequency;
         private OutgoingMessage outgoingMessage;
         private OutgoingMessage outgoingParameters;
-        //private string incomingDiagnostics;
-        //private int incomingMode;
-        //private Battery_state incomingBattery_state;
-        //private int percentage;
-        //private IncomingPheromones incoming_pheromones;
-        //private float stress_pheromone_volume_left;
+
         private IncomingMessage incomingMessage;
         private IncomingMessage incomingParameters;
+        private bool isUltrasoundPlaying = false;
+        private int currentOutgoingFrequency;
 
         public FormRat()
         {
-            InitializeComponent();           
+            InitializeComponent();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             //timer100.Enabled = true;
-
-            timer3000.Enabled = true;
-            progressBar = new ColorfulProgressBar(new Point(30, 90), Color.Yellow);
-            this.Controls.Add(progressBar);
-            batteryController = new ProgressBarController(progressBar);
+            //incomingMessage = new IncomingMessage();
+            //timer3000.Enabled = true;
+            incomingParameters = new IncomingMessage();
+            outgoingParameters = new OutgoingMessage();
+            //ResolveIncomingMessage(incomingMessage);
+            //batteryProgressBar = new ColorfulProgressBar(new Point(30, 90), Color.Yellow);
+            //this.Controls.Add(batteryProgressBar);
+            batteryController = new ProgressBarController(batteryProgressBar);
             this.Text = "Rat application";
             this.KeyPreview = true;
-            linearSpeedHScrollBar.Value = directions.LinearSpeed1 = 123;
-            angularSpeedHScrollBar.Value = directions.AngularSpeed1 = 30;
+            linearSpeedHScrollBar.Value = robotData.LinearSpeed1 = 123;
+            angularSpeedHScrollBar.Value = robotData.AngularSpeed1 = 30;
             ipTextBox.Text = "192.168.1.3";
             portTextBox.Text = "50000";
             imageHandler.ImageReceived += ImageToDisplay_ImageReceived;
             tcpClient.MessageReceived += TcpClient_MessageReceived;
             udpServer = new UDPServer(imageHandler);
-            //outgoingMode = 32;
-            //outgoingSpeed = new Speed(panic, directions.LinearSpeed, directions.RotationSpeed);
-            //outgoingCameraAddress = new CameraAddress(udpServer.IpAddress, udpServer.PortNumber);
-            //outgoingCamera = new Camera(shouldStream, outgoingCameraAddress);
-            //outgoingPhermonoes = new Pheromones(stress_pheromone_volume_out);
-            //outgoingUltrasound = new Ultrasound(frequency);
-            //outgoingMessage = new OutgoingMessage(outgoingMode, outgoingSpeed, outgoingCamera, outgoingPhermonoes, outgoingUltrasound);
-
-            //incomingBattery_state = new Battery_state(percentage);
-            //incoming_pheromones = new IncomingPheromones(stress_pheromone_volume_left);
-            //incomingMessage = new IncomingMessage(incomingDiagnostics, incomingMode, incomingBattery_state, incoming_pheromones);
-            incomingParameters = new IncomingMessage();
-            outgoingParameters = new OutgoingMessage();
             UpdateForm();
         }
 
@@ -97,10 +77,11 @@ namespace RatClientApplication
 
         private void ResolveIncomingMessage(IncomingMessage incomingMessage)
         {
-            incomingParameters.diagnostics = incomingMessage.diagnostics;
-            incomingParameters.mode = incomingMessage.mode;
-            incomingParameters.battery_state = incomingMessage.battery_state;
-            incomingParameters.incoming_pheromones = incomingMessage.incoming_pheromones;
+            incomingParameters = incomingMessage;
+            pheromoneProgressBar.Value = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
+            pheromoneLeftLabel.Text = incomingParameters.incoming_pheromones.stress_pheromone_volume_left.ToString() + " ml";
+            //robotData.mode = (RobotData.RobotMode)incomingParameters.mode;
+            UpdateBatteryProgressBar();
         }
 
         private void ImageToDisplay_ImageReceived(object sender, EventArgs e)
@@ -118,17 +99,17 @@ namespace RatClientApplication
             { 
                 keyUpPressed = true;
                 upBox.BackColor = Color.Green;
-                directions.LinearDirection = 1;
+                robotData.LinearDirection = 1;
                 SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Down && !keyDownPressed)
             {
                 keyDownPressed = true;
                 downBox.BackColor = Color.Green;
-                directions.LinearDirection = -1;
+                robotData.LinearDirection = -1;
                 if (keyLeftPressed || keyRightPressed)
                 {
-                    directions.RotationDirection *= -1;
+                    robotData.RotationDirection *= -1;
                 }
                 SendOutgoingMessage();
             }
@@ -136,10 +117,10 @@ namespace RatClientApplication
             {
                 keyLeftPressed = true;
                 leftBox.BackColor = Color.Green;
-                directions.RotationDirection = -1;
-                if (directions.LinearDirection < 0)
+                robotData.RotationDirection = -1;
+                if (robotData.LinearDirection < 0)
                 {
-                    directions.RotationDirection *= -1;
+                    robotData.RotationDirection *= -1;
                 }
                 SendOutgoingMessage();
             }
@@ -147,17 +128,17 @@ namespace RatClientApplication
             {
                 keyRightPressed = true;
                 rightBox.BackColor = Color.Green;
-                directions.RotationDirection = 1;
-                if (directions.LinearDirection < 0)
+                robotData.RotationDirection = 1;
+                if (robotData.LinearDirection < 0)
                 {
-                    directions.RotationDirection *= -1;
+                    robotData.RotationDirection *= -1;
                 }
                 SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Space)
             {
-                directions.LinearDirection = 0;
-                directions.RotationDirection = 0;
+                robotData.LinearDirection = 0;
+                robotData.RotationDirection = 0;
                 PanicStop();
             }
             UpdateForm();
@@ -177,28 +158,28 @@ namespace RatClientApplication
             {
                 keyUpPressed = false;
                 upBox.BackColor = Color.Gray;
-                directions.LinearDirection = 0;
+                robotData.LinearDirection = 0;
                 SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Down)
             {
                 keyDownPressed = false;
                 downBox.BackColor = Color.Gray;
-                directions.LinearDirection = 0;
+                robotData.LinearDirection = 0;
                 SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Left)
             {
                 keyLeftPressed = false;
                 leftBox.BackColor = Color.Gray;
-                directions.RotationDirection = 0;
+                robotData.RotationDirection = 0;
                 SendOutgoingMessage();
             }
             if (e.KeyData == Keys.Right)
             {
                 keyRightPressed = false;
                 rightBox.BackColor = Color.Gray;
-                directions.RotationDirection = 0;
+                robotData.RotationDirection = 0;
                 SendOutgoingMessage();
             }
             UpdateForm();
@@ -207,13 +188,13 @@ namespace RatClientApplication
         private void speedHScrollBar_ValueChanged(object sender, EventArgs e)
         {
             
-            directions.LinearSpeed1 = linearSpeedHScrollBar.Value;
+            robotData.LinearSpeed1 = linearSpeedHScrollBar.Value;
             UpdateForm();
         }
 
         private void angularSpeedHScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            directions.AngularSpeed1 = angularSpeedHScrollBar.Value;
+            robotData.AngularSpeed1 = angularSpeedHScrollBar.Value;
             UpdateForm();
         }
 
@@ -229,10 +210,13 @@ namespace RatClientApplication
 
         private void UpdateForm()
         {
-            linearSpeedLabel2.Text = directions.LinearSpeed.ToString();
-            angularSpeedLabel2.Text = directions.RotationSpeed.ToString();
-            linearSpeedLabel1.Text = directions.LinearSpeed1.ToString();
-            angularSpeedLabel1.Text = directions.AngularSpeed1.ToString();
+            linearSpeedLabel2.Text = robotData.LinearSpeed.ToString();
+            angularSpeedLabel2.Text = robotData.RotationSpeed.ToString();
+            linearSpeedLabel1.Text = robotData.LinearSpeed1.ToString();
+            angularSpeedLabel1.Text = robotData.AngularSpeed1.ToString();
+            UpdatePheromoneReleaseLabel();
+            UpdateFrequencyLabel();
+            UpdateTimeSoundLabel();
             UpdateConnectionLabels();
         }
 
@@ -252,10 +236,9 @@ namespace RatClientApplication
 
         private void UpdateBatteryProgressBar()
         {
-            //batteryController.Voltage = tcpClient.IncomingParams.voltage;
             batteryController.Voltage = incomingParameters.battery_state.percentage;
             batteryController.CalculateValues();
-            progressBar.Update();
+            batteryProgressBar.Update();
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -268,19 +251,6 @@ namespace RatClientApplication
             timer100.Enabled = true;
             timer3000.Enabled = true;
             UpdateForm();
-        }
-
-        private void sendButton_Click(object sender, EventArgs e)
-        {
-            if (tcpClient.IsConnected)
-            {
-                tcpClient.SendString(inputTextBox.Text);
-            }
-
-            else
-            {
-                outputTCPTextBox.Text = "You must be connected to send text";
-            }
         }
 
         private void clearButton_Click(object sender, EventArgs e)
@@ -300,17 +270,20 @@ namespace RatClientApplication
             }
             else
             {
-                outputTCPTextBox.Text = "You must be connected to steer the robot";
+                outputTCPTextBox.Text = "You must be connected to control the robot";
             }
         }
 
         private void PrepareOutgoingMessage()
         {
-            outgoingMessage = new OutgoingMessage();
-            outgoingMessage.speed.linear = directions.LinearSpeed;
-            outgoingMessage.speed.angular = directions.RotationSpeed;
-            outgoingMessage.speed.panic = outgoingParameters.speed.panic;
+            outgoingParameters.speed.linear = robotData.LinearSpeed;
+            outgoingParameters.speed.angular = robotData.RotationSpeed;
+            outgoingParameters.mode = (int)robotData.Mode;
+            outgoingParameters.camera.address.ip = Dns.GetHostAddresses(Dns.GetHostName()).ToString();
+            outgoingParameters.camera.address.port = tcpClient.PortNumber;
+            outgoingParameters.camera.should_stream = true;
 
+            outgoingMessage = outgoingParameters;
         }
 
         private void setIPButton_Click(object sender, EventArgs e)
@@ -345,19 +318,27 @@ namespace RatClientApplication
             }
         }
 
-        private void automaticModeButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void manualModeButton_Click(object sender, EventArgs e)
         {
-            this.Focus();
+            robotData.Mode = RobotData.RobotMode.Manual;
+            ResolveRobotMode();
+        }
+
+        private void automaticModeButton_Click(object sender, EventArgs e)
+        {
+            robotData.Mode = RobotData.RobotMode.Automatic;
+            ResolveRobotMode();
         }
 
         private void randomMovingButton_Click(object sender, EventArgs e)
         {
-            this.Focus();
+            robotData.Mode = RobotData.RobotMode.Random;
+            ResolveRobotMode();
+        }
+
+        private void ResolveRobotMode()
+        {
+            SendOutgoingMessage();
         }
 
         private void disconnectButton_Click(object sender, EventArgs e)
@@ -408,7 +389,7 @@ namespace RatClientApplication
                     tcpClient.CloseConnection();
                 }
             }
-            UpdateBatteryProgressBar();
+            //UpdateBatteryProgressBar();
         }
 
         private void saveVideoButton_Click(object sender, EventArgs e)
@@ -436,6 +417,157 @@ namespace RatClientApplication
         private void panicStopButton_Click(object sender, EventArgs e)
         {
             PanicStop();
+        }
+
+        private void EnableModeButtons(bool enable)
+        {
+            automaticModeButton.Enabled = enable;
+            manualModeButton.Enabled = enable;
+            randomMovingButton.Enabled = enable;
+        }
+
+        private void advancedIPOptionsButton_Click(object sender, EventArgs e)
+        {
+            advancedIPGroupBox.Visible = true;
+        }
+
+        private void hideAdvancedIPOptionsButton_Click(object sender, EventArgs e)
+        {
+            advancedIPGroupBox.Visible = false;
+        }
+
+        private void pheromoneReleaseScrollbar_ValueChanged(object sender, EventArgs e)
+        {
+            UpdatePheromoneReleaseLabel();
+
+        }
+
+        private void UpdatePheromoneReleaseLabel()
+        {
+            pheromoneReleaseLabel.Text = (pheromoneReleaseScrollbar.Value * 0.1f).ToString() + " ml";
+        }
+
+        private void frequencyScrollbar_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateFrequencyLabel();
+        }
+
+        private void UpdateFrequencyLabel()
+        {
+            switch (frequencyScrollbar.Value)
+            {
+                case 0:
+                    frequencyLabel.Text = "5kHz";
+                    currentOutgoingFrequency = 5000;
+                    break;
+                case 1:
+                    frequencyLabel.Text = "8kHz";
+                    currentOutgoingFrequency = 8000;
+                    break;
+                case 2:
+                    frequencyLabel.Text = "10kHz";
+                    currentOutgoingFrequency = 10000;
+                    break;
+                case 3:
+                    frequencyLabel.Text = "20kHz";
+                    currentOutgoingFrequency = 20000;
+                    break;
+                case 4:
+                    frequencyLabel.Text = "40kHz";
+                    currentOutgoingFrequency = 40000;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void timeSoundScrollbar_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateTimeSoundLabel();
+        }
+
+        private void UpdateTimeSoundLabel()
+        {
+            timeSoundLabel.Text = (timeSoundScrollbar.Value * 0.1f).ToString() + " s";
+            if (timeSoundScrollbar.Value == 0)
+                startImpulseButton.Enabled = false;
+            else
+                startImpulseButton.Enabled = true;
+        }
+
+        private void startExtractingScentButton_Click(object sender, EventArgs e)
+        {
+            if (pheromoneReleaseScrollbar.Value > 0)
+            {
+                outgoingParameters.pheromones.stress_pheromone_volume_out = pheromoneReleaseScrollbar.Value * 1.0f;
+                SendOutgoingMessage();
+                pheromoneReleaseScrollbar.Value = 0;
+            }
+        }
+
+        private void startPlayingSoundButton_Click(object sender, EventArgs e)
+        {
+            if (!isUltrasoundPlaying)
+            {
+                outgoingParameters.ultrasound.frequency = currentOutgoingFrequency;
+                isUltrasoundPlaying = true;
+            }
+            else
+            {
+                outgoingParameters.ultrasound.frequency = 0;
+                isUltrasoundPlaying = false;
+                timerSound.Enabled = false;
+            }
+            SendOutgoingMessage();
+            UpdateStartSoundButton();
+        }
+
+        private void startImpulseButton_Click(object sender, EventArgs e)
+        {
+            outgoingParameters.ultrasound.frequency = currentOutgoingFrequency;
+            SendOutgoingMessage();
+            timerSound.Interval = 100 * timeSoundScrollbar.Value;
+            timerSound.Enabled = true;
+            isUltrasoundPlaying = true;
+            UpdateStartSoundButton();
+        }
+
+        private void soundTimer_Tick(object sender, EventArgs e)
+        {
+            outgoingParameters.ultrasound.frequency = 0;
+            SendOutgoingMessage();
+            timerSound.Enabled = false;
+            isUltrasoundPlaying = false;
+            UpdateStartSoundButton();
+        }
+
+        private void UpdateStartSoundButton()
+        {
+            if (!isUltrasoundPlaying)
+            {
+                startPlayingSoundButton.Text = "Start continuous sound";
+                startImpulseButton.Enabled = true;
+            }
+            else
+            {
+                startPlayingSoundButton.Text = "Stop continuous sound";
+                startImpulseButton.Enabled = false;
+            }
+        }
+
+        private void pheromoneReleaseScrollbar_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void frequencyScrollbar_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void timeSoundScrollbar_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

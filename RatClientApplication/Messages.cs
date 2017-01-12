@@ -17,9 +17,12 @@ namespace RatClientApplication
 
         public OutgoingMessage()
         {
-            speed = new Speed(false, 0, 0);
-            camera = new Camera(false, new CameraAddress((Dns.GetHostAddresses(Dns.GetHostName()).ToString()), 50100));
+            speed = new Speed();
+            camera = new Camera();
+            pheromones = new Pheromones();
+            ultrasound = new Ultrasound();
         }
+
         public OutgoingMessage(int mode, Speed speed, Camera camera, Pheromones pheromones, Ultrasound ultrasound)
         {
             this.mode = mode;
@@ -35,6 +38,7 @@ namespace RatClientApplication
         public int linear;             //: #int !! od -100 do 100 !!
         public int angular;            //: #int !! od -100 do 100 !!
 
+        public Speed() { }
         public Speed(bool panic, int linearSpeed, int rotationSpeed)
         {
             this.panic = panic;
@@ -47,6 +51,7 @@ namespace RatClientApplication
         public bool should_stream;
         public CameraAddress address;
 
+        public Camera() { address = new CameraAddress(); }
         public Camera(bool shouldStream, CameraAddress outgoingCameraAddress)
         {
             this.should_stream = shouldStream;
@@ -58,6 +63,7 @@ namespace RatClientApplication
         public string ip;
         public int port;
 
+        public CameraAddress() { }
         public CameraAddress(string ipAddress, int portNumber)
         {
             this.ip = ipAddress;
@@ -68,6 +74,7 @@ namespace RatClientApplication
     {
         public float stress_pheromone_volume_out;
 
+        public Pheromones() { }
         public Pheromones(float stress_pheromone_volume_out)
         {
             this.stress_pheromone_volume_out = stress_pheromone_volume_out;
@@ -77,6 +84,7 @@ namespace RatClientApplication
     {
         public int frequency;
 
+        public Ultrasound() { }
         public Ultrasound(int frequency)
         {
             this.frequency = frequency;
