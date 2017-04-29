@@ -11,28 +11,23 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Sockets;
 
 namespace RatClientApplication
 {
     public partial class FormRat : Form
     {
-        Keys[] keysPressed = new Keys[4];
         private bool keyDownPressed = false;
         private bool keyUpPressed = false;
         private bool keyLeftPressed = false;
         private bool keyRightPressed = false;
-
-        RobotData robotData = new RobotData();
-        // Interesting thing. When you connect UDP after TCP, TCP gets autoamtically connected with whatever
-        IPClient tcpClient = new IPClient();
-        ImageDisplay imageHandler = new ImageDisplay(300, 175);
-        UDPServer udpServer;
-
-        //private ColorfulProgressBar batteryProgressBar;
+        private RobotData robotData = new RobotData();
+        private TCPlient tcpClient = new TCPlient();
+        private ImageDisplay imageHandler = new ImageDisplay(300, 175);
+        private UDPServer udpServer;
         private ProgressBarController batteryController;
         private OutgoingMessage outgoingMessage;
         private OutgoingMessage outgoingParameters;
-
         private IncomingMessage incomingMessage;
         private IncomingMessage incomingParameters;
         private bool isUltrasoundPlaying = false;
@@ -41,47 +36,65 @@ namespace RatClientApplication
         public FormRat()
         {
             InitializeComponent();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //timer100.Enabled = true;
-            //incomingMessage = new IncomingMessage();
-            //timer3000.Enabled = true;
             incomingParameters = new IncomingMessage();
             outgoingParameters = new OutgoingMessage();
-            //ResolveIncomingMessage(incomingMessage);
-            //batteryProgressBar = new ColorfulProgressBar(new Point(30, 90), Color.Yellow);
-            //this.Controls.Add(batteryProgressBar);
             batteryController = new ProgressBarController(batteryProgressBar);
             this.Text = "Rat application";
             this.KeyPreview = true;
             linearSpeedHScrollBar.Value = robotData.LinearSpeed1 = 123;
             angularSpeedHScrollBar.Value = robotData.AngularSpeed1 = 30;
-            ipTextBox.Text = "192.168.1.3";
+            ipTextBox.Text = "192.168.0.80";
             portTextBox.Text = "50000";
+            //portTextBox.Text = "100";
+            //ipTextBox.Text = "192.168.1.3";
             imageHandler.ImageReceived += ImageToDisplay_ImageReceived;
             tcpClient.MessageReceived += TcpClient_MessageReceived;
             udpServer = new UDPServer(imageHandler);
+            IpConfiguration();
+            batteryProgressBar.Value = 60;
+            pheromoneProgressBar.Value = 20;
+            incomingParameters.incoming_pheromones.stress_pheromone_volume_left = 2.1f;
             UpdateForm();
         }
 
         private void TcpClient_MessageReceived(object sender, EventArgs e)
         {
-            //Here might be problem with the instance of IncomingMessage
-            incomingMessage = JsonConvert.DeserializeObject<IncomingMessage>(tcpClient.IncomingText);
+            try
+            {
+                udpServer.OutputText = tcpClient.IncomingText;
+                incomingMessage = JsonConvert.DeserializeObject<IncomingMessage>(tcpClient.IncomingText);
+            }
+            catch(Exception ex)
+            {
+                tcpClient.OutputText = ex.Message;
+                //outputTCPTextBox.Text = "Something wrong with JSON " /*+ ex.Message*/;
+                return;
+            }
+            //incomingMessage = JsonConvert.DeserializeObject<IncomingMessage>(tcpClient.IncomingText);
             ResolveIncomingMessage(incomingMessage);
-
         }
 
         private void ResolveIncomingMessage(IncomingMessage incomingMessage)
         {
-            incomingParameters = incomingMessage;
+            if (incomingMessage!=null)
+            {
+                incomingParameters = incomingMessage;
+                //udpServer.OutputText = incomingMessage.ToString();
+                //pheromoneProgressBar.Value = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
+                // pheromoneLeftLabel.Text = incomingParameters.incoming_pheromones.stress_pheromone_volume_left.ToString() + " ml";
+                //UpdateIncomingPheromones();
+                //UpdateBatteryProgressBar();
+            }
+        }
+
+        private void UpdateIncomingPheromones()
+        {
             pheromoneProgressBar.Value = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
             pheromoneLeftLabel.Text = incomingParameters.incoming_pheromones.stress_pheromone_volume_left.ToString() + " ml";
-            //robotData.mode = (RobotData.RobotMode)incomingParameters.mode;
-            UpdateBatteryProgressBar();
         }
 
         private void ImageToDisplay_ImageReceived(object sender, EventArgs e)
@@ -93,7 +106,6 @@ namespace RatClientApplication
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            //inputTextBox.Text += "Down Event";
             UpdateForm();
             if(e.KeyData==Keys.Up && !keyUpPressed)
             { 
@@ -148,11 +160,12 @@ namespace RatClientApplication
         {
             outgoingParameters.speed.panic = true;
             SendOutgoingMessage();
+            outgoingParameters.speed.panic = false;
+
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            //inputTextBox.Text += "Up Event";
             UpdateForm();
             if (e.KeyData == Keys.Up)
             {
@@ -210,14 +223,17 @@ namespace RatClientApplication
 
         private void UpdateForm()
         {
-            linearSpeedLabel2.Text = robotData.LinearSpeed.ToString();
-            angularSpeedLabel2.Text = robotData.RotationSpeed.ToString();
-            linearSpeedLabel1.Text = robotData.LinearSpeed1.ToString();
-            angularSpeedLabel1.Text = robotData.AngularSpeed1.ToString();
+            linearSpeedLabel2.Text = ((int)(robotData.LinearSpeed * 0.4)).ToString();
+            angularSpeedLabel2.Text = ((int)(robotData.RotationSpeed * 2.5)).ToString();
+            linearSpeedLabel1.Text = ((int)(robotData.LinearSpeed1 * 0.4)).ToString();
+            angularSpeedLabel1.Text = ((int)(robotData.AngularSpeed1 * 2.5)).ToString();
             UpdatePheromoneReleaseLabel();
             UpdateFrequencyLabel();
             UpdateTimeSoundLabel();
             UpdateConnectionLabels();
+            UpdateBatteryProgressBar();
+            UpdateIncomingPheromones();
+            pheromoneLeftLabel.Text = incomingParameters.incoming_pheromones.stress_pheromone_volume_left.ToString() + " ml";
         }
 
         private void UpdateConnectionLabels()
@@ -237,8 +253,9 @@ namespace RatClientApplication
         private void UpdateBatteryProgressBar()
         {
             batteryController.Voltage = incomingParameters.battery_state.percentage;
-            batteryController.CalculateValues();
-            batteryProgressBar.Update();
+            batteryController.ResolveColor();
+            batteryProgressBar.Value = incomingParameters.battery_state.percentage;
+            //batteryProgressBar.Update();
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -265,7 +282,10 @@ namespace RatClientApplication
             if (tcpClient.IsConnected)
             {
                 string jsonSpeed = JsonConvert.SerializeObject(outgoingMessage);
-                //client.SendString(String.Format("{0} {1}", directions.LinearSpeed, directions.RotationSpeed));
+                udpServer.OutputText = jsonSpeed;
+                //jsonSpeed = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, " +
+                //    "suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. " +
+                //"Phasellus pharetra nulla ac diam. Quisque semper justo at risus. ";
                 tcpClient.SendString(jsonSpeed);
             }
             else
@@ -279,14 +299,33 @@ namespace RatClientApplication
             outgoingParameters.speed.linear = robotData.LinearSpeed;
             outgoingParameters.speed.angular = robotData.RotationSpeed;
             outgoingParameters.mode = (int)robotData.Mode;
-            outgoingParameters.camera.address.ip = Dns.GetHostAddresses(Dns.GetHostName()).ToString();
-            outgoingParameters.camera.address.port = tcpClient.PortNumber;
+            //outgoingParameters.camera.address.ip = Dns.GetHostAddresses(Dns.GetHostName()).ToString();
+            //outgoingParameters.camera.address.port = tcpClient.PortNumber;
             outgoingParameters.camera.should_stream = true;
-
+            //outgoingParameters.camera.address.ip = (Dns.GetHostAddresses(Dns.GetHostName())).ToString();
+            outgoingParameters.camera.address.ip = GetLocalIPAddress();
             outgoingMessage = outgoingParameters;
         }
 
+        private static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("Local IP Address Not Found!");
+        }
+
         private void setIPButton_Click(object sender, EventArgs e)
+        {
+            IpConfiguration();
+        }
+
+        private void IpConfiguration()
         {
             string ipString = ipTextBox.Text;
             string portNumberString = portTextBox.Text;
@@ -296,12 +335,12 @@ namespace RatClientApplication
                 return;
             }
 
-            if (!IPClient.ValidateIPV4(ipString))
+            if (!TCPlient.IsIPFormatCorrect(ipString))
             {
                 outputTCPTextBox.Text = "Incorrect IP Address";
                 return;
             }
-            if(string.IsNullOrWhiteSpace(portNumberString))
+            if (string.IsNullOrWhiteSpace(portNumberString))
             {
                 outputTCPTextBox.Text = "Incorrect Port number";
                 return;
@@ -313,7 +352,6 @@ namespace RatClientApplication
                 connectButton.Enabled = true;
                 udpServer.PortNumber = int.Parse(portTextBox.Text) + 100;
                 udpServer.IpAddress = ipTextBox.Text;
-                //                udpClient.PortNumber = int.Parse(portTextBox.Text);
                 outputTCPTextBox.Text = "Correct format of IPAddres and Port number. Ready to connect.";
             }
         }
@@ -357,18 +395,12 @@ namespace RatClientApplication
         {
             outputTCPTextBox.Text = tcpClient.OutputText;
             outputUDPTextBox.Text = udpServer.OutputText + imageHandler.OutputText;
-            //if (imageHandler.OutputText.Length > 0)
-            //    outputUDPTextBox.Text = imageHandler.OutputText;
             disconnectButton.Enabled = !connectButton.Enabled;
-
             UpdateForm();
-            //if (progressBar.Value > 0)
-            //    progressBar.Value--;
         }
 
         private void timer3000_Tick(object sender, EventArgs e)
         {
-            //client.SendString("test");
             if (tcpClient.IsConnected)
             {
                 connectButton.Enabled = false;
@@ -389,7 +421,6 @@ namespace RatClientApplication
                     tcpClient.CloseConnection();
                 }
             }
-            //UpdateBatteryProgressBar();
         }
 
         private void saveVideoButton_Click(object sender, EventArgs e)
@@ -499,7 +530,7 @@ namespace RatClientApplication
         {
             if (pheromoneReleaseScrollbar.Value > 0)
             {
-                outgoingParameters.pheromones.stress_pheromone_volume_out = pheromoneReleaseScrollbar.Value * 1.0f;
+                outgoingParameters.pheromones.stress_pheromone_volume_out = pheromoneReleaseScrollbar.Value * 0.1f;
                 SendOutgoingMessage();
                 pheromoneReleaseScrollbar.Value = 0;
             }

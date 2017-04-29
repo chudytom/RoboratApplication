@@ -11,38 +11,37 @@ namespace RatClientApplication
     class ProgressBarController
     {
         public int Voltage { get; set; }
-        ColorfulProgressBar progressBar;
+        ColorfulProgressBar batteryProgressBar;
         private int[] thresholds = new int[5] {27, 54, 67, 84, 100};
         private enum Levels { LowLow, Low, Medium, High, HighHigh }
-        public ProgressBarController(ColorfulProgressBar progressBar)
+        public ProgressBarController(ColorfulProgressBar batteryProgressBar)
         {
-            this.progressBar = progressBar;
-            this.Voltage = Voltage;
+            this.batteryProgressBar = batteryProgressBar;
         }
-        public void CalculateValues()
+        public void ResolveColor()
         {
             if (Voltage >= 100)
                 Voltage = 99;
             if (Voltage < 0)
                 Voltage = 0;
-            progressBar.Value = Voltage;
+            //batteryProgressBar.Value = Voltage;
             Levels level = GetLevel(Voltage);
             switch (level)
             {
                 case Levels.LowLow:
-                    progressBar.Color = Color.Red;
+                    batteryProgressBar.Color = Color.Red;
                     break;
                 case Levels.Low:
-                    progressBar.Color = Color.Orange;
+                    batteryProgressBar.Color = Color.Orange;
                     break;
                 case Levels.Medium:
-                    progressBar.Color = Color.Yellow;
+                    batteryProgressBar.Color = Color.Yellow;
                     break;
                 case Levels.High:
-                    progressBar.Color = Color.GreenYellow;
+                    batteryProgressBar.Color = Color.GreenYellow;
                     break;
                 case Levels.HighHigh:
-                    progressBar.Color = Color.Green;
+                    batteryProgressBar.Color = Color.Green;
                     break;
             }
         }

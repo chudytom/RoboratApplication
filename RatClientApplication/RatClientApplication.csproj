@@ -71,7 +71,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="ProgressBarController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IPClient.cs" />
+    <Compile Include="TCPClient.cs" />
     <Compile Include="UDPServer.cs" />
     <EmbeddedResource Include="FormRat.resx">
       <DependentUpon>FormRat.cs</DependentUpon>

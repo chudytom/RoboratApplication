@@ -11,7 +11,6 @@ namespace RatClientApplication
     class ImageDisplay
     {
         private List<byte[]> listOfImages = new List<byte[]>();
-        //public String fileToDisplay = @"D:\OneDrive\Szczur\szczur.jpg";
         string folderPath = @"C:\Rat Application\Saved frames";
 
         public Bitmap CurrentImage { get; set; }
@@ -36,7 +35,7 @@ namespace RatClientApplication
             listOfImages.Add(imageToSave);
 
         }
-
+        
         public void SaveAllImages()
         {
             try

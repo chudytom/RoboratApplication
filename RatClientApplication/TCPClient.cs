@@ -9,28 +9,25 @@ using System.Net.Sockets;
 
 namespace RatClientApplication
 {
-    
-    class IPClient
+    class TCPlient
     {
-        private Socket _clientSocket;
-        public IPClient()
+        private Socket clientSocket;
+        public TCPlient()
         {
-            _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //IncomingParams.voltage = 50;
+            clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
         public bool IsConnected { get; set; }
         public string IP { get; set; }
         public int PortNumber { get; set; }
-        
-        const int PORT = 100;
-        const int BUFFER_SIZE = 1024;
-        byte[] incomingBuffer = new byte[BUFFER_SIZE];
         public string OutputText { get; set; }
         public string IncomingText { get; set; }
         public string InputText { get; set; }
-        //public IncomingParameters IncomingParams;
+        
+        //const int PORT = 100;
+        const int BUFFER_SIZE = 1024;
+        byte[] incomingBuffer = new byte[BUFFER_SIZE];
 
-        public virtual void OnMessageReceived(EventArgs e)
+        public virtual void InvokeMessageReceived(EventArgs e)
         {
             MessageReceived?.Invoke(this, e);
         }
@@ -41,14 +38,13 @@ namespace RatClientApplication
             OutputText = "Nothing to display";
             ConnectToServer();
         }
-        ///////////////////////////
+
         private void ConnectToServer()
         {   
             try
             {
-                _clientSocket.BeginConnect(IPAddress.Parse(IP), PortNumber, new AsyncCallback(ConnectCallback), _clientSocket);
-                //_clientSocket.BeginConnect(IPAddress.Parse(IP), PortNumber, new AsyncCallback(ConnectCallback), _clientSocket);
-                //_clientSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+                clientSocket.BeginConnect(IPAddress.Parse(IP), PortNumber, new AsyncCallback(ConnectCallback), clientSocket);
+                //_clientSocket.BeginConnect(IPAddress.Loopback, PortNumber, new AsyncCallback(ConnectCallback), _clientSocket);
             }
             catch(Exception)
             {
@@ -64,7 +60,7 @@ namespace RatClientApplication
         {
             try
             {
-                _clientSocket.EndConnect(AR);
+                clientSocket.EndConnect(AR);
             }
             catch(SocketException)
             {
@@ -76,24 +72,18 @@ namespace RatClientApplication
                 OutputText = "Cannot connect to the server(end, ArgumentException)";
                 return;
             }
-            if(_clientSocket.Connected)
-            {
-                IsConnected = true;
-            }
-            //ReceiveResponse();
+            IsConnected = clientSocket.Connected;
             try
             {
-                _clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+                clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), clientSocket);
                 Thread.Sleep(200);
             }
             catch (SocketException)
             {
                 CloseConnection();
-                InputText = "This error";
-                OutputText = "This error";
                 ConnectToServer();
+                OutputText = "Sudden connection lost";
                 Thread.Sleep(3000);
-                OutputText = "This error";
             }
             catch (Exception)
             {
@@ -108,13 +98,12 @@ namespace RatClientApplication
             byte[] outgoingBuffer = Encoding.ASCII.GetBytes(stringToSend);
             try
             {
-                _clientSocket.Send(outgoingBuffer, 0, outgoingBuffer.Length, SocketFlags.None);
+                clientSocket.Send(outgoingBuffer, 0, outgoingBuffer.Length, SocketFlags.None);
             }
             catch(SocketException)
             {
-                //_clientSocket.Shutdown(SocketShutdown.Both);
                 OutputText = "Unable to send string (SocketException)";
-                _clientSocket.Close();
+                clientSocket.Close();
                 return;
             }
             catch(ObjectDisposedException)
@@ -123,15 +112,13 @@ namespace RatClientApplication
                 CloseConnection();
                 return;
             }
-            
-            //OutputText += " Message sent";
         }
 
-        public void ReceiveResponse()
+        void ReceiveResponse()
         {
             try
             {
-                _clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+                clientSocket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), clientSocket);
                 Thread.Sleep(200);
             }
             catch (SocketException)
@@ -160,9 +147,8 @@ namespace RatClientApplication
             }
             catch(SocketException)
             {
-                //_clientSocket.Shutdown(SocketShutdown.Both);
                 OutputText = "Couldn't receive the message(SocketException)";
-                _clientSocket.Close();
+                clientSocket.Close();
                 return;
             }
             catch(ObjectDisposedException)
@@ -171,13 +157,11 @@ namespace RatClientApplication
                 CloseConnection();
                 return;
             }
-            
-            //Console.WriteLine("Message received");
             byte[] tempBuffer = new byte[received];
             Array.Copy(incomingBuffer, tempBuffer, received);
             string text = Encoding.ASCII.GetString(tempBuffer);
             IncomingText = text;
-            OnMessageReceived(EventArgs.Empty);
+            InvokeMessageReceived(EventArgs.Empty);
             try
             { 
                 socket.BeginReceive(incomingBuffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
@@ -199,7 +183,7 @@ namespace RatClientApplication
             }           
         }
 
-        public static bool ValidateIPV4(string ipString)
+        public static bool IsIPFormatCorrect(string ipString)
         {
             if(string.IsNullOrWhiteSpace(ipString))
             {
@@ -210,22 +194,14 @@ namespace RatClientApplication
             {
                 return false;
             }
-
-            byte byteTester;
-            return splitIP.All(splitNumber => byte.TryParse(splitNumber, out byteTester));
+            return splitIP.All(splitNumber => byte.TryParse(splitNumber, out byte byteTester));
         }
         public void CloseConnection()
         {
             IsConnected = false;
-            _clientSocket.Close();
-            _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            clientSocket.Close();
+            clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
-        //public struct IncomingParameters
-        //{
-        //    public int voltage;
-        //    public DirectionData.RobotMode mode;
-        //}
-
         public event EventHandler MessageReceived;
     }
 }

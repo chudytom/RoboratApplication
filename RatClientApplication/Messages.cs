@@ -34,9 +34,9 @@ namespace RatClientApplication
     }
     public class Speed
     {
-        public bool panic;             //: #bool # true to stop
-        public int linear;             //: #int !! od -100 do 100 !!
-        public int angular;            //: #int !! od -100 do 100 !!
+        public bool panic;
+        public int linear;
+        public int angular;
 
         public Speed() { }
         public Speed(bool panic, int linearSpeed, int rotationSpeed)
@@ -94,12 +94,9 @@ namespace RatClientApplication
     public class IncomingMessage
     {
         public string diagnostics;
-        public int mode;                   //: tryb #int # 0 - manual # 1 - automatic # 2 - random
+        public int mode;
         public Battery_state battery_state;
         public IncomingPheromones incoming_pheromones;
-        private string incomingDiagnostics;
-        private int incomingMode;
-        private Battery_state incomingBattery_state;
 
         public IncomingMessage()
         {
@@ -123,7 +120,7 @@ namespace RatClientApplication
             this.percentage = percentage;
         }
     }
-    public class IncomingPheromones         //Here is a difference in naming + Everywhere class name begins with a capital letter
+    public class IncomingPheromones
     {
         public float stress_pheromone_volume_left;
 

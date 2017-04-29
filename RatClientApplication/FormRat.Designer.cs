@@ -134,10 +134,11 @@
             // linearSpeedHScrollBar
             // 
             this.linearSpeedHScrollBar.Location = new System.Drawing.Point(337, 373);
-            this.linearSpeedHScrollBar.Maximum = 270;
+            this.linearSpeedHScrollBar.Maximum = 259;
             this.linearSpeedHScrollBar.Minimum = 1;
             this.linearSpeedHScrollBar.Name = "linearSpeedHScrollBar";
             this.linearSpeedHScrollBar.Size = new System.Drawing.Size(243, 17);
+            this.linearSpeedHScrollBar.SmallChange = 2;
             this.linearSpeedHScrollBar.TabIndex = 4;
             this.linearSpeedHScrollBar.TabStop = true;
             this.linearSpeedHScrollBar.Value = 100;
@@ -303,11 +304,11 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label8.Location = new System.Drawing.Point(22, 8);
+            this.label8.Location = new System.Drawing.Point(2, 8);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(108, 17);
+            this.label8.Size = new System.Drawing.Size(149, 17);
             this.label8.TabIndex = 26;
-            this.label8.Text = "IP Connection";
+            this.label8.Text = "Remote Connection";
             // 
             // tcpConnectionLabel
             // 
@@ -336,13 +337,13 @@
             // angularSpeedHScrollBar
             // 
             this.angularSpeedHScrollBar.Location = new System.Drawing.Point(337, 424);
-            this.angularSpeedHScrollBar.Maximum = 50;
+            this.angularSpeedHScrollBar.Maximum = 49;
             this.angularSpeedHScrollBar.Minimum = 1;
             this.angularSpeedHScrollBar.Name = "angularSpeedHScrollBar";
             this.angularSpeedHScrollBar.Size = new System.Drawing.Size(243, 17);
             this.angularSpeedHScrollBar.TabIndex = 29;
             this.angularSpeedHScrollBar.TabStop = true;
-            this.angularSpeedHScrollBar.Value = 50;
+            this.angularSpeedHScrollBar.Value = 49;
             this.angularSpeedHScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.angularSpeedHScrollBar_Scroll);
             this.angularSpeedHScrollBar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.angularSpeedHScrollBar_KeyDown);
             // 
@@ -472,11 +473,11 @@
             // 
             this.panicStopButton.BackColor = System.Drawing.Color.Red;
             this.panicStopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.panicStopButton.Location = new System.Drawing.Point(229, 175);
+            this.panicStopButton.Location = new System.Drawing.Point(206, 160);
             this.panicStopButton.Name = "panicStopButton";
-            this.panicStopButton.Size = new System.Drawing.Size(99, 78);
+            this.panicStopButton.Size = new System.Drawing.Size(144, 93);
             this.panicStopButton.TabIndex = 43;
-            this.panicStopButton.Text = "Panic Stop";
+            this.panicStopButton.Text = "Emergency Stop";
             this.panicStopButton.UseVisualStyleBackColor = false;
             this.panicStopButton.Click += new System.EventHandler(this.panicStopButton_Click);
             // 
@@ -651,6 +652,7 @@
             this.pheromoneReleaseScrollbar.Size = new System.Drawing.Size(150, 17);
             this.pheromoneReleaseScrollbar.TabIndex = 58;
             this.pheromoneReleaseScrollbar.TabStop = true;
+            this.pheromoneReleaseScrollbar.Value = 21;
             this.pheromoneReleaseScrollbar.ValueChanged += new System.EventHandler(this.pheromoneReleaseScrollbar_ValueChanged);
             this.pheromoneReleaseScrollbar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pheromoneReleaseScrollbar_KeyDown);
             // 
