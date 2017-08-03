@@ -44,7 +44,6 @@ namespace RatClientApplication
             try
             {
                 clientSocket.BeginConnect(IPAddress.Parse(IP), PortNumber, new AsyncCallback(ConnectCallback), clientSocket);
-                //_clientSocket.BeginConnect(IPAddress.Loopback, PortNumber, new AsyncCallback(ConnectCallback), _clientSocket);
             }
             catch(Exception)
             {
@@ -201,6 +200,12 @@ namespace RatClientApplication
             IsConnected = false;
             clientSocket.Close();
             clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            // Always Shutdown before closing
+            //current.Shutdown(SocketShutdown.Both);
+            //current.Close();
+            //clientSockets.Remove(current);
+            //Console.WriteLine("Client disconnected");
+            //return;
         }
         public event EventHandler MessageReceived;
     }

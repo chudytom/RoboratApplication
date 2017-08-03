@@ -421,7 +421,6 @@
             this.manualModeButton.Name = "manualModeButton";
             this.manualModeButton.Size = new System.Drawing.Size(100, 30);
             this.manualModeButton.TabIndex = 37;
-            this.manualModeButton.TabStop = false;
             this.manualModeButton.Text = "Manual mode";
             this.manualModeButton.UseVisualStyleBackColor = true;
             this.manualModeButton.Click += new System.EventHandler(this.manualModeButton_Click);

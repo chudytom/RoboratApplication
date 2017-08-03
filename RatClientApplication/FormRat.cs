@@ -58,6 +58,7 @@ namespace RatClientApplication
             batteryProgressBar.Value = 60;
             pheromoneProgressBar.Value = 20;
             incomingParameters.incoming_pheromones.stress_pheromone_volume_left = 2.1f;
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             UpdateForm();
         }
 
@@ -65,10 +66,10 @@ namespace RatClientApplication
         {
             try
             {
-                udpServer.OutputText = tcpClient.IncomingText;
+                //udpServer.OutputText = tcpClient.IncomingText;
                 incomingMessage = JsonConvert.DeserializeObject<IncomingMessage>(tcpClient.IncomingText);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 tcpClient.OutputText = ex.Message;
                 //outputTCPTextBox.Text = "Something wrong with JSON " /*+ ex.Message*/;
@@ -80,7 +81,7 @@ namespace RatClientApplication
 
         private void ResolveIncomingMessage(IncomingMessage incomingMessage)
         {
-            if (incomingMessage!=null)
+            if (incomingMessage != null)
             {
                 incomingParameters = incomingMessage;
                 //udpServer.OutputText = incomingMessage.ToString();
@@ -94,7 +95,7 @@ namespace RatClientApplication
         private void UpdateIncomingPheromones()
         {
             pheromoneProgressBar.Value = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
-            pheromoneLeftLabel.Text = incomingParameters.incoming_pheromones.stress_pheromone_volume_left.ToString() + " ml";
+            pheromoneLeftLabel.Text = (incomingParameters.incoming_pheromones.stress_pheromone_volume_left * 1.0f).ToString("0.0") + " ml";
         }
 
         private void ImageToDisplay_ImageReceived(object sender, EventArgs e)
@@ -107,8 +108,8 @@ namespace RatClientApplication
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             UpdateForm();
-            if(e.KeyData==Keys.Up && !keyUpPressed)
-            { 
+            if (e.KeyData == Keys.Up && !keyUpPressed)
+            {
                 keyUpPressed = true;
                 upBox.BackColor = Color.Green;
                 robotData.LinearDirection = 1;
@@ -129,7 +130,7 @@ namespace RatClientApplication
             {
                 keyLeftPressed = true;
                 leftBox.BackColor = Color.Green;
-                robotData.RotationDirection = -1;
+                robotData.RotationDirection = 1;//
                 if (robotData.LinearDirection < 0)
                 {
                     robotData.RotationDirection *= -1;
@@ -140,7 +141,7 @@ namespace RatClientApplication
             {
                 keyRightPressed = true;
                 rightBox.BackColor = Color.Green;
-                robotData.RotationDirection = 1;
+                robotData.RotationDirection = -1;
                 if (robotData.LinearDirection < 0)
                 {
                     robotData.RotationDirection *= -1;
@@ -200,7 +201,7 @@ namespace RatClientApplication
 
         private void speedHScrollBar_ValueChanged(object sender, EventArgs e)
         {
-            
+
             robotData.LinearSpeed1 = linearSpeedHScrollBar.Value;
             UpdateForm();
         }
@@ -233,7 +234,6 @@ namespace RatClientApplication
             UpdateConnectionLabels();
             UpdateBatteryProgressBar();
             UpdateIncomingPheromones();
-            pheromoneLeftLabel.Text = incomingParameters.incoming_pheromones.stress_pheromone_volume_left.ToString() + " ml";
         }
 
         private void UpdateConnectionLabels()
@@ -242,11 +242,13 @@ namespace RatClientApplication
             {
                 tcpConnectionLabel.BackColor = Color.Green;
                 tcpConnectionLabel.Text = "ON";
+                outputTCPTextBox.Text = "Connected";
             }
             else
             {
                 tcpConnectionLabel.BackColor = Color.Red;
                 tcpConnectionLabel.Text = "OFF";
+                outputTCPTextBox.Text = "Disconnected";
             }
         }
 
@@ -260,29 +262,32 @@ namespace RatClientApplication
 
         private void connectButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             tcpClient.Start();
-            if (!udpServer.IsConnected)
-            {
-                udpServer.Start();
-            }
+            //if (!udpServer.IsConnected)
+            //{
+            udpServer.Start();
+            //}
             timer100.Enabled = true;
             timer3000.Enabled = true;
             UpdateForm();
+            SendOutgoingMessage();
         }
 
         private void clearButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             tcpClient.OutputText = "";
             outputTCPTextBox.Clear();
         }
-        
+
         private void SendOutgoingMessage()
         {
             PrepareOutgoingMessage();
             if (tcpClient.IsConnected)
             {
                 string jsonSpeed = JsonConvert.SerializeObject(outgoingMessage);
-                udpServer.OutputText = jsonSpeed;
+                //udpServer.OutputText = jsonSpeed;
                 //jsonSpeed = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, " +
                 //    "suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. " +
                 //"Phasellus pharetra nulla ac diam. Quisque semper justo at risus. ";
@@ -301,9 +306,10 @@ namespace RatClientApplication
             outgoingParameters.mode = (int)robotData.Mode;
             //outgoingParameters.camera.address.ip = Dns.GetHostAddresses(Dns.GetHostName()).ToString();
             //outgoingParameters.camera.address.port = tcpClient.PortNumber;
-            outgoingParameters.camera.should_stream = true;
+            outgoingParameters.camera.should_stream = udpServer.ContinueSavingAndDisplayingImages;
             //outgoingParameters.camera.address.ip = (Dns.GetHostAddresses(Dns.GetHostName())).ToString();
             outgoingParameters.camera.address.ip = GetLocalIPAddress();
+            outgoingParameters.camera.address.port = udpServer.PortNumber;
             outgoingMessage = outgoingParameters;
         }
 
@@ -322,6 +328,7 @@ namespace RatClientApplication
 
         private void setIPButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             IpConfiguration();
         }
 
@@ -359,11 +366,13 @@ namespace RatClientApplication
         private void manualModeButton_Click(object sender, EventArgs e)
         {
             robotData.Mode = RobotData.RobotMode.Manual;
+            angularSpeedHScrollBar.Focus();
             ResolveRobotMode();
         }
 
         private void automaticModeButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             robotData.Mode = RobotData.RobotMode.Automatic;
             ResolveRobotMode();
         }
@@ -371,23 +380,64 @@ namespace RatClientApplication
         private void randomMovingButton_Click(object sender, EventArgs e)
         {
             robotData.Mode = RobotData.RobotMode.Random;
+            angularSpeedHScrollBar.Focus();
             ResolveRobotMode();
         }
 
         private void ResolveRobotMode()
         {
+            if(robotData.Mode == RobotData.RobotMode.Automatic)
+            {
+                DialogResult messageBoxResult = MessageBox.Show(
+                    "Do you want to calibrate the detection?", "Detection choice",
+                    MessageBoxButtons.YesNo);
+                if(messageBoxResult== DialogResult.Yes)
+                {
+                    //pictureBox1.Image = new Bitmap(@"C: \Users\tomasz123456\Desktop\Muka1.png");
+                    if ( pictureBox1.Image is null)
+                    {
+                        MessageBox.Show(@"There is no image in the PictureBox. Make sure you started streaming the video", "Calibration error");
+                        return;
+                    }
+                    else
+                    {
+                        Bitmap img = new Bitmap(pictureBox1.Image);
+                        DetectionCalibrator calibrator = new DetectionCalibrator(img);
+                        //calibrator.OriginalImage = new Bitmap(img);
+                        CalibrationForm calibrationForm = new CalibrationForm(calibrator);
+                        DialogResult formResult =  calibrationForm.ShowDialog();
+                        if (formResult == DialogResult.OK)
+                        {
+                            outgoingParameters.camera.detection_calibration.hue.min = calibrator.HueMin;
+                            outgoingParameters.camera.detection_calibration.hue.min = calibrator.HueMin;
+                            outgoingParameters.camera.detection_calibration.hue.max = calibrator.HueMax;
+                            outgoingParameters.camera.detection_calibration.saturation.min = calibrator.SaturationMin;
+                            outgoingParameters.camera.detection_calibration.saturation.max = calibrator.SaturationMax;
+                            outgoingParameters.camera.detection_calibration.value.min = calibrator.ValueMin;
+                            outgoingParameters.camera.detection_calibration.value.max = calibrator.ValueMax;
+                        }
+                    }
+                }
+                else if(messageBoxResult == DialogResult.No)
+                {
+                    return;
+                }
+            }
             SendOutgoingMessage();
         }
 
         private void disconnectButton_Click(object sender, EventArgs e)
         {
             outputTCPTextBox.Text = "User pressed disconnect button";
+            udpServer.ContinueSavingAndDisplayingImages = false;
+            SendOutgoingMessage();
             tcpClient.CloseConnection();
+            udpServer.CloseConnection();
+            angularSpeedHScrollBar.Focus();
         }
 
         private void displayImage(Bitmap imageToDisplay)
         {
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.Image = (Image)imageToDisplay;
         }
 
@@ -425,6 +475,7 @@ namespace RatClientApplication
 
         private void saveVideoButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             if (udpServer.ContinueSavingAndDisplayingImages)
                 MessageBox.Show("Stop streaming before you save frames");
             else
@@ -433,6 +484,7 @@ namespace RatClientApplication
 
         private void continueStreamingButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             if (udpServer.ContinueSavingAndDisplayingImages)
             {
                 udpServer.ContinueSavingAndDisplayingImages = false;
@@ -447,6 +499,7 @@ namespace RatClientApplication
 
         private void panicStopButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             PanicStop();
         }
 
@@ -459,11 +512,13 @@ namespace RatClientApplication
 
         private void advancedIPOptionsButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             advancedIPGroupBox.Visible = true;
         }
 
         private void hideAdvancedIPOptionsButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             advancedIPGroupBox.Visible = false;
         }
 
@@ -475,7 +530,7 @@ namespace RatClientApplication
 
         private void UpdatePheromoneReleaseLabel()
         {
-            pheromoneReleaseLabel.Text = (pheromoneReleaseScrollbar.Value * 0.1f).ToString() + " ml";
+            pheromoneReleaseLabel.Text = (pheromoneReleaseScrollbar.Value * 0.1f).ToString("0.0") + " ml";
         }
 
         private void frequencyScrollbar_ValueChanged(object sender, EventArgs e)
@@ -528,6 +583,7 @@ namespace RatClientApplication
 
         private void startExtractingScentButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             if (pheromoneReleaseScrollbar.Value > 0)
             {
                 outgoingParameters.pheromones.stress_pheromone_volume_out = pheromoneReleaseScrollbar.Value * 0.1f;
@@ -538,6 +594,7 @@ namespace RatClientApplication
 
         private void startPlayingSoundButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             if (!isUltrasoundPlaying)
             {
                 outgoingParameters.ultrasound.frequency = currentOutgoingFrequency;
@@ -555,6 +612,7 @@ namespace RatClientApplication
 
         private void startImpulseButton_Click(object sender, EventArgs e)
         {
+            angularSpeedHScrollBar.Focus();
             outgoingParameters.ultrasound.frequency = currentOutgoingFrequency;
             SendOutgoingMessage();
             timerSound.Interval = 100 * timeSoundScrollbar.Value;

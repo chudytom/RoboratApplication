@@ -71,6 +71,7 @@ namespace RatClientApplication
 
         private void PrepareReceiving()
         {
+            ContinueSavingAndDisplayingImages = true;
             IPEndPoint sender = new IPEndPoint(IPAddress.Any, PortNumber);
             remoteEndPoint = (EndPoint)sender;
             try
@@ -206,6 +207,11 @@ namespace RatClientApplication
             IsConnected = false;
             if (startConnection)
                 Start();
+        }
+
+        public void CloseConnection()
+        {
+            CloseConnection("Disconnect button clicked");
         }
     }
 }

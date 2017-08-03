@@ -49,15 +49,49 @@ namespace RatClientApplication
     public class Camera
     {
         public bool should_stream;
+        public DetectionCalibration detection_calibration;
         public CameraAddress address;
 
-        public Camera() { address = new CameraAddress(); }
+        public Camera() { address = new CameraAddress(); detection_calibration = new DetectionCalibration(); }
         public Camera(bool shouldStream, CameraAddress outgoingCameraAddress)
         {
             this.should_stream = shouldStream;
             this.address = outgoingCameraAddress;
         }
     }
+
+    public class DetectionCalibration
+    {
+        public DetectionCalibration()
+        {
+            hue = new Hue() { min = 21, max = 28 };
+            saturation = new Saturation() { min = 102, max = 140 };
+            value = new Value() { min = 151, max = 210 };
+        }
+
+        public Hue hue;
+        public Saturation saturation;
+        public Value value;
+    }
+
+    public class Hue
+    {
+        public int min;
+        public int max;
+    }
+
+    public class Saturation
+    {
+        public int min;
+        public int max;
+    }
+
+    public class Value
+    {
+        public int min;
+        public int max;
+    }
+
     public class CameraAddress
     {
         public string ip;
@@ -70,6 +104,7 @@ namespace RatClientApplication
             this.port = portNumber;
         }
     }
+
     public class Pheromones
     {
         public float stress_pheromone_volume_out;

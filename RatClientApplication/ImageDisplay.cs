@@ -63,7 +63,7 @@ namespace RatClientApplication
         {
             return listOfImages.Count;
         }
-
+        
         public event EventHandler ImageReceived;
     }
 }
