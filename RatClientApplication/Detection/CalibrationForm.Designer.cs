@@ -84,10 +84,10 @@
             // 
             // hScrollBarHMin
             // 
-            this.hScrollBarHMin.Location = new System.Drawing.Point(397, 284);
+            this.hScrollBarHMin.Location = new System.Drawing.Point(403, 284);
             this.hScrollBarHMin.Maximum = 264;
             this.hScrollBarHMin.Name = "hScrollBarHMin";
-            this.hScrollBarHMin.Size = new System.Drawing.Size(261, 17);
+            this.hScrollBarHMin.Size = new System.Drawing.Size(255, 17);
             this.hScrollBarHMin.TabIndex = 3;
             this.hScrollBarHMin.ValueChanged += new System.EventHandler(this.hScrollBarHMin_ValueChanged);
             // 
@@ -174,49 +174,49 @@
             // 
             // hScrollBarVMin
             // 
-            this.hScrollBarVMin.Location = new System.Drawing.Point(395, 355);
-            this.hScrollBarVMin.Maximum = 264;
+            this.hScrollBarVMin.Location = new System.Drawing.Point(401, 355);
+            this.hScrollBarVMin.Maximum = 188;
             this.hScrollBarVMin.Name = "hScrollBarVMin";
-            this.hScrollBarVMin.Size = new System.Drawing.Size(261, 17);
+            this.hScrollBarVMin.Size = new System.Drawing.Size(255, 17);
             this.hScrollBarVMin.TabIndex = 18;
             this.hScrollBarVMin.ValueChanged += new System.EventHandler(this.hScrollBarVMin_ValueChanged);
             // 
             // hScrollBarHMax
             // 
-            this.hScrollBarHMax.Location = new System.Drawing.Point(397, 387);
-            this.hScrollBarHMax.Maximum = 264;
+            this.hScrollBarHMax.Location = new System.Drawing.Point(403, 387);
+            this.hScrollBarHMax.Maximum = 188;
             this.hScrollBarHMax.Name = "hScrollBarHMax";
-            this.hScrollBarHMax.Size = new System.Drawing.Size(261, 17);
+            this.hScrollBarHMax.Size = new System.Drawing.Size(255, 17);
             this.hScrollBarHMax.TabIndex = 19;
-            this.hScrollBarHMax.Value = 255;
+            this.hScrollBarHMax.Value = 179;
             this.hScrollBarHMax.ValueChanged += new System.EventHandler(this.hScrollBarHMax_ValueChanged);
             // 
             // hScrollBarSMax
             // 
-            this.hScrollBarSMax.Location = new System.Drawing.Point(397, 430);
+            this.hScrollBarSMax.Location = new System.Drawing.Point(403, 430);
             this.hScrollBarSMax.Maximum = 264;
             this.hScrollBarSMax.Name = "hScrollBarSMax";
-            this.hScrollBarSMax.Size = new System.Drawing.Size(261, 17);
+            this.hScrollBarSMax.Size = new System.Drawing.Size(255, 17);
             this.hScrollBarSMax.TabIndex = 20;
             this.hScrollBarSMax.Value = 255;
             this.hScrollBarSMax.ValueChanged += new System.EventHandler(this.hScrollBarSMax_ValueChanged);
             // 
             // hScrollBarVMax
             // 
-            this.hScrollBarVMax.Location = new System.Drawing.Point(397, 473);
+            this.hScrollBarVMax.Location = new System.Drawing.Point(403, 473);
             this.hScrollBarVMax.Maximum = 264;
             this.hScrollBarVMax.Name = "hScrollBarVMax";
-            this.hScrollBarVMax.Size = new System.Drawing.Size(261, 17);
+            this.hScrollBarVMax.Size = new System.Drawing.Size(255, 17);
             this.hScrollBarVMax.TabIndex = 21;
             this.hScrollBarVMax.Value = 255;
             this.hScrollBarVMax.ValueChanged += new System.EventHandler(this.hScrollBarVMax_ValueChanged);
             // 
             // hScrollBarSMin
             // 
-            this.hScrollBarSMin.Location = new System.Drawing.Point(397, 318);
+            this.hScrollBarSMin.Location = new System.Drawing.Point(403, 318);
             this.hScrollBarSMin.Maximum = 264;
             this.hScrollBarSMin.Name = "hScrollBarSMin";
-            this.hScrollBarSMin.Size = new System.Drawing.Size(261, 17);
+            this.hScrollBarSMin.Size = new System.Drawing.Size(255, 17);
             this.hScrollBarSMin.TabIndex = 22;
             this.hScrollBarSMin.ValueChanged += new System.EventHandler(this.hScrollBarSMin_ValueChanged);
             // 
@@ -282,7 +282,7 @@
             this.buttonSendCalibrationParameters.Name = "buttonSendCalibrationParameters";
             this.buttonSendCalibrationParameters.Size = new System.Drawing.Size(177, 23);
             this.buttonSendCalibrationParameters.TabIndex = 29;
-            this.buttonSendCalibrationParameters.Text = "Send Calibration Parameters";
+            this.buttonSendCalibrationParameters.Text = "Set Calibration Parameters";
             this.buttonSendCalibrationParameters.UseVisualStyleBackColor = true;
             this.buttonSendCalibrationParameters.Click += new System.EventHandler(this.buttonSendCalibrationParameters_Click);
             // 

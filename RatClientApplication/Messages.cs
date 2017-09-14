@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.Drawing;
 
 namespace RatClientApplication
 {
@@ -49,10 +50,12 @@ namespace RatClientApplication
     public class Camera
     {
         public bool should_stream;
-        public DetectionCalibration detection_calibration;
+        public Point detected_position;
+        //public DetectionCalibration detection_calibration;
         public CameraAddress address;
 
-        public Camera() { address = new CameraAddress(); detection_calibration = new DetectionCalibration(); }
+        //public Camera() { address = new CameraAddress(); detection_calibration = new DetectionCalibration(); }
+        public Camera() { address = new CameraAddress(); detected_position = new Point(); }
         public Camera(bool shouldStream, CameraAddress outgoingCameraAddress)
         {
             this.should_stream = shouldStream;
@@ -60,19 +63,19 @@ namespace RatClientApplication
         }
     }
 
-    public class DetectionCalibration
-    {
-        public DetectionCalibration()
-        {
-            hue = new Hue() { min = 21, max = 28 };
-            saturation = new Saturation() { min = 102, max = 140 };
-            value = new Value() { min = 151, max = 210 };
-        }
+    //public class DetectionCalibration
+    //{
+    //    public DetectionCalibration()
+    //    {
+    //        hue = new Hue() { min = 21, max = 28 };
+    //        saturation = new Saturation() { min = 102, max = 140 };
+    //        value = new Value() { min = 151, max = 210 };
+    //    }
 
-        public Hue hue;
-        public Saturation saturation;
-        public Value value;
-    }
+    //    public Hue hue;
+    //    public Saturation saturation;
+    //    public Value value;
+    //}
 
     public class Hue
     {

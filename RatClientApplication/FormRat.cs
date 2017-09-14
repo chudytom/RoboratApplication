@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Sockets;
+using RatClientApplication.Detection;
 
 namespace RatClientApplication
 {
@@ -24,6 +25,7 @@ namespace RatClientApplication
         private RobotData robotData = new RobotData();
         private TCPlient tcpClient = new TCPlient();
         private ImageDisplay imageHandler = new ImageDisplay(300, 175);
+        private RatTracker ratTracker;
         private UDPServer udpServer;
         private ProgressBarController batteryController;
         private OutgoingMessage outgoingMessage;
@@ -47,10 +49,10 @@ namespace RatClientApplication
             this.KeyPreview = true;
             linearSpeedHScrollBar.Value = robotData.LinearSpeed1 = 123;
             angularSpeedHScrollBar.Value = robotData.AngularSpeed1 = 30;
-            ipTextBox.Text = "192.168.0.80";
+            //ipTextBox.Text = "192.168.0.80";
             portTextBox.Text = "50000";
-            //portTextBox.Text = "100";
-            //ipTextBox.Text = "192.168.1.3";
+            //portTextBox.Text = "10";
+            ipTextBox.Text = "192.168.1.103";
             imageHandler.ImageReceived += ImageToDisplay_ImageReceived;
             tcpClient.MessageReceived += TcpClient_MessageReceived;
             udpServer = new UDPServer(imageHandler);
@@ -59,7 +61,14 @@ namespace RatClientApplication
             pheromoneProgressBar.Value = 20;
             incomingParameters.incoming_pheromones.stress_pheromone_volume_left = 2.1f;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            ratTracker = GetRatTrackerWithBasicHsvLimits();
             UpdateForm();
+        }
+
+        private RatTracker GetRatTrackerWithBasicHsvLimits()
+        {
+            return new RatTracker(lowerHSVLimit: new Emgu.CV.Structure.Hsv(13, 210, 144),
+                                    upperHSVLimit: new Emgu.CV.Structure.Hsv(36, 231, 217));
         }
 
         private void TcpClient_MessageReceived(object sender, EventArgs e)
@@ -101,7 +110,10 @@ namespace RatClientApplication
         private void ImageToDisplay_ImageReceived(object sender, EventArgs e)
         {
             imageHandler.AddImage(udpServer.JpegImageBytes);
-            displayImage(udpServer.ImageBitMap);
+            Point detectedRatPosition = ratTracker.PerformDetection(udpServer.ImageBitMap);
+            displayImage(ratTracker.GetOriginalImage());
+            outgoingParameters.camera.detected_position = detectedRatPosition;
+            SendOutgoingMessage();
             udpServer.OutputText = String.Format("Images displayed: {0}", imageHandler.GetCountOfImages());
         }
 
@@ -295,7 +307,7 @@ namespace RatClientApplication
             }
             else
             {
-                outputTCPTextBox.Text = "You must be connected to control the robot";
+                return;
             }
         }
 
@@ -394,6 +406,7 @@ namespace RatClientApplication
                 if(messageBoxResult== DialogResult.Yes)
                 {
                     //pictureBox1.Image = new Bitmap(@"C: \Users\tomasz123456\Desktop\Muka1.png");
+                    //pictureBox1.Image = new Bitmap(@"D:\OneDrive\Szczur\Zdjecia Testy\Test2\115.jpeg");
                     if ( pictureBox1.Image is null)
                     {
                         MessageBox.Show(@"There is no image in the PictureBox. Make sure you started streaming the video", "Calibration error");
@@ -402,19 +415,21 @@ namespace RatClientApplication
                     else
                     {
                         Bitmap img = new Bitmap(pictureBox1.Image);
-                        DetectionCalibrator calibrator = new DetectionCalibrator(img);
-                        //calibrator.OriginalImage = new Bitmap(img);
+                        DetectionCalibrator calibrator = new DetectionCalibrator(udpServer.ImageBitMap);
                         CalibrationForm calibrationForm = new CalibrationForm(calibrator);
                         DialogResult formResult =  calibrationForm.ShowDialog();
                         if (formResult == DialogResult.OK)
                         {
-                            outgoingParameters.camera.detection_calibration.hue.min = calibrator.HueMin;
-                            outgoingParameters.camera.detection_calibration.hue.min = calibrator.HueMin;
-                            outgoingParameters.camera.detection_calibration.hue.max = calibrator.HueMax;
-                            outgoingParameters.camera.detection_calibration.saturation.min = calibrator.SaturationMin;
-                            outgoingParameters.camera.detection_calibration.saturation.max = calibrator.SaturationMax;
-                            outgoingParameters.camera.detection_calibration.value.min = calibrator.ValueMin;
-                            outgoingParameters.camera.detection_calibration.value.max = calibrator.ValueMax;
+                            //ratTracker = new RatTracker(calibrator.LowerHSVLimit, calibrator.UpperHSVLimit); 
+                            ratTracker.LowerHSVLimit = calibrator.LowerHSVLimit;
+                            ratTracker.UpperHSVLimit = calibrator.UpperHSVLimit;
+                            //outgoingParameters.camera.detection_calibration.hue.min = calibrator.HueMin;
+                            //outgoingParameters.camera.detection_calibration.hue.min = calibrator.HueMin;
+                            //outgoingParameters.camera.detection_calibration.hue.max = calibrator.HueMax;
+                            //outgoingParameters.camera.detection_calibration.saturation.min = calibrator.SaturationMin;
+                            //outgoingParameters.camera.detection_calibration.saturation.max = calibrator.SaturationMax;
+                            //outgoingParameters.camera.detection_calibration.value.min = calibrator.ValueMin;
+                            //outgoingParameters.camera.detection_calibration.value.max = calibrator.ValueMax;
                         }
                     }
                 }
@@ -438,7 +453,7 @@ namespace RatClientApplication
 
         private void displayImage(Bitmap imageToDisplay)
         {
-            pictureBox1.Image = (Image)imageToDisplay;
+            pictureBox1.Image = imageToDisplay;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

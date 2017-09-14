@@ -101,7 +101,7 @@ namespace RatClientApplication
             }
             catch(SocketException)
             {
-                string closeMessage = "The image received is incorrect. Try decresing its resolution and connect again";
+                string closeMessage = "The image received is incorrect. Problems while receving images. Try decresing its resolution and connect again";
                 CloseConnection(closeMessage);
                 return;
             }
@@ -150,7 +150,7 @@ namespace RatClientApplication
             }
             catch (ArgumentException)
             {
-                string closeMessage = "The image received is incorrect. Try decresing its resolution and connect again";
+                string closeMessage = "The image received is incorrect. Problems while displaying. Try decresing its resolution and connect again";
                 CloseConnection(closeMessage);
                 return;
             }

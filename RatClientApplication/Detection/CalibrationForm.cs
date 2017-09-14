@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RatClientApplication.Detection;
 
 namespace RatClientApplication
 {
@@ -26,18 +27,21 @@ namespace RatClientApplication
         {
             this.calibrator = calibrator;
             pictureBoxOriginal.Image = calibrator.GetOriginalImage();
-            pictureBoxHSV.Image = calibrator.GetHsvImage();
+            pictureBoxHSV.Image = calibrator.GetHsvBitmap();
             ScrollBarValueChanged();
         }
 
 
-        private void SetHSVLimits()
+        private void SetBinaryImageWithNewLimits()
         {
             calibrator.LowerHSVLimit = new Emgu.CV.Structure.Hsv(
                 hScrollBarHMin.Value, hScrollBarSMin.Value, hScrollBarVMin.Value);
             calibrator.UpperHSVLimit = new Emgu.CV.Structure.Hsv(
                 hScrollBarHMax.Value, hScrollBarSMax.Value, hScrollBarVMax.Value);
+            calibrator.PrepareBinaryImage(performMorphology: true);
             pictureBoxBinary.Image = calibrator.GetBinaryImage();
+            calibrator.GetRatPosition(drawPositionInfo: true);
+            pictureBoxOriginal.Image = calibrator.GetOriginalImage();
         }
 
         private void UpdateLabelsValues()
@@ -53,7 +57,7 @@ namespace RatClientApplication
         private void ScrollBarValueChanged()
         {
             UpdateLabelsValues();
-            SetHSVLimits();
+            SetBinaryImageWithNewLimits();
         }
 
         private void hScrollBarHMin_ValueChanged(object sender, EventArgs e)
