@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Sockets;
 using RatClientApplication.Detection;
+using System.Diagnostics;
 
 namespace RatClientApplication
 {
@@ -110,10 +111,16 @@ namespace RatClientApplication
         private void ImageToDisplay_ImageReceived(object sender, EventArgs e)
         {
             imageHandler.AddImage(udpServer.JpegImageBytes);
-            Point detectedRatPosition = ratTracker.PerformDetection(udpServer.ImageBitMap);
-            displayImage(ratTracker.GetOriginalImage());
-            outgoingParameters.camera.detected_position = detectedRatPosition;
-            SendOutgoingMessage();
+            if (robotData.Mode == RobotData.RobotMode.Automatic)
+            {
+                Point detectedRatPosition = ratTracker.PerformDetection(udpServer.ImageBitMap);
+                displayImage(ratTracker.GetOriginalImage());
+                outgoingParameters.camera.detected_position.x = detectedRatPosition.X;
+                outgoingParameters.camera.detected_position.y = detectedRatPosition.Y;
+                SendOutgoingMessage();
+            }
+            else
+                displayImage(udpServer.ImageBitMap);
             udpServer.OutputText = String.Format("Images displayed: {0}", imageHandler.GetCountOfImages());
         }
 
@@ -298,12 +305,12 @@ namespace RatClientApplication
             PrepareOutgoingMessage();
             if (tcpClient.IsConnected)
             {
-                string jsonSpeed = JsonConvert.SerializeObject(outgoingMessage);
+                string jsonMessage = JsonConvert.SerializeObject(outgoingMessage);
                 //udpServer.OutputText = jsonSpeed;
                 //jsonSpeed = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, " +
                 //    "suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. " +
                 //"Phasellus pharetra nulla ac diam. Quisque semper justo at risus. ";
-                tcpClient.SendString(jsonSpeed);
+                tcpClient.SendString(jsonMessage);
             }
             else
             {
@@ -432,10 +439,6 @@ namespace RatClientApplication
                             //outgoingParameters.camera.detection_calibration.value.max = calibrator.ValueMax;
                         }
                     }
-                }
-                else if(messageBoxResult == DialogResult.No)
-                {
-                    return;
                 }
             }
             SendOutgoingMessage();

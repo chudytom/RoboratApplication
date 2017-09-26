@@ -50,17 +50,29 @@ namespace RatClientApplication
     public class Camera
     {
         public bool should_stream;
-        public Point detected_position;
-        //public DetectionCalibration detection_calibration;
+        public DetectedPosition detected_position;
         public CameraAddress address;
+        //public DetectionCalibration detection_calibration;
 
         //public Camera() { address = new CameraAddress(); detection_calibration = new DetectionCalibration(); }
-        public Camera() { address = new CameraAddress(); detected_position = new Point(); }
+        public Camera() { address = new CameraAddress(); detected_position = new DetectedPosition(); }
         public Camera(bool shouldStream, CameraAddress outgoingCameraAddress)
         {
             this.should_stream = shouldStream;
             this.address = outgoingCameraAddress;
         }
+    }
+
+    public class DetectedPosition
+    {
+        public DetectedPosition() { }
+        public DetectedPosition(int x, int y) : this()
+        {
+            this.x = x;
+            this.y = y;
+        }
+        public int x;
+        public int y;
     }
 
     //public class DetectionCalibration

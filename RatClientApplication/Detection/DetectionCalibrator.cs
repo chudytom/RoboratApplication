@@ -25,10 +25,4 @@ namespace RatClientApplication.Detection
             ratPosition.Draw(rawImageCV);
         }
     }
-
-
-
-
-
-
 }

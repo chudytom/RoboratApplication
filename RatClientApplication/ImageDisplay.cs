@@ -13,7 +13,6 @@ namespace RatClientApplication
     {
         private List<byte[]> listOfImages = new List<byte[]>();
         string folderPath = @"C:\Rat Application\Saved frames";
-        private DetectionCalibrator detectionModule;
 
         public Bitmap CurrentImage { get; set; }
         public int xPictureBoxSize { get; set; }
@@ -64,17 +63,6 @@ namespace RatClientApplication
         public int GetCountOfImages()
         {
             return listOfImages.Count;
-        }
-
-        public void PrepareDetection(Bitmap original)
-        {
-            
-        }
-
-        public void PerformDetection(Bitmap originalImage)
-        {
-            //detectionModule = new DetectionCalibrator(originalImage);
-            //detectionModule.
         }
         
         public event EventHandler ImageReceived;
