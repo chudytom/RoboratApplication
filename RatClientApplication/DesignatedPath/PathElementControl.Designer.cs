@@ -56,6 +56,11 @@
             // timeNumeric
             // 
             this.timeNumeric.Location = new System.Drawing.Point(228, 8);
+            this.timeNumeric.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
             this.timeNumeric.Name = "timeNumeric";
             this.timeNumeric.Size = new System.Drawing.Size(54, 22);
             this.timeNumeric.TabIndex = 2;

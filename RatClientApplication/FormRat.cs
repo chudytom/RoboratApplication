@@ -387,7 +387,7 @@ namespace RatClientApplication
         {
             string ipString = ipTextBox.Text;
             string portNumberString = portTextBox.Text;
-            if(ipString == "raspberrypi.local" || ipString == "localhost")
+            if (ipString == "raspberrypi.local" || ipString == "localhost")
             {
                 PrepareConnection();
                 return;
@@ -464,9 +464,65 @@ namespace RatClientApplication
             designatedPathForm.ShowDialog();
         }
 
-        private void DesignatedPathForm_ExecutePathRequested(object sender, EventArgs e)
+        private async void DesignatedPathForm_ExecutePathRequested(object sender, EventArgs e)
         {
-            
+            var pathElements = sender as List<PathElement>;
+            var enumerator = pathElements.GetEnumerator();
+            foreach (var element in pathElements)
+            {
+                ExecutePathElement(element);
+                await PutTaskDelay((int)element.Time);
+                SendClearedDataToRobot();
+                await PutTaskDelay(20);
+            }
+        }
+
+        async Task PutTaskDelay(int miliseconds)
+        {
+            await Task.Delay(miliseconds);
+        }
+
+        private void ExecutePathElement(PathElement pathElement)
+        {
+            robotData.LinearSpeed1 = (int)pathElement.Speed;
+            robotData.AngularSpeed1 = (int)pathElement.Speed;
+            switch (pathElement.PathDirection)
+            {
+                case PathElement.DirectionEnum.Forward:
+                    robotData.LinearDirection = 1;
+                    upBox.BackColor = Color.Green;
+                    break;
+                case PathElement.DirectionEnum.Backward:
+                    robotData.RotationDirection = -1;
+                    downBox.BackColor = Color.Green;
+                    break;
+                case PathElement.DirectionEnum.Left:
+                    robotData.RotationDirection = 1;
+                    leftBox.BackColor = Color.Green;
+                    break;
+                case PathElement.DirectionEnum.Right:
+                    robotData.RotationDirection = -1;
+                    rightBox.BackColor = Color.Green;
+                    break;
+                default:
+                    break;
+            }
+
+            SendOutgoingMessage();
+
+        }
+
+        private void SendClearedDataToRobot()
+        {
+            upBox.BackColor = Color.Gray;
+            downBox.BackColor = Color.Gray;
+            leftBox.BackColor = Color.Gray;
+            rightBox.BackColor = Color.Gray;
+            robotData.LinearDirection = 0;
+            robotData.RotationDirection = 0;
+            robotData.LinearSpeed1 = 0;
+            robotData.AngularSpeed1 = 0;
+            SendOutgoingMessage();
         }
 
         private void OnAutomaticModeSelected()

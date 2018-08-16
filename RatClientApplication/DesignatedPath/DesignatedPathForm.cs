@@ -41,8 +41,8 @@ namespace RatClientApplication.DesignatedPath
 
         private void executePathButton_Click(object sender, EventArgs e)
         {
-            ExecutePathRequested(pathManager.PathElements, EventArgs.Empty);
             Close();
+            ExecutePathRequested(pathManager.PathElements, EventArgs.Empty);
         }
 
         private void savePathButton_Click(object sender, EventArgs e)

@@ -70,20 +70,20 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(265, 61);
+            this.label2.Location = new System.Drawing.Point(266, 61);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(39, 17);
+            this.label2.Size = new System.Drawing.Size(65, 17);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Time";
+            this.label2.Text = "Time[ms]";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(181, 61);
+            this.label3.Location = new System.Drawing.Point(173, 61);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 17);
+            this.label3.Size = new System.Drawing.Size(94, 17);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Speed";
+            this.label3.Text = "Speed[0-100]";
             // 
             // executePathButton
             // 
