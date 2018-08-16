@@ -89,6 +89,7 @@
             this.startPlayingSoundButton = new System.Windows.Forms.Button();
             this.startImpulseButton = new System.Windows.Forms.Button();
             this.timerSound = new System.Windows.Forms.Timer(this.components);
+            this.designatedPathModeButton = new System.Windows.Forms.Button();
             this.pheromoneProgressBar = new RatClientApplication.ColorfulProgressBar();
             this.batteryProgressBar = new RatClientApplication.ColorfulProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -98,46 +99,50 @@
             // upBox
             // 
             this.upBox.BackColor = System.Drawing.SystemColors.GrayText;
-            this.upBox.Location = new System.Drawing.Point(441, 223);
-            this.upBox.MinimumSize = new System.Drawing.Size(30, 10);
+            this.upBox.Location = new System.Drawing.Point(588, 274);
+            this.upBox.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.upBox.MinimumSize = new System.Drawing.Size(40, 12);
             this.upBox.Name = "upBox";
-            this.upBox.Size = new System.Drawing.Size(40, 20);
+            this.upBox.Size = new System.Drawing.Size(53, 25);
             this.upBox.TabIndex = 0;
             // 
             // rightBox
             // 
             this.rightBox.BackColor = System.Drawing.SystemColors.GrayText;
-            this.rightBox.Location = new System.Drawing.Point(489, 249);
-            this.rightBox.MinimumSize = new System.Drawing.Size(30, 10);
+            this.rightBox.Location = new System.Drawing.Point(652, 306);
+            this.rightBox.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.rightBox.MinimumSize = new System.Drawing.Size(40, 12);
             this.rightBox.Name = "rightBox";
-            this.rightBox.Size = new System.Drawing.Size(40, 20);
+            this.rightBox.Size = new System.Drawing.Size(53, 25);
             this.rightBox.TabIndex = 1;
             // 
             // leftBox
             // 
             this.leftBox.BackColor = System.Drawing.SystemColors.GrayText;
-            this.leftBox.Location = new System.Drawing.Point(393, 249);
-            this.leftBox.MinimumSize = new System.Drawing.Size(30, 10);
+            this.leftBox.Location = new System.Drawing.Point(524, 306);
+            this.leftBox.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.leftBox.MinimumSize = new System.Drawing.Size(40, 12);
             this.leftBox.Name = "leftBox";
-            this.leftBox.Size = new System.Drawing.Size(40, 20);
+            this.leftBox.Size = new System.Drawing.Size(53, 25);
             this.leftBox.TabIndex = 2;
             // 
             // downBox
             // 
             this.downBox.BackColor = System.Drawing.SystemColors.GrayText;
-            this.downBox.Location = new System.Drawing.Point(441, 249);
-            this.downBox.MinimumSize = new System.Drawing.Size(30, 10);
+            this.downBox.Location = new System.Drawing.Point(588, 306);
+            this.downBox.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.downBox.MinimumSize = new System.Drawing.Size(40, 12);
             this.downBox.Name = "downBox";
-            this.downBox.Size = new System.Drawing.Size(40, 20);
+            this.downBox.Size = new System.Drawing.Size(53, 25);
             this.downBox.TabIndex = 3;
             // 
             // linearSpeedHScrollBar
             // 
-            this.linearSpeedHScrollBar.Location = new System.Drawing.Point(337, 373);
+            this.linearSpeedHScrollBar.Location = new System.Drawing.Point(449, 459);
             this.linearSpeedHScrollBar.Maximum = 259;
             this.linearSpeedHScrollBar.Minimum = 1;
             this.linearSpeedHScrollBar.Name = "linearSpeedHScrollBar";
-            this.linearSpeedHScrollBar.Size = new System.Drawing.Size(243, 17);
+            this.linearSpeedHScrollBar.Size = new System.Drawing.Size(324, 17);
             this.linearSpeedHScrollBar.SmallChange = 2;
             this.linearSpeedHScrollBar.TabIndex = 4;
             this.linearSpeedHScrollBar.TabStop = true;
@@ -149,9 +154,10 @@
             // 
             this.speedLabel2.AutoSize = true;
             this.speedLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.speedLabel2.Location = new System.Drawing.Point(396, 353);
+            this.speedLabel2.Location = new System.Drawing.Point(528, 434);
+            this.speedLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.speedLabel2.Name = "speedLabel2";
-            this.speedLabel2.Size = new System.Drawing.Size(92, 16);
+            this.speedLabel2.Size = new System.Drawing.Size(113, 20);
             this.speedLabel2.TabIndex = 5;
             this.speedLabel2.Text = "Linear Speed:";
             // 
@@ -159,9 +165,10 @@
             // 
             this.Label1.AutoSize = true;
             this.Label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.Label1.Location = new System.Drawing.Point(406, 294);
+            this.Label1.Location = new System.Drawing.Point(541, 362);
+            this.Label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Label1.Name = "Label1";
-            this.Label1.Size = new System.Drawing.Size(95, 16);
+            this.Label1.Size = new System.Drawing.Size(113, 20);
             this.Label1.TabIndex = 6;
             this.Label1.Text = "Speed Ahead:";
             // 
@@ -169,9 +176,10 @@
             // 
             this.Label2.AutoSize = true;
             this.Label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.Label2.Location = new System.Drawing.Point(406, 317);
+            this.Label2.Location = new System.Drawing.Point(541, 390);
+            this.Label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Label2.Name = "Label2";
-            this.Label2.Size = new System.Drawing.Size(98, 16);
+            this.Label2.Size = new System.Drawing.Size(119, 20);
             this.Label2.TabIndex = 7;
             this.Label2.Text = "Speed Around:";
             // 
@@ -179,9 +187,10 @@
             // 
             this.linearSpeedLabel2.AutoSize = true;
             this.linearSpeedLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.linearSpeedLabel2.Location = new System.Drawing.Point(507, 293);
+            this.linearSpeedLabel2.Location = new System.Drawing.Point(676, 361);
+            this.linearSpeedLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linearSpeedLabel2.Name = "linearSpeedLabel2";
-            this.linearSpeedLabel2.Size = new System.Drawing.Size(16, 16);
+            this.linearSpeedLabel2.Size = new System.Drawing.Size(19, 20);
             this.linearSpeedLabel2.TabIndex = 8;
             this.linearSpeedLabel2.Text = "0";
             // 
@@ -189,9 +198,10 @@
             // 
             this.angularSpeedLabel2.AutoSize = true;
             this.angularSpeedLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.angularSpeedLabel2.Location = new System.Drawing.Point(507, 316);
+            this.angularSpeedLabel2.Location = new System.Drawing.Point(676, 389);
+            this.angularSpeedLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.angularSpeedLabel2.Name = "angularSpeedLabel2";
-            this.angularSpeedLabel2.Size = new System.Drawing.Size(16, 16);
+            this.angularSpeedLabel2.Size = new System.Drawing.Size(19, 20);
             this.angularSpeedLabel2.TabIndex = 9;
             this.angularSpeedLabel2.Text = "0";
             // 
@@ -199,9 +209,10 @@
             // 
             this.linearSpeedLabel1.AutoSize = true;
             this.linearSpeedLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.linearSpeedLabel1.Location = new System.Drawing.Point(496, 353);
+            this.linearSpeedLabel1.Location = new System.Drawing.Point(661, 434);
+            this.linearSpeedLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linearSpeedLabel1.Name = "linearSpeedLabel1";
-            this.linearSpeedLabel1.Size = new System.Drawing.Size(32, 16);
+            this.linearSpeedLabel1.Size = new System.Drawing.Size(39, 20);
             this.linearSpeedLabel1.TabIndex = 10;
             this.linearSpeedLabel1.Text = "100";
             // 
@@ -210,9 +221,10 @@
             this.connectButton.BackColor = System.Drawing.Color.Silver;
             this.connectButton.Enabled = false;
             this.connectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.connectButton.Location = new System.Drawing.Point(29, 64);
+            this.connectButton.Location = new System.Drawing.Point(39, 79);
+            this.connectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(85, 30);
+            this.connectButton.Size = new System.Drawing.Size(113, 37);
             this.connectButton.TabIndex = 13;
             this.connectButton.Text = "Connect";
             this.connectButton.UseVisualStyleBackColor = false;
@@ -226,27 +238,30 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label3.Location = new System.Drawing.Point(161, 18);
+            this.label3.Location = new System.Drawing.Point(215, 22);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(129, 15);
+            this.label3.Size = new System.Drawing.Size(157, 18);
             this.label3.TabIndex = 15;
             this.label3.Text = "Connection messages";
             // 
             // outputTCPTextBox
             // 
-            this.outputTCPTextBox.Location = new System.Drawing.Point(150, 35);
+            this.outputTCPTextBox.Location = new System.Drawing.Point(200, 43);
+            this.outputTCPTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.outputTCPTextBox.Multiline = true;
             this.outputTCPTextBox.Name = "outputTCPTextBox";
-            this.outputTCPTextBox.Size = new System.Drawing.Size(150, 75);
+            this.outputTCPTextBox.Size = new System.Drawing.Size(199, 91);
             this.outputTCPTextBox.TabIndex = 16;
             // 
             // clearButton
             // 
             this.clearButton.AutoSize = true;
             this.clearButton.BackColor = System.Drawing.Color.Silver;
-            this.clearButton.Location = new System.Drawing.Point(184, 114);
+            this.clearButton.Location = new System.Drawing.Point(245, 140);
+            this.clearButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(79, 23);
+            this.clearButton.Size = new System.Drawing.Size(105, 28);
             this.clearButton.TabIndex = 18;
             this.clearButton.Text = "Clear the box";
             this.clearButton.UseVisualStyleBackColor = false;
@@ -255,41 +270,46 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 48);
+            this.label5.Location = new System.Drawing.Point(17, 59);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(20, 13);
+            this.label5.Size = new System.Drawing.Size(24, 17);
             this.label5.TabIndex = 19;
             this.label5.Text = "IP:";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 21);
+            this.label6.Location = new System.Drawing.Point(13, 26);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(29, 13);
+            this.label6.Size = new System.Drawing.Size(38, 17);
             this.label6.TabIndex = 20;
             this.label6.Text = "Port:";
             // 
             // ipTextBox
             // 
-            this.ipTextBox.Location = new System.Drawing.Point(43, 45);
+            this.ipTextBox.Location = new System.Drawing.Point(57, 55);
+            this.ipTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ipTextBox.Name = "ipTextBox";
-            this.ipTextBox.Size = new System.Drawing.Size(100, 20);
+            this.ipTextBox.Size = new System.Drawing.Size(132, 22);
             this.ipTextBox.TabIndex = 21;
             // 
             // portTextBox
             // 
-            this.portTextBox.Location = new System.Drawing.Point(43, 19);
+            this.portTextBox.Location = new System.Drawing.Point(57, 23);
+            this.portTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.portTextBox.Name = "portTextBox";
-            this.portTextBox.Size = new System.Drawing.Size(100, 20);
+            this.portTextBox.Size = new System.Drawing.Size(132, 22);
             this.portTextBox.TabIndex = 22;
             // 
             // setIPButton
             // 
             this.setIPButton.BackColor = System.Drawing.Color.Silver;
-            this.setIPButton.Location = new System.Drawing.Point(92, 69);
+            this.setIPButton.Location = new System.Drawing.Point(123, 85);
+            this.setIPButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.setIPButton.Name = "setIPButton";
-            this.setIPButton.Size = new System.Drawing.Size(51, 23);
+            this.setIPButton.Size = new System.Drawing.Size(68, 28);
             this.setIPButton.TabIndex = 23;
             this.setIPButton.Text = "Set IP";
             this.setIPButton.UseVisualStyleBackColor = false;
@@ -304,9 +324,10 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label8.Location = new System.Drawing.Point(2, 8);
+            this.label8.Location = new System.Drawing.Point(3, 10);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(149, 17);
+            this.label8.Size = new System.Drawing.Size(173, 20);
             this.label8.TabIndex = 26;
             this.label8.Text = "Remote Connection";
             // 
@@ -314,10 +335,11 @@
             // 
             this.tcpConnectionLabel.BackColor = System.Drawing.SystemColors.GrayText;
             this.tcpConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tcpConnectionLabel.Location = new System.Drawing.Point(51, 29);
-            this.tcpConnectionLabel.MinimumSize = new System.Drawing.Size(30, 10);
+            this.tcpConnectionLabel.Location = new System.Drawing.Point(68, 36);
+            this.tcpConnectionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.tcpConnectionLabel.MinimumSize = new System.Drawing.Size(40, 12);
             this.tcpConnectionLabel.Name = "tcpConnectionLabel";
-            this.tcpConnectionLabel.Size = new System.Drawing.Size(40, 30);
+            this.tcpConnectionLabel.Size = new System.Drawing.Size(53, 37);
             this.tcpConnectionLabel.TabIndex = 27;
             this.tcpConnectionLabel.Text = "OFF";
             this.tcpConnectionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -326,9 +348,10 @@
             // 
             this.disconnectButton.BackColor = System.Drawing.Color.Silver;
             this.disconnectButton.Enabled = false;
-            this.disconnectButton.Location = new System.Drawing.Point(34, 127);
+            this.disconnectButton.Location = new System.Drawing.Point(45, 156);
+            this.disconnectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.disconnectButton.Name = "disconnectButton";
-            this.disconnectButton.Size = new System.Drawing.Size(75, 23);
+            this.disconnectButton.Size = new System.Drawing.Size(100, 28);
             this.disconnectButton.TabIndex = 28;
             this.disconnectButton.Text = "Disconnect";
             this.disconnectButton.UseVisualStyleBackColor = false;
@@ -336,11 +359,11 @@
             // 
             // angularSpeedHScrollBar
             // 
-            this.angularSpeedHScrollBar.Location = new System.Drawing.Point(337, 424);
+            this.angularSpeedHScrollBar.Location = new System.Drawing.Point(449, 522);
             this.angularSpeedHScrollBar.Maximum = 49;
             this.angularSpeedHScrollBar.Minimum = 1;
             this.angularSpeedHScrollBar.Name = "angularSpeedHScrollBar";
-            this.angularSpeedHScrollBar.Size = new System.Drawing.Size(243, 17);
+            this.angularSpeedHScrollBar.Size = new System.Drawing.Size(324, 17);
             this.angularSpeedHScrollBar.TabIndex = 29;
             this.angularSpeedHScrollBar.TabStop = true;
             this.angularSpeedHScrollBar.Value = 49;
@@ -351,9 +374,10 @@
             // 
             this.angularSpeedLabel1.AutoSize = true;
             this.angularSpeedLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.angularSpeedLabel1.Location = new System.Drawing.Point(496, 401);
+            this.angularSpeedLabel1.Location = new System.Drawing.Point(661, 494);
+            this.angularSpeedLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.angularSpeedLabel1.Name = "angularSpeedLabel1";
-            this.angularSpeedLabel1.Size = new System.Drawing.Size(32, 16);
+            this.angularSpeedLabel1.Size = new System.Drawing.Size(39, 20);
             this.angularSpeedLabel1.TabIndex = 31;
             this.angularSpeedLabel1.Text = "100";
             // 
@@ -361,9 +385,10 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label9.Location = new System.Drawing.Point(393, 401);
+            this.label9.Location = new System.Drawing.Point(524, 494);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(105, 16);
+            this.label9.Size = new System.Drawing.Size(128, 20);
             this.label9.TabIndex = 30;
             this.label9.Text = "Rotation Speed:";
             // 
@@ -371,26 +396,29 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label7.Location = new System.Drawing.Point(31, 164);
+            this.label7.Location = new System.Drawing.Point(41, 202);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(139, 15);
+            this.label7.Size = new System.Drawing.Size(168, 18);
             this.label7.TabIndex = 33;
             this.label7.Text = "Video stream messages";
             // 
             // outputUDPTextBox
             // 
-            this.outputUDPTextBox.Location = new System.Drawing.Point(25, 185);
+            this.outputUDPTextBox.Location = new System.Drawing.Point(33, 228);
+            this.outputUDPTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.outputUDPTextBox.Multiline = true;
             this.outputUDPTextBox.Name = "outputUDPTextBox";
-            this.outputUDPTextBox.Size = new System.Drawing.Size(150, 75);
+            this.outputUDPTextBox.Size = new System.Drawing.Size(199, 91);
             this.outputUDPTextBox.TabIndex = 32;
             // 
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(7, 295);
+            this.pictureBox1.Location = new System.Drawing.Point(9, 363);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(300, 175);
+            this.pictureBox1.Size = new System.Drawing.Size(399, 215);
             this.pictureBox1.TabIndex = 34;
             this.pictureBox1.TabStop = false;
             // 
@@ -398,17 +426,19 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label10.Location = new System.Drawing.Point(118, 266);
+            this.label10.Location = new System.Drawing.Point(157, 327);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(106, 20);
+            this.label10.Size = new System.Drawing.Size(131, 25);
             this.label10.TabIndex = 35;
             this.label10.Text = "Video Stream";
             // 
             // automaticModeButton
             // 
-            this.automaticModeButton.Location = new System.Drawing.Point(317, 54);
+            this.automaticModeButton.Location = new System.Drawing.Point(424, 50);
+            this.automaticModeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.automaticModeButton.Name = "automaticModeButton";
-            this.automaticModeButton.Size = new System.Drawing.Size(100, 30);
+            this.automaticModeButton.Size = new System.Drawing.Size(133, 37);
             this.automaticModeButton.TabIndex = 36;
             this.automaticModeButton.TabStop = false;
             this.automaticModeButton.Text = "Automatic mode";
@@ -417,9 +447,10 @@
             // 
             // manualModeButton
             // 
-            this.manualModeButton.Location = new System.Drawing.Point(317, 21);
+            this.manualModeButton.Location = new System.Drawing.Point(424, 10);
+            this.manualModeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.manualModeButton.Name = "manualModeButton";
-            this.manualModeButton.Size = new System.Drawing.Size(100, 30);
+            this.manualModeButton.Size = new System.Drawing.Size(133, 37);
             this.manualModeButton.TabIndex = 37;
             this.manualModeButton.Text = "Manual mode";
             this.manualModeButton.UseVisualStyleBackColor = true;
@@ -427,9 +458,10 @@
             // 
             // randomMovingButton
             // 
-            this.randomMovingButton.Location = new System.Drawing.Point(317, 88);
+            this.randomMovingButton.Location = new System.Drawing.Point(424, 92);
+            this.randomMovingButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.randomMovingButton.Name = "randomMovingButton";
-            this.randomMovingButton.Size = new System.Drawing.Size(100, 30);
+            this.randomMovingButton.Size = new System.Drawing.Size(133, 37);
             this.randomMovingButton.TabIndex = 38;
             this.randomMovingButton.TabStop = false;
             this.randomMovingButton.Text = "Random moving";
@@ -440,18 +472,20 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label11.Location = new System.Drawing.Point(414, 135);
+            this.label11.Location = new System.Drawing.Point(552, 178);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(91, 17);
+            this.label11.Size = new System.Drawing.Size(108, 20);
             this.label11.TabIndex = 39;
             this.label11.Text = "Battery Level";
             // 
             // saveVideoButton
             // 
             this.saveVideoButton.BackColor = System.Drawing.Color.Silver;
-            this.saveVideoButton.Location = new System.Drawing.Point(229, 264);
+            this.saveVideoButton.Location = new System.Drawing.Point(305, 325);
+            this.saveVideoButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.saveVideoButton.Name = "saveVideoButton";
-            this.saveVideoButton.Size = new System.Drawing.Size(75, 23);
+            this.saveVideoButton.Size = new System.Drawing.Size(100, 28);
             this.saveVideoButton.TabIndex = 40;
             this.saveVideoButton.Text = "Save frames";
             this.saveVideoButton.UseVisualStyleBackColor = false;
@@ -460,9 +494,10 @@
             // continueStreamingButton
             // 
             this.continueStreamingButton.BackColor = System.Drawing.Color.Silver;
-            this.continueStreamingButton.Location = new System.Drawing.Point(8, 264);
+            this.continueStreamingButton.Location = new System.Drawing.Point(11, 325);
+            this.continueStreamingButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.continueStreamingButton.Name = "continueStreamingButton";
-            this.continueStreamingButton.Size = new System.Drawing.Size(104, 23);
+            this.continueStreamingButton.Size = new System.Drawing.Size(139, 28);
             this.continueStreamingButton.TabIndex = 41;
             this.continueStreamingButton.Text = "Stop streaming";
             this.continueStreamingButton.UseVisualStyleBackColor = false;
@@ -472,9 +507,10 @@
             // 
             this.panicStopButton.BackColor = System.Drawing.Color.Red;
             this.panicStopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.panicStopButton.Location = new System.Drawing.Point(206, 160);
+            this.panicStopButton.Location = new System.Drawing.Point(275, 197);
+            this.panicStopButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panicStopButton.Name = "panicStopButton";
-            this.panicStopButton.Size = new System.Drawing.Size(144, 93);
+            this.panicStopButton.Size = new System.Drawing.Size(192, 114);
             this.panicStopButton.TabIndex = 43;
             this.panicStopButton.Text = "Emergency Stop";
             this.panicStopButton.UseVisualStyleBackColor = false;
@@ -488,9 +524,11 @@
             this.advancedIPGroupBox.Controls.Add(this.label6);
             this.advancedIPGroupBox.Controls.Add(this.ipTextBox);
             this.advancedIPGroupBox.Controls.Add(this.setIPButton);
-            this.advancedIPGroupBox.Location = new System.Drawing.Point(437, 18);
+            this.advancedIPGroupBox.Location = new System.Drawing.Point(583, 22);
+            this.advancedIPGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.advancedIPGroupBox.Name = "advancedIPGroupBox";
-            this.advancedIPGroupBox.Size = new System.Drawing.Size(158, 100);
+            this.advancedIPGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.advancedIPGroupBox.Size = new System.Drawing.Size(211, 123);
             this.advancedIPGroupBox.TabIndex = 44;
             this.advancedIPGroupBox.TabStop = false;
             this.advancedIPGroupBox.Text = "Advanced IP options";
@@ -499,9 +537,10 @@
             // hideAdvancedIPOptionsButton
             // 
             this.hideAdvancedIPOptionsButton.BackColor = System.Drawing.Color.Silver;
-            this.hideAdvancedIPOptionsButton.Location = new System.Drawing.Point(6, 69);
+            this.hideAdvancedIPOptionsButton.Location = new System.Drawing.Point(8, 85);
+            this.hideAdvancedIPOptionsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.hideAdvancedIPOptionsButton.Name = "hideAdvancedIPOptionsButton";
-            this.hideAdvancedIPOptionsButton.Size = new System.Drawing.Size(80, 23);
+            this.hideAdvancedIPOptionsButton.Size = new System.Drawing.Size(107, 28);
             this.hideAdvancedIPOptionsButton.TabIndex = 24;
             this.hideAdvancedIPOptionsButton.Text = "Hide options";
             this.hideAdvancedIPOptionsButton.UseVisualStyleBackColor = false;
@@ -511,9 +550,10 @@
             // 
             this.advancedIPOptionsButton.AutoSize = true;
             this.advancedIPOptionsButton.BackColor = System.Drawing.Color.Silver;
-            this.advancedIPOptionsButton.Location = new System.Drawing.Point(20, 99);
+            this.advancedIPOptionsButton.Location = new System.Drawing.Point(27, 122);
+            this.advancedIPOptionsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.advancedIPOptionsButton.Name = "advancedIPOptionsButton";
-            this.advancedIPOptionsButton.Size = new System.Drawing.Size(103, 23);
+            this.advancedIPOptionsButton.Size = new System.Drawing.Size(137, 28);
             this.advancedIPOptionsButton.TabIndex = 45;
             this.advancedIPOptionsButton.Text = "Advanced options";
             this.advancedIPOptionsButton.UseVisualStyleBackColor = false;
@@ -523,9 +563,10 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label4.Location = new System.Drawing.Point(653, 75);
+            this.label4.Location = new System.Drawing.Point(871, 92);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(51, 20);
+            this.label4.Size = new System.Drawing.Size(63, 25);
             this.label4.TabIndex = 46;
             this.label4.Text = "Scent";
             // 
@@ -533,9 +574,10 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label12.Location = new System.Drawing.Point(639, 264);
+            this.label12.Location = new System.Drawing.Point(852, 325);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(95, 20);
+            this.label12.Size = new System.Drawing.Size(116, 25);
             this.label12.TabIndex = 47;
             this.label12.Text = "Ultrasounds";
             // 
@@ -543,9 +585,10 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label13.Location = new System.Drawing.Point(636, 97);
+            this.label13.Location = new System.Drawing.Point(848, 119);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(83, 17);
+            this.label13.Size = new System.Drawing.Size(99, 20);
             this.label13.TabIndex = 49;
             this.label13.Text = "Amount left:";
             // 
@@ -553,9 +596,10 @@
             // 
             this.pheromoneLeftLabel.AutoSize = true;
             this.pheromoneLeftLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.pheromoneLeftLabel.Location = new System.Drawing.Point(714, 97);
+            this.pheromoneLeftLabel.Location = new System.Drawing.Point(952, 119);
+            this.pheromoneLeftLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.pheromoneLeftLabel.Name = "pheromoneLeftLabel";
-            this.pheromoneLeftLabel.Size = new System.Drawing.Size(17, 17);
+            this.pheromoneLeftLabel.Size = new System.Drawing.Size(19, 20);
             this.pheromoneLeftLabel.TabIndex = 50;
             this.pheromoneLeftLabel.Text = "0";
             // 
@@ -563,9 +607,10 @@
             // 
             this.timeSoundLabel.AutoSize = true;
             this.timeSoundLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.timeSoundLabel.Location = new System.Drawing.Point(698, 378);
+            this.timeSoundLabel.Location = new System.Drawing.Point(931, 465);
+            this.timeSoundLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.timeSoundLabel.Name = "timeSoundLabel";
-            this.timeSoundLabel.Size = new System.Drawing.Size(32, 16);
+            this.timeSoundLabel.Size = new System.Drawing.Size(39, 20);
             this.timeSoundLabel.TabIndex = 57;
             this.timeSoundLabel.Text = "100";
             // 
@@ -573,18 +618,19 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label16.Location = new System.Drawing.Point(662, 378);
+            this.label16.Location = new System.Drawing.Point(883, 465);
+            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(42, 16);
+            this.label16.Size = new System.Drawing.Size(51, 20);
             this.label16.TabIndex = 56;
             this.label16.Text = "Time:";
             // 
             // timeSoundScrollbar
             // 
-            this.timeSoundScrollbar.Location = new System.Drawing.Point(611, 401);
+            this.timeSoundScrollbar.Location = new System.Drawing.Point(815, 494);
             this.timeSoundScrollbar.Maximum = 49;
             this.timeSoundScrollbar.Name = "timeSoundScrollbar";
-            this.timeSoundScrollbar.Size = new System.Drawing.Size(150, 17);
+            this.timeSoundScrollbar.Size = new System.Drawing.Size(200, 17);
             this.timeSoundScrollbar.TabIndex = 55;
             this.timeSoundScrollbar.TabStop = true;
             this.timeSoundScrollbar.ValueChanged += new System.EventHandler(this.timeSoundScrollbar_ValueChanged);
@@ -594,9 +640,10 @@
             // 
             this.frequencyLabel.AutoSize = true;
             this.frequencyLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.frequencyLabel.Location = new System.Drawing.Point(707, 288);
+            this.frequencyLabel.Location = new System.Drawing.Point(943, 354);
+            this.frequencyLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.frequencyLabel.Name = "frequencyLabel";
-            this.frequencyLabel.Size = new System.Drawing.Size(32, 16);
+            this.frequencyLabel.Size = new System.Drawing.Size(39, 20);
             this.frequencyLabel.TabIndex = 54;
             this.frequencyLabel.Text = "100";
             // 
@@ -604,19 +651,20 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label18.Location = new System.Drawing.Point(633, 288);
+            this.label18.Location = new System.Drawing.Point(844, 354);
+            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(75, 16);
+            this.label18.Size = new System.Drawing.Size(92, 20);
             this.label18.TabIndex = 53;
             this.label18.Text = "Frequency:";
             // 
             // frequencyScrollbar
             // 
             this.frequencyScrollbar.LargeChange = 5;
-            this.frequencyScrollbar.Location = new System.Drawing.Point(611, 308);
+            this.frequencyScrollbar.Location = new System.Drawing.Point(815, 379);
             this.frequencyScrollbar.Maximum = 8;
             this.frequencyScrollbar.Name = "frequencyScrollbar";
-            this.frequencyScrollbar.Size = new System.Drawing.Size(150, 17);
+            this.frequencyScrollbar.Size = new System.Drawing.Size(200, 17);
             this.frequencyScrollbar.TabIndex = 52;
             this.frequencyScrollbar.TabStop = true;
             this.frequencyScrollbar.ValueChanged += new System.EventHandler(this.frequencyScrollbar_ValueChanged);
@@ -626,9 +674,10 @@
             // 
             this.pheromoneReleaseLabel.AutoSize = true;
             this.pheromoneReleaseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.pheromoneReleaseLabel.Location = new System.Drawing.Point(726, 143);
+            this.pheromoneReleaseLabel.Location = new System.Drawing.Point(968, 176);
+            this.pheromoneReleaseLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.pheromoneReleaseLabel.Name = "pheromoneReleaseLabel";
-            this.pheromoneReleaseLabel.Size = new System.Drawing.Size(32, 16);
+            this.pheromoneReleaseLabel.Size = new System.Drawing.Size(39, 20);
             this.pheromoneReleaseLabel.TabIndex = 60;
             this.pheromoneReleaseLabel.Text = "100";
             // 
@@ -636,19 +685,20 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label20.Location = new System.Drawing.Point(609, 143);
+            this.label20.Location = new System.Drawing.Point(812, 176);
+            this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(119, 16);
+            this.label20.Size = new System.Drawing.Size(150, 20);
             this.label20.TabIndex = 59;
             this.label20.Text = "Amount to release:";
             // 
             // pheromoneReleaseScrollbar
             // 
             this.pheromoneReleaseScrollbar.LargeChange = 5;
-            this.pheromoneReleaseScrollbar.Location = new System.Drawing.Point(609, 163);
+            this.pheromoneReleaseScrollbar.Location = new System.Drawing.Point(812, 201);
             this.pheromoneReleaseScrollbar.Maximum = 25;
             this.pheromoneReleaseScrollbar.Name = "pheromoneReleaseScrollbar";
-            this.pheromoneReleaseScrollbar.Size = new System.Drawing.Size(150, 17);
+            this.pheromoneReleaseScrollbar.Size = new System.Drawing.Size(200, 17);
             this.pheromoneReleaseScrollbar.TabIndex = 58;
             this.pheromoneReleaseScrollbar.TabStop = true;
             this.pheromoneReleaseScrollbar.Value = 21;
@@ -660,9 +710,10 @@
             this.startExtractingScentButton.AutoSize = true;
             this.startExtractingScentButton.BackColor = System.Drawing.Color.Silver;
             this.startExtractingScentButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.startExtractingScentButton.Location = new System.Drawing.Point(635, 188);
+            this.startExtractingScentButton.Location = new System.Drawing.Point(847, 231);
+            this.startExtractingScentButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.startExtractingScentButton.Name = "startExtractingScentButton";
-            this.startExtractingScentButton.Size = new System.Drawing.Size(105, 26);
+            this.startExtractingScentButton.Size = new System.Drawing.Size(140, 32);
             this.startExtractingScentButton.TabIndex = 61;
             this.startExtractingScentButton.Text = "Release scent";
             this.startExtractingScentButton.UseVisualStyleBackColor = false;
@@ -673,9 +724,10 @@
             this.startPlayingSoundButton.AutoSize = true;
             this.startPlayingSoundButton.BackColor = System.Drawing.Color.Silver;
             this.startPlayingSoundButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.startPlayingSoundButton.Location = new System.Drawing.Point(613, 332);
+            this.startPlayingSoundButton.Location = new System.Drawing.Point(817, 409);
+            this.startPlayingSoundButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.startPlayingSoundButton.Name = "startPlayingSoundButton";
-            this.startPlayingSoundButton.Size = new System.Drawing.Size(152, 26);
+            this.startPlayingSoundButton.Size = new System.Drawing.Size(203, 32);
             this.startPlayingSoundButton.TabIndex = 62;
             this.startPlayingSoundButton.Text = "Start continuous sound";
             this.startPlayingSoundButton.UseVisualStyleBackColor = false;
@@ -686,9 +738,10 @@
             this.startImpulseButton.AutoSize = true;
             this.startImpulseButton.BackColor = System.Drawing.Color.Silver;
             this.startImpulseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.startImpulseButton.Location = new System.Drawing.Point(625, 424);
+            this.startImpulseButton.Location = new System.Drawing.Point(833, 522);
+            this.startImpulseButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.startImpulseButton.Name = "startImpulseButton";
-            this.startImpulseButton.Size = new System.Drawing.Size(126, 26);
+            this.startImpulseButton.Size = new System.Drawing.Size(168, 32);
             this.startImpulseButton.TabIndex = 63;
             this.startImpulseButton.Text = "Start impulse";
             this.startImpulseButton.UseVisualStyleBackColor = false;
@@ -698,31 +751,46 @@
             // 
             this.timerSound.Tick += new System.EventHandler(this.soundTimer_Tick);
             // 
+            // designatedPathModeButton
+            // 
+            this.designatedPathModeButton.Location = new System.Drawing.Point(424, 133);
+            this.designatedPathModeButton.Margin = new System.Windows.Forms.Padding(4);
+            this.designatedPathModeButton.Name = "designatedPathModeButton";
+            this.designatedPathModeButton.Size = new System.Drawing.Size(133, 37);
+            this.designatedPathModeButton.TabIndex = 64;
+            this.designatedPathModeButton.TabStop = false;
+            this.designatedPathModeButton.Text = "Designated path";
+            this.designatedPathModeButton.UseVisualStyleBackColor = true;
+            this.designatedPathModeButton.Click += new System.EventHandler(this.designatedPathModeButton_Click);
+            // 
             // pheromoneProgressBar
             // 
             this.pheromoneProgressBar.Color = System.Drawing.Color.Yellow;
-            this.pheromoneProgressBar.Location = new System.Drawing.Point(635, 116);
+            this.pheromoneProgressBar.Location = new System.Drawing.Point(847, 143);
+            this.pheromoneProgressBar.Margin = new System.Windows.Forms.Padding(4);
             this.pheromoneProgressBar.Maximum = 21;
             this.pheromoneProgressBar.Name = "pheromoneProgressBar";
-            this.pheromoneProgressBar.Size = new System.Drawing.Size(100, 23);
+            this.pheromoneProgressBar.Size = new System.Drawing.Size(133, 28);
             this.pheromoneProgressBar.TabIndex = 48;
             this.pheromoneProgressBar.Value = 21;
             // 
             // batteryProgressBar
             // 
             this.batteryProgressBar.Color = System.Drawing.Color.Yellow;
-            this.batteryProgressBar.Location = new System.Drawing.Point(386, 160);
+            this.batteryProgressBar.Location = new System.Drawing.Point(515, 209);
+            this.batteryProgressBar.Margin = new System.Windows.Forms.Padding(4);
             this.batteryProgressBar.Name = "batteryProgressBar";
-            this.batteryProgressBar.Size = new System.Drawing.Size(150, 40);
+            this.batteryProgressBar.Size = new System.Drawing.Size(200, 49);
             this.batteryProgressBar.TabIndex = 42;
             this.batteryProgressBar.Value = 100;
             // 
             // FormRat
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(785, 477);
+            this.ClientSize = new System.Drawing.Size(1047, 587);
+            this.Controls.Add(this.designatedPathModeButton);
             this.Controls.Add(this.startImpulseButton);
             this.Controls.Add(this.startPlayingSoundButton);
             this.Controls.Add(this.startExtractingScentButton);
@@ -777,6 +845,7 @@
             this.Controls.Add(this.upBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormRat";
@@ -855,6 +924,7 @@
         private System.Windows.Forms.Button startPlayingSoundButton;
         private System.Windows.Forms.Button startImpulseButton;
         private System.Windows.Forms.Timer timerSound;
+        private System.Windows.Forms.Button designatedPathModeButton;
     }
 }
 

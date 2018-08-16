@@ -14,6 +14,7 @@ using System.Net;
 using System.Net.Sockets;
 using RatClientApplication.Detection;
 using System.Diagnostics;
+using RatClientApplication.DesignatedPath;
 //using TCPConnection;
 
 namespace RatClientApplication
@@ -448,6 +449,20 @@ namespace RatClientApplication
             ResolveRobotMode();
         }
 
+        private void designatedPathModeButton_Click(object sender, EventArgs e)
+        {
+            OnDesignatedPathModeSelected();
+        }
+
+        private void OnDesignatedPathModeSelected()
+        {
+            robotData.Mode = RobotData.RobotMode.Manual;
+            angularSpeedHScrollBar.Focus();
+            ResolveRobotMode();
+            var designatedPathForm = new DesignatedPathForm();
+            designatedPathForm.ShowDialog();
+        }
+
         private void OnAutomaticModeSelected()
         {
             DialogResult messageBoxResult = MessageBox.Show(
@@ -727,5 +742,6 @@ namespace RatClientApplication
         {
             e.Handled = true;
         }
+
     }
 }
