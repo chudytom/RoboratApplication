@@ -47,5 +47,13 @@ namespace RatClientApplication.DesignatedPath
         {
             CustomPathElement.Time = timeNumeric.Value;
         }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            DeleteRequested(this, EventArgs.Empty);
+        }
+
+        public event EventHandler DeleteRequested = delegate { };
+
     }
 }

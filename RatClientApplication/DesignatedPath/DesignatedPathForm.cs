@@ -28,7 +28,20 @@ namespace RatClientApplication.DesignatedPath
             var pathElement = new PathElement();
             PathElements.Add(pathElement);
             var control = new PathElementControl(pathElement);
+            control.DeleteRequested += Control_DeleteRequested;
             pathLayoutPanel.Controls.Add(control);
+        }
+
+        private void Control_DeleteRequested(object sender, EventArgs e)
+        {
+            var controlToDelete = sender as PathElementControl;
+            PathElements.Remove(controlToDelete.CustomPathElement);
+            pathLayoutPanel.Controls.Remove(controlToDelete);
+        }
+
+        private void executePathButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Path execution in progress");
         }
     }
 }

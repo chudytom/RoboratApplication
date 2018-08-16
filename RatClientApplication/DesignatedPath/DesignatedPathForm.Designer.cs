@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.executePathButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pathLayoutPanel
@@ -42,13 +43,13 @@
             this.pathLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pathLayoutPanel.Location = new System.Drawing.Point(22, 84);
             this.pathLayoutPanel.Name = "pathLayoutPanel";
-            this.pathLayoutPanel.Size = new System.Drawing.Size(300, 100);
+            this.pathLayoutPanel.Size = new System.Drawing.Size(350, 100);
             this.pathLayoutPanel.TabIndex = 0;
             // 
             // addPathElementButton
             // 
             this.addPathElementButton.AutoSize = true;
-            this.addPathElementButton.Location = new System.Drawing.Point(339, 97);
+            this.addPathElementButton.Location = new System.Drawing.Point(388, 107);
             this.addPathElementButton.Name = "addPathElementButton";
             this.addPathElementButton.Size = new System.Drawing.Size(129, 27);
             this.addPathElementButton.TabIndex = 1;
@@ -83,18 +84,31 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Speed";
             // 
+            // executePathButton
+            // 
+            this.executePathButton.AutoSize = true;
+            this.executePathButton.Location = new System.Drawing.Point(388, 166);
+            this.executePathButton.Name = "executePathButton";
+            this.executePathButton.Size = new System.Drawing.Size(129, 27);
+            this.executePathButton.TabIndex = 5;
+            this.executePathButton.Text = "Execute path";
+            this.executePathButton.UseVisualStyleBackColor = true;
+            this.executePathButton.Click += new System.EventHandler(this.executePathButton_Click);
+            // 
             // DesignatedPathForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(480, 450);
+            this.ClientSize = new System.Drawing.Size(582, 553);
+            this.Controls.Add(this.executePathButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addPathElementButton);
             this.Controls.Add(this.pathLayoutPanel);
             this.Name = "DesignatedPathForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "DesignatedPathForm";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -108,5 +122,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button executePathButton;
     }
 }
