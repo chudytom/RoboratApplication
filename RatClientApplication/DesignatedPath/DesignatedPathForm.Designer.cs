@@ -38,7 +38,6 @@
             // 
             // pathLayoutPanel
             // 
-            this.pathLayoutPanel.AutoScroll = true;
             this.pathLayoutPanel.AutoSize = true;
             this.pathLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pathLayoutPanel.Location = new System.Drawing.Point(22, 84);
