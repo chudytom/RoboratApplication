@@ -86,7 +86,7 @@
     <Compile Include="DesignatedPath\DesignatedPathForm.Designer.cs">
       <DependentUpon>DesignatedPathForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DesignatedPath\DirectionEnum.cs" />
+    <Compile Include="DesignatedPath\DesignatedPathManager.cs" />
     <Compile Include="DesignatedPath\PathElement.cs" />
     <Compile Include="DesignatedPath\PathElementControl.cs">
       <SubType>UserControl</SubType>
@@ -94,7 +94,6 @@
     <Compile Include="DesignatedPath\PathElementControl.Designer.cs">
       <DependentUpon>PathElementControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="DesignatedPath\PathManager.cs" />
     <Compile Include="Detection\CalibrationForm.cs">
       <SubType>Form</SubType>
     </Compile>

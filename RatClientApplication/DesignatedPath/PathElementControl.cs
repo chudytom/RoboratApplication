@@ -23,11 +23,14 @@ namespace RatClientApplication.DesignatedPath
         public PathElementControl(PathElement pathElement) : this()
         {
             CustomPathElement = pathElement;
+            directionComboBox.SelectedIndex = (int)pathElement.PathDirection;
+            speedNumeric.Value = pathElement.Speed;
+            timeNumeric.Value = pathElement.Time;
         }
 
         private void AddItemsToComboBox()
         {
-            foreach (var item in Enum.GetNames(typeof(PathElement.Direction)))
+            foreach (var item in Enum.GetNames(typeof(PathElement.DirectionEnum)))
             {
                 directionComboBox.Items.Add(item);
             }
@@ -35,7 +38,7 @@ namespace RatClientApplication.DesignatedPath
 
         private void directionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CustomPathElement.PathDirection = (PathElement.Direction)directionComboBox.SelectedIndex;
+            CustomPathElement.PathDirection = (PathElement.DirectionEnum)directionComboBox.SelectedIndex;
         }
 
         private void speedNumeric_ValueChanged(object sender, EventArgs e)

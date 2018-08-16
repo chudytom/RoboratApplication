@@ -34,6 +34,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.executePathButton = new System.Windows.Forms.Button();
+            this.savePathButton = new System.Windows.Forms.Button();
+            this.loadPathButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pathLayoutPanel
@@ -68,7 +70,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(255, 61);
+            this.label2.Location = new System.Drawing.Point(265, 61);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 17);
             this.label2.TabIndex = 3;
@@ -77,7 +79,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(161, 61);
+            this.label3.Location = new System.Drawing.Point(181, 61);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 17);
             this.label3.TabIndex = 4;
@@ -94,12 +96,36 @@
             this.executePathButton.UseVisualStyleBackColor = true;
             this.executePathButton.Click += new System.EventHandler(this.executePathButton_Click);
             // 
+            // savePathButton
+            // 
+            this.savePathButton.AutoSize = true;
+            this.savePathButton.Location = new System.Drawing.Point(388, 226);
+            this.savePathButton.Name = "savePathButton";
+            this.savePathButton.Size = new System.Drawing.Size(129, 27);
+            this.savePathButton.TabIndex = 6;
+            this.savePathButton.Text = "Save path";
+            this.savePathButton.UseVisualStyleBackColor = true;
+            this.savePathButton.Click += new System.EventHandler(this.savePathButton_Click);
+            // 
+            // loadPathButton
+            // 
+            this.loadPathButton.AutoSize = true;
+            this.loadPathButton.Location = new System.Drawing.Point(388, 291);
+            this.loadPathButton.Name = "loadPathButton";
+            this.loadPathButton.Size = new System.Drawing.Size(129, 27);
+            this.loadPathButton.TabIndex = 7;
+            this.loadPathButton.Text = " Load path";
+            this.loadPathButton.UseVisualStyleBackColor = true;
+            this.loadPathButton.Click += new System.EventHandler(this.loadPathButton_Click);
+            // 
             // DesignatedPathForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(582, 553);
+            this.Controls.Add(this.loadPathButton);
+            this.Controls.Add(this.savePathButton);
             this.Controls.Add(this.executePathButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label3);
@@ -122,5 +148,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button executePathButton;
+        private System.Windows.Forms.Button savePathButton;
+        private System.Windows.Forms.Button loadPathButton;
     }
 }

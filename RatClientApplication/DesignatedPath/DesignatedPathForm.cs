@@ -12,36 +12,49 @@ namespace RatClientApplication.DesignatedPath
 {
     public partial class DesignatedPathForm : Form
     {
-        public List<PathElement> PathElements { get; set; } = new List<PathElement>();
+        private DesignatedPathManager pathManager;
         public DesignatedPathForm()
         {
             InitializeComponent();
+            pathManager = new DesignatedPathManager();
+            pathManager.DeleteControlRequested += PathManager_DeleteRequested;
+            pathManager.AddControlRequested += PathManager_AddControlRequested;
         }
-
-        private void addPathElementButton_Click(object sender, EventArgs e)
-        {
-            AddPathElement();
-        }
-
-        private void AddPathElement()
-        {
-            var pathElement = new PathElement();
-            PathElements.Add(pathElement);
-            var control = new PathElementControl(pathElement);
-            control.DeleteRequested += Control_DeleteRequested;
-            pathLayoutPanel.Controls.Add(control);
-        }
-
-        private void Control_DeleteRequested(object sender, EventArgs e)
+        private void PathManager_DeleteRequested(object sender, EventArgs e)
         {
             var controlToDelete = sender as PathElementControl;
-            PathElements.Remove(controlToDelete.CustomPathElement);
             pathLayoutPanel.Controls.Remove(controlToDelete);
         }
 
+        private void PathManager_AddControlRequested(object sender, EventArgs e)
+        {
+            var control = sender as PathElementControl;
+            pathLayoutPanel.Controls.Add(control);
+        }
+
+
+        private void addPathElementButton_Click(object sender, EventArgs e)
+        {
+            pathManager.AddEmptyPathElement();
+        }
+        
+
         private void executePathButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Path execution in progress");
+            ExecutePathRequested(pathManager.PathElements, EventArgs.Empty);
+            Close();
         }
+
+        private void savePathButton_Click(object sender, EventArgs e)
+        {
+            pathManager.SavePath();
+        }
+
+        private void loadPathButton_Click(object sender, EventArgs e)
+        {
+            pathManager.LoadPath();
+        }
+
+        public event EventHandler ExecutePathRequested = delegate { };
     }
 }

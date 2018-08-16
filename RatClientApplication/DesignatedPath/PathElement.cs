@@ -8,11 +8,23 @@ namespace RatClientApplication.DesignatedPath
 {
     public class PathElement
     {
-        public Direction PathDirection { get; set; }
+        public DirectionEnum PathDirection { get; set; }
         public decimal Speed { get; set; }
         public decimal Time { get; set; }
 
+        public PathElement()
+        {
 
-        public enum Direction { Left, Forward, Right, Backward }
+        }
+
+        public PathElement(DirectionEnum direction, decimal speed, decimal time)
+        {
+            this.PathDirection = direction;
+            this.Speed = speed;
+            this.Time = time;
+        }
+
+
+        public enum DirectionEnum { Left, Forward, Right, Backward }
     }
 }

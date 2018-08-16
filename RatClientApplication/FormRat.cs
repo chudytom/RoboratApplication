@@ -460,7 +460,13 @@ namespace RatClientApplication
             angularSpeedHScrollBar.Focus();
             ResolveRobotMode();
             var designatedPathForm = new DesignatedPathForm();
+            designatedPathForm.ExecutePathRequested += DesignatedPathForm_ExecutePathRequested;
             designatedPathForm.ShowDialog();
+        }
+
+        private void DesignatedPathForm_ExecutePathRequested(object sender, EventArgs e)
+        {
+            
         }
 
         private void OnAutomaticModeSelected()
