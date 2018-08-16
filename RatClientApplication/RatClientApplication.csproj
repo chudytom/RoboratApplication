@@ -72,8 +72,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TCPConnection">
-      <HintPath>..\..\..\..\..\Programowanie\Programy\Visual Studio\TCPConnection\TCPConnection\TCPConnection\bin\Debug\TCPConnection.dll</HintPath>
+    <Reference Include="TCPConnection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Programowanie\Programy\Visual Studio\TCPConnection\TCPConnection\TCPConnection\bin\Release\TCPConnection.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
       <HintPath>..\packages\ZedGraph.5.1.5\lib\ZedGraph.dll</HintPath>
