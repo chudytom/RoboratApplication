@@ -646,7 +646,7 @@
             // 
             this.pheromoneReleaseScrollbar.LargeChange = 5;
             this.pheromoneReleaseScrollbar.Location = new System.Drawing.Point(609, 163);
-            this.pheromoneReleaseScrollbar.Maximum = 39;
+            this.pheromoneReleaseScrollbar.Maximum = 25;
             this.pheromoneReleaseScrollbar.Name = "pheromoneReleaseScrollbar";
             this.pheromoneReleaseScrollbar.Size = new System.Drawing.Size(150, 17);
             this.pheromoneReleaseScrollbar.TabIndex = 58;
@@ -702,11 +702,11 @@
             // 
             this.pheromoneProgressBar.Color = System.Drawing.Color.Yellow;
             this.pheromoneProgressBar.Location = new System.Drawing.Point(635, 116);
-            this.pheromoneProgressBar.Maximum = 35;
+            this.pheromoneProgressBar.Maximum = 21;
             this.pheromoneProgressBar.Name = "pheromoneProgressBar";
             this.pheromoneProgressBar.Size = new System.Drawing.Size(100, 23);
             this.pheromoneProgressBar.TabIndex = 48;
-            this.pheromoneProgressBar.Value = 20;
+            this.pheromoneProgressBar.Value = 21;
             // 
             // batteryProgressBar
             // 

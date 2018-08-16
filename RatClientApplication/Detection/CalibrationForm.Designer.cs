@@ -85,7 +85,7 @@
             // hScrollBarHMin
             // 
             this.hScrollBarHMin.Location = new System.Drawing.Point(403, 284);
-            this.hScrollBarHMin.Maximum = 264;
+            this.hScrollBarHMin.Maximum = 188;
             this.hScrollBarHMin.Name = "hScrollBarHMin";
             this.hScrollBarHMin.Size = new System.Drawing.Size(255, 17);
             this.hScrollBarHMin.TabIndex = 3;
@@ -175,7 +175,7 @@
             // hScrollBarVMin
             // 
             this.hScrollBarVMin.Location = new System.Drawing.Point(401, 355);
-            this.hScrollBarVMin.Maximum = 188;
+            this.hScrollBarVMin.Maximum = 264;
             this.hScrollBarVMin.Name = "hScrollBarVMin";
             this.hScrollBarVMin.Size = new System.Drawing.Size(255, 17);
             this.hScrollBarVMin.TabIndex = 18;

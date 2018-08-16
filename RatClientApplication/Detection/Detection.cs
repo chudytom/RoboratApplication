@@ -107,7 +107,7 @@ namespace RatClientApplication.Detection
             }
             if (drawPositionInfo)
             {
-                DrawPositionInfo();
+                //DrawPositionInfo();
             }
 
             return ratPosition.Value;

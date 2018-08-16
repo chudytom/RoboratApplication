@@ -8,23 +8,25 @@ using System.Drawing;
 
 namespace RatClientApplication
 {
-    public class OutgoingMessage
+    #region ComputerToRobot
+
+    public class ComputerToRoboRatMessage
     {
         public int mode;                   //# 0 - manual # 1 - automatic # 2 - random
         public Speed speed;
         public Camera camera;
-        public Pheromones pheromones;
+        public PheromonesVolumeToRelease pheromones;
         public Ultrasound ultrasound;
 
-        public OutgoingMessage()
+        public ComputerToRoboRatMessage()
         {
             speed = new Speed();
             camera = new Camera();
-            pheromones = new Pheromones();
+            pheromones = new PheromonesVolumeToRelease();
             ultrasound = new Ultrasound();
         }
 
-        public OutgoingMessage(int mode, Speed speed, Camera camera, Pheromones pheromones, Ultrasound ultrasound)
+        public ComputerToRoboRatMessage(int mode, Speed speed, Camera camera, PheromonesVolumeToRelease pheromones, Ultrasound ultrasound)
         {
             this.mode = mode;
             this.speed = speed;
@@ -120,12 +122,12 @@ namespace RatClientApplication
         }
     }
 
-    public class Pheromones
+    public class PheromonesVolumeToRelease
     {
         public float stress_pheromone_volume_out;
 
-        public Pheromones() { }
-        public Pheromones(float stress_pheromone_volume_out)
+        public PheromonesVolumeToRelease() { }
+        public PheromonesVolumeToRelease(float stress_pheromone_volume_out)
         {
             this.stress_pheromone_volume_out = stress_pheromone_volume_out;
         }
@@ -140,20 +142,23 @@ namespace RatClientApplication
             this.frequency = frequency;
         }
     }
+    #endregion
 
-    public class IncomingMessage
+    #region RobotToComputer
+
+    public class RoboRatToComputerMessage
     {
         public string diagnostics;
         public int mode;
-        public Battery_state battery_state;
-        public IncomingPheromones incoming_pheromones;
+        public BatteryState battery_state;
+        public PheromonesVolumeLeft incoming_pheromones;
 
-        public IncomingMessage()
+        public RoboRatToComputerMessage()
         {
-            battery_state = new Battery_state(0);
-            incoming_pheromones = new IncomingPheromones(0);
+            battery_state = new BatteryState(0);
+            incoming_pheromones = new PheromonesVolumeLeft(0);
         }
-        public IncomingMessage(string incomingDiagnostics, int incomingMode, Battery_state incomingBattery_state, IncomingPheromones incoming_pheromones)
+        public RoboRatToComputerMessage(string incomingDiagnostics, int incomingMode, BatteryState incomingBattery_state, PheromonesVolumeLeft incoming_pheromones)
         {
             this.diagnostics = incomingDiagnostics;
             this.mode = incomingMode;
@@ -161,22 +166,23 @@ namespace RatClientApplication
             this.incoming_pheromones = incoming_pheromones;
         }
     }
-    public class Battery_state
+    public class BatteryState
     {
         public int percentage;
 
-        public Battery_state(int percentage)
+        public BatteryState(int percentage)
         {
             this.percentage = percentage;
         }
     }
-    public class IncomingPheromones
+    public class PheromonesVolumeLeft
     {
         public float stress_pheromone_volume_left;
 
-        public IncomingPheromones(float stress_pheromone_volume_left)
+        public PheromonesVolumeLeft(float stress_pheromone_volume_left)
         {
             this.stress_pheromone_volume_left = stress_pheromone_volume_left;
         }
     }
+    #endregion
 }

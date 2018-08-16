@@ -35,8 +35,9 @@ namespace RatClientApplication
         private byte[] longBuffer;
         private bool isReadyToReceiveImage = false;
 
-        public UDPServer(ImageDisplay passedObject)
+        public UDPServer(ImageDisplay passedObject, int portNumber)
         {
+            PortNumber = portNumber;
             IsConnected = false;
             displayObject = passedObject;
             ContinueSavingAndDisplayingImages = true;
