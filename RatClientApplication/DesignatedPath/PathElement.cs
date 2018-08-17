@@ -25,6 +25,6 @@ namespace RatClientApplication.DesignatedPath
         }
 
 
-        public enum DirectionEnum { Left, Forward, Right, Backward }
+        public enum DirectionEnum { Wait, Left, Forward, Right, Backward }
     }
 }

@@ -54,7 +54,7 @@ namespace RatClientApplication
             batteryController = new ProgressBarController(batteryProgressBar);
             this.Text = "Rat application";
             this.KeyPreview = true;
-            ipTextBox.Text = "raspberrypi.local";
+            ipTextBox.Text = "192.168.1.3";
             portTextBox.Text = "50000";
             //portTextBox.Text = "10";
             //ipTextBox.Text = "192.168.1.3";
@@ -312,6 +312,7 @@ namespace RatClientApplication
 
         private void connectButton_Click(object sender, EventArgs e)
         {
+            IpConfiguration();
             angularSpeedHScrollBar.Focus();
             //tcpClient.Start();
             client.StartConnection();
@@ -430,6 +431,8 @@ namespace RatClientApplication
 
         private void manualModeButton_Click(object sender, EventArgs e)
         {
+            if (!VerifyConnection())
+                return;
             robotData.Mode = RobotData.RobotMode.Manual;
             angularSpeedHScrollBar.Focus();
             ResolveRobotMode();
@@ -437,6 +440,8 @@ namespace RatClientApplication
 
         private void automaticModeButton_Click(object sender, EventArgs e)
         {
+            if (!VerifyConnection())
+                return;
             angularSpeedHScrollBar.Focus();
             OnAutomaticModeSelected();
             ResolveRobotMode();
@@ -444,6 +449,8 @@ namespace RatClientApplication
 
         private void randomMovingButton_Click(object sender, EventArgs e)
         {
+            if (!VerifyConnection())
+                return;
             robotData.Mode = RobotData.RobotMode.Random;
             angularSpeedHScrollBar.Focus();
             ResolveRobotMode();
@@ -456,12 +463,25 @@ namespace RatClientApplication
 
         private void OnDesignatedPathModeSelected()
         {
+            if (!VerifyConnection())
+                return;
             robotData.Mode = RobotData.RobotMode.Manual;
             angularSpeedHScrollBar.Focus();
             ResolveRobotMode();
             var designatedPathForm = new DesignatedPathForm();
             designatedPathForm.ExecutePathRequested += DesignatedPathForm_ExecutePathRequested;
             designatedPathForm.ShowDialog();
+        }
+
+        private bool VerifyConnection()
+        {
+            if (client.IsConnected)
+                return true;
+            else
+            {
+                MessageBox.Show("First, you need to be connected to the robot");
+                return false;
+            }
         }
 
         private async void DesignatedPathForm_ExecutePathRequested(object sender, EventArgs e)
@@ -488,12 +508,16 @@ namespace RatClientApplication
             robotData.AngularSpeed1 = (int)pathElement.Speed;
             switch (pathElement.PathDirection)
             {
+                case PathElement.DirectionEnum.Wait:
+                    robotData.LinearDirection = 0;
+                    robotData.RotationDirection = 0;
+                    break;
                 case PathElement.DirectionEnum.Forward:
                     robotData.LinearDirection = 1;
                     upBox.BackColor = Color.Green;
                     break;
                 case PathElement.DirectionEnum.Backward:
-                    robotData.RotationDirection = -1;
+                    robotData.LinearDirection = -1;
                     downBox.BackColor = Color.Green;
                     break;
                 case PathElement.DirectionEnum.Left:
