@@ -72,6 +72,7 @@ namespace RatClientApplication
             ratTracker = GetRatTrackerWithBasicHsvLimits();
             linearSpeedHScrollBar.Value = robotData.LinearSpeed1 = 123;
             angularSpeedHScrollBar.Value = robotData.AngularSpeed1 = 30;
+            HideAdvancedOptionsView();
             UpdateForm();
         }
 
@@ -89,6 +90,7 @@ namespace RatClientApplication
                 //udpServer.OutputText = tcpClient.IncomingText;
                 //incomingMessage = JsonConvert.DeserializeObject<IncomingMessage>(tcpClient.IncomingText);
                 incomingMessage = JsonConvert.DeserializeObject<RoboRatToComputerMessage>(client.IncomingText);
+                DisplayIncomingMessage(client.IncomingText);
             }
             catch (Exception ex)
             {
@@ -298,7 +300,7 @@ namespace RatClientApplication
             {
                 tcpConnectionLabel.BackColor = Color.Green;
                 tcpConnectionLabel.Text = "ON";
-                outputTCPTextBox.Text = "Connected";
+                //outputTCPTextBox.Text = "Connected";
             }
             else
             {
@@ -343,12 +345,29 @@ namespace RatClientApplication
                 //jsonSpeed = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, " +
                 //    "suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. " +
                 //"Phasellus pharetra nulla ac diam. Quisque semper justo at risus. ";
+                DisplayOutgoingMessage(jsonMessage);
                 client.SendString(jsonMessage);
             }
             else
             {
                 return;
             }
+        }
+
+        private void DisplayIncomingMessage(string message)
+        {
+            DisplayMessage(message, incomingJsonTextBox);
+        }
+
+        private void DisplayOutgoingMessage(string message)
+        {
+            DisplayMessage(message, outgoingJsonTextBox);
+        }
+
+
+        private void DisplayMessage(string message, TextBox textBox)
+        {
+            textBox.Text = message;
         }
 
         private void PrepareOutgoingMessage()
@@ -672,18 +691,29 @@ namespace RatClientApplication
         private void advancedIPOptionsButton_Click(object sender, EventArgs e)
         {
             angularSpeedHScrollBar.Focus();
-            advancedIPGroupBox.Visible = true;
-
+            ShowAdvancedOptionsView();
             //var outgoingMessage = new RoboRatToComputerMessage("Some diagnostics", 0, new BatteryState(80), new PheromonesVolumeLeft(2.0f));
             //string str = JsonConvert.SerializeObject(outgoingMessage);
             //client.IncomingText = str;
             //client.OnMessageReceived(EventArgs.Empty);
         }
+        private void ShowAdvancedOptionsView()
+        {
+            advancedIPGroupBox.Visible = true;
+            jsonGroupBox.Visible = false;
+        }
+
+        private void HideAdvancedOptionsView()
+        {
+            advancedIPGroupBox.Visible = false;
+            jsonGroupBox.Visible = true;
+        }
+
 
         private void hideAdvancedIPOptionsButton_Click(object sender, EventArgs e)
         {
             angularSpeedHScrollBar.Focus();
-            advancedIPGroupBox.Visible = false;
+            HideAdvancedOptionsView();
         }
 
         private void pheromoneReleaseScrollbar_ValueChanged(object sender, EventArgs e)

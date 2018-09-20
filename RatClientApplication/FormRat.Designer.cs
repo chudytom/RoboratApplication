@@ -92,8 +92,14 @@
             this.designatedPathModeButton = new System.Windows.Forms.Button();
             this.pheromoneProgressBar = new RatClientApplication.ColorfulProgressBar();
             this.batteryProgressBar = new RatClientApplication.ColorfulProgressBar();
+            this.outgoingJsonTextBox = new System.Windows.Forms.TextBox();
+            this.incomingJsonTextBox = new System.Windows.Forms.TextBox();
+            this.incomingJsonLabel = new System.Windows.Forms.Label();
+            this.outgoingJsonLabel = new System.Windows.Forms.Label();
+            this.jsonGroupBox = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.advancedIPGroupBox.SuspendLayout();
+            this.jsonGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // upBox
@@ -221,8 +227,8 @@
             this.connectButton.BackColor = System.Drawing.Color.Silver;
             this.connectButton.Enabled = false;
             this.connectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.connectButton.Location = new System.Drawing.Point(39, 79);
-            this.connectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.connectButton.Location = new System.Drawing.Point(39, 81);
+            this.connectButton.Margin = new System.Windows.Forms.Padding(4);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(113, 37);
             this.connectButton.TabIndex = 13;
@@ -248,9 +254,10 @@
             // outputTCPTextBox
             // 
             this.outputTCPTextBox.Location = new System.Drawing.Point(200, 43);
-            this.outputTCPTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.outputTCPTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.outputTCPTextBox.Multiline = true;
             this.outputTCPTextBox.Name = "outputTCPTextBox";
+            this.outputTCPTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.outputTCPTextBox.Size = new System.Drawing.Size(199, 91);
             this.outputTCPTextBox.TabIndex = 16;
             // 
@@ -259,7 +266,7 @@
             this.clearButton.AutoSize = true;
             this.clearButton.BackColor = System.Drawing.Color.Silver;
             this.clearButton.Location = new System.Drawing.Point(245, 140);
-            this.clearButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.clearButton.Margin = new System.Windows.Forms.Padding(4);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(105, 28);
             this.clearButton.TabIndex = 18;
@@ -290,7 +297,7 @@
             // ipTextBox
             // 
             this.ipTextBox.Location = new System.Drawing.Point(57, 55);
-            this.ipTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.ipTextBox.Name = "ipTextBox";
             this.ipTextBox.Size = new System.Drawing.Size(132, 22);
             this.ipTextBox.TabIndex = 21;
@@ -298,7 +305,7 @@
             // portTextBox
             // 
             this.portTextBox.Location = new System.Drawing.Point(57, 23);
-            this.portTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.portTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.portTextBox.Name = "portTextBox";
             this.portTextBox.Size = new System.Drawing.Size(132, 22);
             this.portTextBox.TabIndex = 22;
@@ -307,7 +314,7 @@
             // 
             this.setIPButton.BackColor = System.Drawing.Color.Silver;
             this.setIPButton.Location = new System.Drawing.Point(123, 85);
-            this.setIPButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.setIPButton.Margin = new System.Windows.Forms.Padding(4);
             this.setIPButton.Name = "setIPButton";
             this.setIPButton.Size = new System.Drawing.Size(68, 28);
             this.setIPButton.TabIndex = 23;
@@ -324,7 +331,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label8.Location = new System.Drawing.Point(3, 10);
+            this.label8.Location = new System.Drawing.Point(8, 15);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(173, 20);
@@ -335,7 +342,7 @@
             // 
             this.tcpConnectionLabel.BackColor = System.Drawing.SystemColors.GrayText;
             this.tcpConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tcpConnectionLabel.Location = new System.Drawing.Point(68, 36);
+            this.tcpConnectionLabel.Location = new System.Drawing.Point(68, 38);
             this.tcpConnectionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.tcpConnectionLabel.MinimumSize = new System.Drawing.Size(40, 12);
             this.tcpConnectionLabel.Name = "tcpConnectionLabel";
@@ -348,8 +355,8 @@
             // 
             this.disconnectButton.BackColor = System.Drawing.Color.Silver;
             this.disconnectButton.Enabled = false;
-            this.disconnectButton.Location = new System.Drawing.Point(45, 156);
-            this.disconnectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.disconnectButton.Location = new System.Drawing.Point(45, 124);
+            this.disconnectButton.Margin = new System.Windows.Forms.Padding(4);
             this.disconnectButton.Name = "disconnectButton";
             this.disconnectButton.Size = new System.Drawing.Size(100, 28);
             this.disconnectButton.TabIndex = 28;
@@ -396,7 +403,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label7.Location = new System.Drawing.Point(41, 202);
+            this.label7.Location = new System.Drawing.Point(41, 206);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(168, 18);
@@ -406,7 +413,7 @@
             // outputUDPTextBox
             // 
             this.outputUDPTextBox.Location = new System.Drawing.Point(33, 228);
-            this.outputUDPTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.outputUDPTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.outputUDPTextBox.Multiline = true;
             this.outputUDPTextBox.Name = "outputUDPTextBox";
             this.outputUDPTextBox.Size = new System.Drawing.Size(199, 91);
@@ -416,7 +423,7 @@
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(9, 363);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(399, 215);
             this.pictureBox1.TabIndex = 34;
@@ -436,7 +443,7 @@
             // automaticModeButton
             // 
             this.automaticModeButton.Location = new System.Drawing.Point(424, 50);
-            this.automaticModeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.automaticModeButton.Margin = new System.Windows.Forms.Padding(4);
             this.automaticModeButton.Name = "automaticModeButton";
             this.automaticModeButton.Size = new System.Drawing.Size(133, 37);
             this.automaticModeButton.TabIndex = 36;
@@ -448,7 +455,7 @@
             // manualModeButton
             // 
             this.manualModeButton.Location = new System.Drawing.Point(424, 10);
-            this.manualModeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.manualModeButton.Margin = new System.Windows.Forms.Padding(4);
             this.manualModeButton.Name = "manualModeButton";
             this.manualModeButton.Size = new System.Drawing.Size(133, 37);
             this.manualModeButton.TabIndex = 37;
@@ -459,7 +466,7 @@
             // randomMovingButton
             // 
             this.randomMovingButton.Location = new System.Drawing.Point(424, 92);
-            this.randomMovingButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.randomMovingButton.Margin = new System.Windows.Forms.Padding(4);
             this.randomMovingButton.Name = "randomMovingButton";
             this.randomMovingButton.Size = new System.Drawing.Size(133, 37);
             this.randomMovingButton.TabIndex = 38;
@@ -483,7 +490,7 @@
             // 
             this.saveVideoButton.BackColor = System.Drawing.Color.Silver;
             this.saveVideoButton.Location = new System.Drawing.Point(305, 325);
-            this.saveVideoButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.saveVideoButton.Margin = new System.Windows.Forms.Padding(4);
             this.saveVideoButton.Name = "saveVideoButton";
             this.saveVideoButton.Size = new System.Drawing.Size(100, 28);
             this.saveVideoButton.TabIndex = 40;
@@ -495,7 +502,7 @@
             // 
             this.continueStreamingButton.BackColor = System.Drawing.Color.Silver;
             this.continueStreamingButton.Location = new System.Drawing.Point(11, 325);
-            this.continueStreamingButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.continueStreamingButton.Margin = new System.Windows.Forms.Padding(4);
             this.continueStreamingButton.Name = "continueStreamingButton";
             this.continueStreamingButton.Size = new System.Drawing.Size(139, 28);
             this.continueStreamingButton.TabIndex = 41;
@@ -508,7 +515,7 @@
             this.panicStopButton.BackColor = System.Drawing.Color.Red;
             this.panicStopButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.panicStopButton.Location = new System.Drawing.Point(275, 197);
-            this.panicStopButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panicStopButton.Margin = new System.Windows.Forms.Padding(4);
             this.panicStopButton.Name = "panicStopButton";
             this.panicStopButton.Size = new System.Drawing.Size(192, 114);
             this.panicStopButton.TabIndex = 43;
@@ -525,9 +532,9 @@
             this.advancedIPGroupBox.Controls.Add(this.ipTextBox);
             this.advancedIPGroupBox.Controls.Add(this.setIPButton);
             this.advancedIPGroupBox.Location = new System.Drawing.Point(583, 22);
-            this.advancedIPGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.advancedIPGroupBox.Margin = new System.Windows.Forms.Padding(4);
             this.advancedIPGroupBox.Name = "advancedIPGroupBox";
-            this.advancedIPGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.advancedIPGroupBox.Padding = new System.Windows.Forms.Padding(4);
             this.advancedIPGroupBox.Size = new System.Drawing.Size(211, 123);
             this.advancedIPGroupBox.TabIndex = 44;
             this.advancedIPGroupBox.TabStop = false;
@@ -538,7 +545,7 @@
             // 
             this.hideAdvancedIPOptionsButton.BackColor = System.Drawing.Color.Silver;
             this.hideAdvancedIPOptionsButton.Location = new System.Drawing.Point(8, 85);
-            this.hideAdvancedIPOptionsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hideAdvancedIPOptionsButton.Margin = new System.Windows.Forms.Padding(4);
             this.hideAdvancedIPOptionsButton.Name = "hideAdvancedIPOptionsButton";
             this.hideAdvancedIPOptionsButton.Size = new System.Drawing.Size(107, 28);
             this.hideAdvancedIPOptionsButton.TabIndex = 24;
@@ -550,10 +557,10 @@
             // 
             this.advancedIPOptionsButton.AutoSize = true;
             this.advancedIPOptionsButton.BackColor = System.Drawing.Color.Silver;
-            this.advancedIPOptionsButton.Location = new System.Drawing.Point(27, 122);
-            this.advancedIPOptionsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.advancedIPOptionsButton.Location = new System.Drawing.Point(27, 158);
+            this.advancedIPOptionsButton.Margin = new System.Windows.Forms.Padding(4);
             this.advancedIPOptionsButton.Name = "advancedIPOptionsButton";
-            this.advancedIPOptionsButton.Size = new System.Drawing.Size(137, 28);
+            this.advancedIPOptionsButton.Size = new System.Drawing.Size(139, 28);
             this.advancedIPOptionsButton.TabIndex = 45;
             this.advancedIPOptionsButton.Text = "Advanced options";
             this.advancedIPOptionsButton.UseVisualStyleBackColor = false;
@@ -563,7 +570,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label4.Location = new System.Drawing.Point(871, 92);
+            this.label4.Location = new System.Drawing.Point(871, 136);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 25);
@@ -585,7 +592,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label13.Location = new System.Drawing.Point(848, 119);
+            this.label13.Location = new System.Drawing.Point(848, 163);
             this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(99, 20);
@@ -596,7 +603,7 @@
             // 
             this.pheromoneLeftLabel.AutoSize = true;
             this.pheromoneLeftLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.pheromoneLeftLabel.Location = new System.Drawing.Point(952, 119);
+            this.pheromoneLeftLabel.Location = new System.Drawing.Point(952, 163);
             this.pheromoneLeftLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.pheromoneLeftLabel.Name = "pheromoneLeftLabel";
             this.pheromoneLeftLabel.Size = new System.Drawing.Size(19, 20);
@@ -674,7 +681,7 @@
             // 
             this.pheromoneReleaseLabel.AutoSize = true;
             this.pheromoneReleaseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.pheromoneReleaseLabel.Location = new System.Drawing.Point(968, 176);
+            this.pheromoneReleaseLabel.Location = new System.Drawing.Point(968, 220);
             this.pheromoneReleaseLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.pheromoneReleaseLabel.Name = "pheromoneReleaseLabel";
             this.pheromoneReleaseLabel.Size = new System.Drawing.Size(39, 20);
@@ -685,7 +692,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label20.Location = new System.Drawing.Point(812, 176);
+            this.label20.Location = new System.Drawing.Point(812, 220);
             this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(150, 20);
@@ -695,7 +702,7 @@
             // pheromoneReleaseScrollbar
             // 
             this.pheromoneReleaseScrollbar.LargeChange = 5;
-            this.pheromoneReleaseScrollbar.Location = new System.Drawing.Point(812, 201);
+            this.pheromoneReleaseScrollbar.Location = new System.Drawing.Point(812, 245);
             this.pheromoneReleaseScrollbar.Maximum = 25;
             this.pheromoneReleaseScrollbar.Name = "pheromoneReleaseScrollbar";
             this.pheromoneReleaseScrollbar.Size = new System.Drawing.Size(200, 17);
@@ -710,8 +717,8 @@
             this.startExtractingScentButton.AutoSize = true;
             this.startExtractingScentButton.BackColor = System.Drawing.Color.Silver;
             this.startExtractingScentButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.startExtractingScentButton.Location = new System.Drawing.Point(847, 231);
-            this.startExtractingScentButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startExtractingScentButton.Location = new System.Drawing.Point(847, 275);
+            this.startExtractingScentButton.Margin = new System.Windows.Forms.Padding(4);
             this.startExtractingScentButton.Name = "startExtractingScentButton";
             this.startExtractingScentButton.Size = new System.Drawing.Size(140, 32);
             this.startExtractingScentButton.TabIndex = 61;
@@ -725,7 +732,7 @@
             this.startPlayingSoundButton.BackColor = System.Drawing.Color.Silver;
             this.startPlayingSoundButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.startPlayingSoundButton.Location = new System.Drawing.Point(817, 409);
-            this.startPlayingSoundButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startPlayingSoundButton.Margin = new System.Windows.Forms.Padding(4);
             this.startPlayingSoundButton.Name = "startPlayingSoundButton";
             this.startPlayingSoundButton.Size = new System.Drawing.Size(203, 32);
             this.startPlayingSoundButton.TabIndex = 62;
@@ -739,7 +746,7 @@
             this.startImpulseButton.BackColor = System.Drawing.Color.Silver;
             this.startImpulseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.startImpulseButton.Location = new System.Drawing.Point(833, 522);
-            this.startImpulseButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startImpulseButton.Margin = new System.Windows.Forms.Padding(4);
             this.startImpulseButton.Name = "startImpulseButton";
             this.startImpulseButton.Size = new System.Drawing.Size(168, 32);
             this.startImpulseButton.TabIndex = 63;
@@ -766,7 +773,7 @@
             // pheromoneProgressBar
             // 
             this.pheromoneProgressBar.Color = System.Drawing.Color.Yellow;
-            this.pheromoneProgressBar.Location = new System.Drawing.Point(847, 143);
+            this.pheromoneProgressBar.Location = new System.Drawing.Point(847, 187);
             this.pheromoneProgressBar.Margin = new System.Windows.Forms.Padding(4);
             this.pheromoneProgressBar.Maximum = 21;
             this.pheromoneProgressBar.Name = "pheromoneProgressBar";
@@ -784,12 +791,71 @@
             this.batteryProgressBar.TabIndex = 42;
             this.batteryProgressBar.Value = 100;
             // 
+            // outgoingJsonTextBox
+            // 
+            this.outgoingJsonTextBox.Location = new System.Drawing.Point(224, 53);
+            this.outgoingJsonTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.outgoingJsonTextBox.Multiline = true;
+            this.outgoingJsonTextBox.Name = "outgoingJsonTextBox";
+            this.outgoingJsonTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.outgoingJsonTextBox.Size = new System.Drawing.Size(199, 91);
+            this.outgoingJsonTextBox.TabIndex = 66;
+            // 
+            // incomingJsonTextBox
+            // 
+            this.incomingJsonTextBox.Location = new System.Drawing.Point(6, 53);
+            this.incomingJsonTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.incomingJsonTextBox.Multiline = true;
+            this.incomingJsonTextBox.Name = "incomingJsonTextBox";
+            this.incomingJsonTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.incomingJsonTextBox.Size = new System.Drawing.Size(199, 91);
+            this.incomingJsonTextBox.TabIndex = 67;
+            // 
+            // incomingJsonLabel
+            // 
+            this.incomingJsonLabel.AutoSize = true;
+            this.incomingJsonLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.incomingJsonLabel.Location = new System.Drawing.Point(34, 27);
+            this.incomingJsonLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.incomingJsonLabel.Name = "incomingJsonLabel";
+            this.incomingJsonLabel.Size = new System.Drawing.Size(113, 18);
+            this.incomingJsonLabel.TabIndex = 67;
+            this.incomingJsonLabel.Text = "Incoming JSON";
+            // 
+            // outgoingJsonLabel
+            // 
+            this.outgoingJsonLabel.AutoSize = true;
+            this.outgoingJsonLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.outgoingJsonLabel.Location = new System.Drawing.Point(255, 26);
+            this.outgoingJsonLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.outgoingJsonLabel.Name = "outgoingJsonLabel";
+            this.outgoingJsonLabel.Size = new System.Drawing.Size(113, 18);
+            this.outgoingJsonLabel.TabIndex = 68;
+            this.outgoingJsonLabel.Text = "Outgoing JSON";
+            // 
+            // jsonGroupBox
+            // 
+            this.jsonGroupBox.Controls.Add(this.incomingJsonTextBox);
+            this.jsonGroupBox.Controls.Add(this.incomingJsonLabel);
+            this.jsonGroupBox.Controls.Add(this.outgoingJsonLabel);
+            this.jsonGroupBox.Controls.Add(this.outgoingJsonTextBox);
+            this.jsonGroupBox.Location = new System.Drawing.Point(599, 5);
+            this.jsonGroupBox.Margin = new System.Windows.Forms.Padding(4);
+            this.jsonGroupBox.Name = "jsonGroupBox";
+            this.jsonGroupBox.Padding = new System.Windows.Forms.Padding(4);
+            this.jsonGroupBox.Size = new System.Drawing.Size(431, 155);
+            this.jsonGroupBox.TabIndex = 45;
+            this.jsonGroupBox.TabStop = false;
+            this.jsonGroupBox.Text = "JSON messages";
+            this.jsonGroupBox.Visible = false;
+            // 
             // FormRat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1047, 587);
+            this.Controls.Add(this.jsonGroupBox);
             this.Controls.Add(this.designatedPathModeButton);
             this.Controls.Add(this.startImpulseButton);
             this.Controls.Add(this.startPlayingSoundButton);
@@ -845,7 +911,7 @@
             this.Controls.Add(this.upBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormRat";
@@ -856,6 +922,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.advancedIPGroupBox.ResumeLayout(false);
             this.advancedIPGroupBox.PerformLayout();
+            this.jsonGroupBox.ResumeLayout(false);
+            this.jsonGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -925,6 +993,11 @@
         private System.Windows.Forms.Button startImpulseButton;
         private System.Windows.Forms.Timer timerSound;
         private System.Windows.Forms.Button designatedPathModeButton;
+        private System.Windows.Forms.TextBox incomingJsonTextBox;
+        private System.Windows.Forms.TextBox outgoingJsonTextBox;
+        private System.Windows.Forms.Label incomingJsonLabel;
+        private System.Windows.Forms.Label outgoingJsonLabel;
+        private System.Windows.Forms.GroupBox jsonGroupBox;
     }
 }
 
