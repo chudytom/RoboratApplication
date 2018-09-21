@@ -90,13 +90,13 @@
             this.startImpulseButton = new System.Windows.Forms.Button();
             this.timerSound = new System.Windows.Forms.Timer(this.components);
             this.designatedPathModeButton = new System.Windows.Forms.Button();
-            this.pheromoneProgressBar = new RatClientApplication.ColorfulProgressBar();
-            this.batteryProgressBar = new RatClientApplication.ColorfulProgressBar();
             this.outgoingJsonTextBox = new System.Windows.Forms.TextBox();
             this.incomingJsonTextBox = new System.Windows.Forms.TextBox();
             this.incomingJsonLabel = new System.Windows.Forms.Label();
             this.outgoingJsonLabel = new System.Windows.Forms.Label();
             this.jsonGroupBox = new System.Windows.Forms.GroupBox();
+            this.pheromoneProgressBar = new RatClientApplication.ColorfulProgressBar();
+            this.batteryProgressBar = new RatClientApplication.ColorfulProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.advancedIPGroupBox.SuspendLayout();
             this.jsonGroupBox.SuspendLayout();
@@ -770,27 +770,6 @@
             this.designatedPathModeButton.UseVisualStyleBackColor = true;
             this.designatedPathModeButton.Click += new System.EventHandler(this.designatedPathModeButton_Click);
             // 
-            // pheromoneProgressBar
-            // 
-            this.pheromoneProgressBar.Color = System.Drawing.Color.Yellow;
-            this.pheromoneProgressBar.Location = new System.Drawing.Point(847, 187);
-            this.pheromoneProgressBar.Margin = new System.Windows.Forms.Padding(4);
-            this.pheromoneProgressBar.Maximum = 21;
-            this.pheromoneProgressBar.Name = "pheromoneProgressBar";
-            this.pheromoneProgressBar.Size = new System.Drawing.Size(133, 28);
-            this.pheromoneProgressBar.TabIndex = 48;
-            this.pheromoneProgressBar.Value = 21;
-            // 
-            // batteryProgressBar
-            // 
-            this.batteryProgressBar.Color = System.Drawing.Color.Yellow;
-            this.batteryProgressBar.Location = new System.Drawing.Point(515, 209);
-            this.batteryProgressBar.Margin = new System.Windows.Forms.Padding(4);
-            this.batteryProgressBar.Name = "batteryProgressBar";
-            this.batteryProgressBar.Size = new System.Drawing.Size(200, 49);
-            this.batteryProgressBar.TabIndex = 42;
-            this.batteryProgressBar.Value = 100;
-            // 
             // outgoingJsonTextBox
             // 
             this.outgoingJsonTextBox.Location = new System.Drawing.Point(224, 53);
@@ -848,6 +827,25 @@
             this.jsonGroupBox.TabStop = false;
             this.jsonGroupBox.Text = "JSON messages";
             this.jsonGroupBox.Visible = false;
+            // 
+            // pheromoneProgressBar
+            // 
+            this.pheromoneProgressBar.Color = System.Drawing.Color.Yellow;
+            this.pheromoneProgressBar.Location = new System.Drawing.Point(847, 187);
+            this.pheromoneProgressBar.Margin = new System.Windows.Forms.Padding(4);
+            this.pheromoneProgressBar.Maximum = 21;
+            this.pheromoneProgressBar.Name = "pheromoneProgressBar";
+            this.pheromoneProgressBar.Size = new System.Drawing.Size(133, 28);
+            this.pheromoneProgressBar.TabIndex = 48;
+            // 
+            // batteryProgressBar
+            // 
+            this.batteryProgressBar.Color = System.Drawing.Color.Yellow;
+            this.batteryProgressBar.Location = new System.Drawing.Point(515, 209);
+            this.batteryProgressBar.Margin = new System.Windows.Forms.Padding(4);
+            this.batteryProgressBar.Name = "batteryProgressBar";
+            this.batteryProgressBar.Size = new System.Drawing.Size(200, 49);
+            this.batteryProgressBar.TabIndex = 42;
             // 
             // FormRat
             // 

@@ -26,7 +26,7 @@ namespace RatClientApplication
         private bool keyLeftPressed = false;
         private bool keyRightPressed = false;
         private RobotData robotData = new RobotData();
-        private TCPConnection.TCPlient client;
+        private TCPConnection.TCPlient tcpClient;
         //private TCPlient tcpClient = new TCPlient();
         private ImageDisplay imageHandler = new ImageDisplay(300, 175);
         private string ipAddress;
@@ -55,27 +55,23 @@ namespace RatClientApplication
             this.Text = "Rat application";
             this.KeyPreview = true;
             ipTextBox.Text = "192.168.1.3";
+            //ipTextBox.Text = "localhost";
             portTextBox.Text = "50000";
             //portTextBox.Text = "10";
             //ipTextBox.Text = "192.168.1.3";
-            IpConfiguration();
-            DiagnosticsMessageReceived += OnDiagnosticsMessageReceived;
-            //client = new TCPConnection.TCPlient(portNumber, ipAddress);
-            //udpServer = new UDPServer(imageHandler, portNumber);
-            imageHandler.ImageReceived += ImageToDisplay_ImageReceived;
-            //tcpClient.MessageReceived += TcpClient_MessageReceived;
-            client.MessageReceived += TcpClient_MessageReceived;
-            batteryProgressBar.Value = 0;
-            pheromoneProgressBar.Value = 0;
+            PrepareConnection();
+            PrepareForm();
+        }
+
+        private void PrepareForm()
+        {
             incomingParameters.incoming_pheromones.stress_pheromone_volume_left = 0.0f;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             ratTracker = GetRatTrackerWithBasicHsvLimits();
             linearSpeedHScrollBar.Value = robotData.LinearSpeed1 = 123;
             angularSpeedHScrollBar.Value = robotData.AngularSpeed1 = 30;
-            HideAdvancedOptionsView();
             UpdateForm();
         }
-
 
         private RatTracker GetRatTrackerWithBasicHsvLimits()
         {
@@ -85,23 +81,21 @@ namespace RatClientApplication
 
         private void TcpClient_MessageReceived(object sender, EventArgs e)
         {
+            Debug.WriteLine("Message received from server");
             try
             {
-                //udpServer.OutputText = tcpClient.IncomingText;
-                //incomingMessage = JsonConvert.DeserializeObject<IncomingMessage>(tcpClient.IncomingText);
-                incomingMessage = JsonConvert.DeserializeObject<RoboRatToComputerMessage>(client.IncomingText);
-                DisplayIncomingMessage(client.IncomingText);
+                incomingMessage = JsonConvert.DeserializeObject<RoboRatToComputerMessage>(tcpClient.IncomingText);
+                ResolveIncomingMessage(incomingMessage);
             }
             catch (Exception ex)
             {
-                client.OutputText = ex.Message;
-                //tcpClient.OutputText = ex.Message;
-                //outputTCPTextBox.Text = "Something wrong with JSON " /*+ ex.Message*/;
+                tcpClient.OutputText = $"Unknown message format received. Error: {ex.Message}";
                 return;
             }
-            //incomingMessage = JsonConvert.DeserializeObject<IncomingMessage>(tcpClient.IncomingText);
-            udpServer.OutputText = client.IncomingText;
-            ResolveIncomingMessage(incomingMessage);
+            finally
+            {
+                DisplayIncomingMessage(tcpClient.IncomingText);
+            }
 
         }
 
@@ -290,23 +284,23 @@ namespace RatClientApplication
             UpdateConnectionLabels();
             UpdateBatteryProgressBar();
             UpdateIncomingPheromones();
-            outputTCPTextBox.Text = client.OutputText;
-            outputUDPTextBox.Text = udpServer.OutputText + imageHandler.OutputText;
+            if (tcpClient != null)
+                outputTCPTextBox.Text = tcpClient?.OutputText;
+            if (udpServer != null)
+                outputUDPTextBox.Text = udpServer.OutputText + imageHandler.OutputText;
         }
 
         private void UpdateConnectionLabels()
         {
-            if (client.IsConnected)
+            if (tcpClient != null && tcpClient.IsConnected)
             {
                 tcpConnectionLabel.BackColor = Color.Green;
                 tcpConnectionLabel.Text = "ON";
-                //outputTCPTextBox.Text = "Connected";
             }
             else
             {
                 tcpConnectionLabel.BackColor = Color.Red;
                 tcpConnectionLabel.Text = "OFF";
-                outputTCPTextBox.Text = "Disconnected";
             }
         }
 
@@ -314,15 +308,14 @@ namespace RatClientApplication
 
         private void connectButton_Click(object sender, EventArgs e)
         {
-            IpConfiguration();
+            PrepareConnection();
             angularSpeedHScrollBar.Focus();
             //tcpClient.Start();
-            client.StartConnection();
+            tcpClient.StartConnection();
             //if (!udpServer.IsConnected)
             //{
             udpServer.Start();
             //}
-            timer100.Enabled = true;
             timer3000.Enabled = true;
             UpdateForm();
             SendOutgoingMessage();
@@ -331,14 +324,14 @@ namespace RatClientApplication
         private void clearButton_Click(object sender, EventArgs e)
         {
             angularSpeedHScrollBar.Focus();
-            client.OutputText = "";
+            tcpClient.OutputText = "";
             outputTCPTextBox.Clear();
         }
 
         private void SendOutgoingMessage()
         {
             PrepareOutgoingMessage();
-            if (client.IsConnected)
+            if (tcpClient.IsConnected)
             {
                 string jsonMessage = JsonConvert.SerializeObject(outgoingMessage);
                 //udpServer.OutputText = jsonSpeed;
@@ -346,7 +339,7 @@ namespace RatClientApplication
                 //    "suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. " +
                 //"Phasellus pharetra nulla ac diam. Quisque semper justo at risus. ";
                 DisplayOutgoingMessage(jsonMessage);
-                client.SendString(jsonMessage);
+                tcpClient.SendString(jsonMessage);
             }
             else
             {
@@ -367,7 +360,10 @@ namespace RatClientApplication
 
         private void DisplayMessage(string message, TextBox textBox)
         {
-            textBox.Text = message;
+            textBox.Invoke((MethodInvoker)delegate
+            {
+                textBox.Text = message;
+            });
         }
 
         private void PrepareOutgoingMessage()
@@ -375,10 +371,7 @@ namespace RatClientApplication
             outgoingParameters.speed.linear = robotData.LinearSpeed;
             outgoingParameters.speed.angular = robotData.RotationSpeed;
             outgoingParameters.mode = (int)robotData.Mode;
-            //outgoingParameters.camera.address.ip = Dns.GetHostAddresses(Dns.GetHostName()).ToString();
-            //outgoingParameters.camera.address.port = tcpClient.PortNumber;
             outgoingParameters.camera.should_stream = udpServer.ContinueSavingAndDisplayingImages;
-            //outgoingParameters.camera.address.ip = (Dns.GetHostAddresses(Dns.GetHostName())).ToString();
             outgoingParameters.camera.address.ip = GetLocalIPAddress();
             outgoingParameters.camera.address.port = udpServer.PortNumber;
             outgoingMessage = outgoingParameters;
@@ -403,49 +396,52 @@ namespace RatClientApplication
             IpConfiguration();
         }
 
-        private void IpConfiguration()
+
+        private bool PrepareConnection()
+        {
+            if (!IpConfiguration())
+                return false;
+            tcpClient = new TCPConnection.TCPlient(this.portNumber, this.ipAddress);
+            udpServer = new UDPServer(this.imageHandler, this.portNumber);
+            DiagnosticsMessageReceived += OnDiagnosticsMessageReceived;
+            imageHandler.ImageReceived += ImageToDisplay_ImageReceived;
+            tcpClient.MessageReceived += TcpClient_MessageReceived;
+            timer100.Start();
+            return true;
+        }
+
+        private bool IpConfiguration()
         {
             string ipString = ipTextBox.Text;
             string portNumberString = portTextBox.Text;
-            if (ipString == "raspberrypi.local" || ipString == "localhost")
+            string correctIpFormatText, resultText;
+            correctIpFormatText = resultText = "Correct format of IPAddres and Port number. Ready to connect.";
+            if (ipString != "raspberrypi.local" && ipString != "localhost")
             {
-                PrepareConnection();
-                return;
-            }
-            if (ipTextBox.Text.Contains(" ") || portTextBox.Text.Contains(" "))
-            {
-                outputTCPTextBox.Text = "There are white spaces in IPAddress or Port number";
-                return;
+                if (ipTextBox.Text.Contains(" ") || portTextBox.Text.Contains(" "))
+                    resultText = "There are white spaces in IPAddress or Port number.";
+                else if (!TCPlient.IsIPFormatCorrect(ipString))
+                    resultText = "Incorrect IP Address.";
+                else if (string.IsNullOrWhiteSpace(portNumberString))
+                    resultText = "Incorrect Port number.";
             }
 
-            if (!TCPlient.IsIPFormatCorrect(ipString))
+            outputTCPTextBox.Text = resultText;
+            if (resultText == correctIpFormatText)
             {
-                outputTCPTextBox.Text = "Incorrect IP Address";
-                return;
-            }
-            if (string.IsNullOrWhiteSpace(portNumberString))
-            {
-                outputTCPTextBox.Text = "Incorrect Port number";
-                return;
+                this.ipAddress = ipString;
+                this.portNumber = int.Parse(portNumberString);
+                connectButton.Enabled = true;
+                PrepareForm();
+                HideAdvancedOptionsView();
+                return true;
             }
             else
             {
-                PrepareConnection();
-                //tcpClient.IP = ipAddress;
-                //tcpClient.PortNumber = portNumber;
-                //udpServer.IpAddress = ipAddress;
-                //udpServer.PortNumber = portNumber + 100;
+                outputTCPTextBox.Text += " Make sure to provide correct format of IP address and port number before you try to connect";
+                ShowAdvancedOptionsView();
+                return false;
             }
-        }
-
-        private void PrepareConnection()
-        {
-            ipAddress = ipTextBox.Text;
-            portNumber = int.Parse(portTextBox.Text);
-            client = new TCPConnection.TCPlient(portNumber, ipAddress);
-            udpServer = new UDPServer(imageHandler, portNumber);
-            connectButton.Enabled = true;
-            outputTCPTextBox.Text = "Correct format of IPAddres and Port number. Ready to connect.";
         }
 
         private void manualModeButton_Click(object sender, EventArgs e)
@@ -494,7 +490,7 @@ namespace RatClientApplication
 
         private bool VerifyConnection()
         {
-            if (client.IsConnected)
+            if (tcpClient.IsConnected)
                 return true;
             else
             {
@@ -610,7 +606,7 @@ namespace RatClientApplication
             outputTCPTextBox.Text = "User pressed disconnect button";
             udpServer.ContinueSavingAndDisplayingImages = false;
             SendOutgoingMessage();
-            client.CloseConnection();
+            tcpClient.CloseConnection();
             udpServer.CloseConnection();
             angularSpeedHScrollBar.Focus();
         }
@@ -628,7 +624,7 @@ namespace RatClientApplication
 
         private void timer3000_Tick(object sender, EventArgs e)
         {
-            if (client.IsConnected)
+            if (tcpClient.IsConnected)
             {
                 connectButton.Enabled = false;
             }
@@ -636,17 +632,17 @@ namespace RatClientApplication
             {
                 connectButton.Enabled = true;
             }
-            if (client.IsConnected)
+            if (tcpClient.IsConnected)
             {
                 try
                 {
-                    client.SendString("");
+                    tcpClient.SendString("");
                 }
                 catch
                 {
                     outputTCPTextBox.Text = "Connection lost (timer event)";
-                    client.CloseConnection();
-                    client.CloseConnection();
+                    tcpClient.CloseConnection();
+                    tcpClient.CloseConnection();
                 }
             }
         }
