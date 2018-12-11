@@ -144,7 +144,7 @@ namespace RatClientApplication
             imageHandler.AddImage(udpServer.JpegImageBytes);
             if (robotData.Mode == RobotData.RobotMode.Automatic)
             {
-                Point detectedRatPosition = ratTracker.PerformDetection(udpServer.ImageBitMap);
+                var detectedRatPosition = ratTracker.PerformDetection(udpServer.ImageBitMap);
                 displayImage(ratTracker.GetOriginalImage());
                 outgoingParameters.camera.detected_position.x = detectedRatPosition.X;
                 outgoingParameters.camera.detected_position.y = detectedRatPosition.Y;

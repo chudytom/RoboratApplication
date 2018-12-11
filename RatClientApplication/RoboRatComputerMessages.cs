@@ -68,13 +68,13 @@ namespace RatClientApplication
     public class DetectedPosition
     {
         public DetectedPosition() { }
-        public DetectedPosition(int x, int y) : this()
+        public DetectedPosition(float x, float y) : this()
         {
             this.x = x;
             this.y = y;
         }
-        public int x;
-        public int y;
+        public float x;
+        public float y;
     }
 
     //public class DetectionCalibration

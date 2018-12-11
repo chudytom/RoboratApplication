@@ -12,41 +12,42 @@ namespace RatClientApplication.Detection
 {
     public abstract class Position
     {
-        public abstract Point Value { get; }
+        public abstract PointF Value { get; }
         public abstract void Draw(Emgu.CV.Image<Emgu.CV.Structure.Bgr, Byte> rawImage);
     }
 
     public class CorrectPosition : Position
     {
-        Point position;
-        public CorrectPosition(int x, int y)
+        PointF position;
+        public CorrectPosition(float x, float y)
         {
-            position = new Point(x, y);
+            position = new PointF(x, y);
         }
         public CorrectPosition(Point point) : this(point.X, point.Y) { }
-        public override Point Value => position;
+        public override PointF Value => position;
 
         public override void Draw(Image<Bgr, byte> rawImage)
         {
             int radius = 40, thickness = 10;
             Color markColor = Color.LightGreen;
-            CvInvoke.Circle(rawImage, position, radius, Detection.GetMCvScalar(markColor), thickness);
-            CvInvoke.Line(rawImage, new Point(position.X, position.Y - radius),
-                                    new Point(position.X, position.Y + radius),
+            var intPosition = new Point((int)position.X, (int)position.Y);
+            CvInvoke.Circle(rawImage, intPosition, radius, Detection.GetMCvScalar(markColor), thickness);
+            CvInvoke.Line(rawImage, new Point(intPosition.X, intPosition.Y - radius),
+                                    new Point(intPosition.X, intPosition.Y + radius),
                                     Detection.GetMCvScalar(markColor), thickness);
-            CvInvoke.Line(rawImage, new Point(position.X - radius, position.Y),
-                                    new Point(position.X + radius, position.Y),
+            CvInvoke.Line(rawImage, new Point(intPosition.X - radius, intPosition.Y),
+                                    new Point(intPosition.X + radius, intPosition.Y),
                                     Detection.GetMCvScalar(markColor), thickness);
         }
     }
 
     public class IncorrectPosition : Position
     {
-        public override Point Value => new Point(5000, 5000);
+        public override PointF Value => new PointF(float.NaN, float.NaN);
 
         public override void Draw(Image<Bgr, byte> rawImage)
         {
-            CvInvoke.PutText(rawImage, "Rat could not be detected", new Point(100, 100), FontFace.HersheyPlain, fontScale: 5,
+            CvInvoke.PutText(rawImage, "Rat could not be detected", new Point(0, 100), FontFace.HersheyPlain, fontScale: 3,
                color: Detection.GetMCvScalar(Color.Red), thickness: 10);
         }
     }

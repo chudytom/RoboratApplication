@@ -53,6 +53,7 @@ namespace RatClientApplication
                     i++;
                 }
                 OutputText = String.Format("\n All frames saved in a folder {0}", folderPathWithTimestamp);
+                listOfImages.Clear();
             }
             catch (Exception e)
             {

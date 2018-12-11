@@ -67,18 +67,19 @@ namespace RatClientApplication.Detection
             CvInvoke.Dilate(binaryImageCV, binaryImageCV, erosionKernel, new Point(-1, -1), 2, BorderType.Default, new MCvScalar(1, 1, 1));
         }
 
-        public Point GetRatPosition(bool drawPositionInfo)
+        public PointF GetRatPosition(bool drawPositionInfo)
         {
             return GetPositionFromBinary(binaryImageCV, drawPositionInfo);
         }
 
-        protected Point GetPositionFromBinary(Emgu.CV.Image<Emgu.CV.Structure.Gray, Byte> binaryImage, bool drawPositionInfo)
+        protected PointF GetPositionFromBinary(Emgu.CV.Image<Emgu.CV.Structure.Gray, Byte> binaryImage, bool drawPositionInfo)
         {
             int maxNumberOfObects = 50;
             int minObjectArea = 30 * 30;
             int maxObjectArea = (int)(binaryImage.Size.Width * binaryImage.Size.Height / 1.05);
             ratPosition = new IncorrectPosition();
-            Point positionNotFound = new Point(5000, 5000);
+            //Point positionNotFound = new Point(50000, 50000);
+            //var positionNotFound = new PointF(float.NaN, float.NaN);
             Emgu.CV.Image<Emgu.CV.Structure.Gray, Byte> temporaryBinaryImage = binaryImage.Clone();
             Emgu.CV.Util.VectorOfVectorOfPoint contours = new Emgu.CV.Util.VectorOfVectorOfPoint();
             Emgu.CV.Mat hierarchy = new Mat();
@@ -89,17 +90,19 @@ namespace RatClientApplication.Detection
                 //var h = hierarchy.GetInputOutputArray();
                 if (numberOfObjects < maxNumberOfObects)
                 {
-                    double referenceArea = 0;
+                    float referenceArea = 0;
                     //index = hierarchy.GetData(new int[] { index, 0 })[0]
                     for (int index = 0; index < numberOfObjects; index++)
                     {
                         IInputArray contour = contours.GetInputArray().GetMat(index);
                         MCvMoments moment = CvInvoke.Moments(contour);
-                        double area = moment.M00;
+                        float area = (float)moment.M00;
 
                         if (area > minObjectArea && area < maxObjectArea && area > referenceArea)
                         {
-                            ratPosition = new CorrectPosition(x: (int)(moment.M10 / area), y: (int)(moment.M01 / area));
+                            ratPosition = new CorrectPosition(
+                                x: (float)moment.M10 / area,
+                                y: (float)moment.M01 / area);
                             referenceArea = area;
                         }
                     }
@@ -107,10 +110,16 @@ namespace RatClientApplication.Detection
             }
             if (drawPositionInfo)
             {
-                //DrawPositionInfo();
+                DrawPositionInfo();
             }
 
-            return ratPosition.Value;
+            var positionToSend = new PointF
+                (
+                    x: -2 * (ratPosition.Value.X - binaryImage.Size.Width / 2) / binaryImage.Size.Width,
+                    y: -2 * (ratPosition.Value.Y - binaryImage.Size.Height / 2) / binaryImage.Size.Height
+                );
+
+            return positionToSend;
         }
 
         public static MCvScalar GetMCvScalar(Color color)

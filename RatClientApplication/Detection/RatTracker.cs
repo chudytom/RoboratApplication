@@ -24,7 +24,7 @@ namespace RatClientApplication.Detection
             ratPosition.Draw(rawImageCV);
         }
 
-        public Point PerformDetection(Bitmap originalImage)
+        public PointF PerformDetection(Bitmap originalImage)
         {
             rawImageCV = new Image<Bgr, byte>(originalImage);
             hsvImageCV = GetHsvImage();
