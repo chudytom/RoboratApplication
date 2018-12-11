@@ -384,7 +384,9 @@ namespace RatClientApplication
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    return ip.ToString();
+                    var splitAddress = ip.ToString().Split('.');
+                    if (splitAddress[0] == "192" && splitAddress[1] == "168")
+                        return ip.ToString();
                 }
             }
             throw new Exception("Local IP Address Not Found!");
@@ -402,7 +404,7 @@ namespace RatClientApplication
             if (!IpConfiguration())
                 return false;
             tcpClient = new TCPConnection.TCPlient(this.portNumber, this.ipAddress);
-            udpServer = new UDPServer(this.imageHandler, this.portNumber);
+            udpServer = new UDPServer(this.imageHandler, this.portNumber + 100);
             DiagnosticsMessageReceived += OnDiagnosticsMessageReceived;
             imageHandler.ImageReceived += ImageToDisplay_ImageReceived;
             tcpClient.MessageReceived += TcpClient_MessageReceived;
@@ -572,7 +574,7 @@ namespace RatClientApplication
             if (messageBoxResult == DialogResult.Yes)
             {
                 //pictureBox1.Image = new Bitmap(@"C: \Users\tomasz123456\Desktop\Muka1.png");
-                pictureBox1.Image = new Bitmap(@"D:\OneDrive\Szczur\Zdjecia Testy\Test2\116.jpeg");
+                //pictureBox1.Image = new Bitmap(@"D:\OneDrive\Szczur\Zdjecia Testy\Test2\116.jpeg");
                 if (pictureBox1.Image is null)
                 {
                     MessageBox.Show(@"There is no image in the PictureBox. Make sure you started streaming the video", "Calibration error");
