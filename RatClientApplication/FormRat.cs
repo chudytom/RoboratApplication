@@ -34,6 +34,7 @@ namespace RatClientApplication
         private RatTracker ratTracker;
         private UDPServer udpServer;
         private ProgressBarController batteryController;
+        private ProgressBarController pheromoneController;
         private ComputerToRoboRatMessage outgoingMessage;
         private ComputerToRoboRatMessage outgoingParameters;
         private RoboRatToComputerMessage incomingMessage;
@@ -41,6 +42,7 @@ namespace RatClientApplication
         private bool isUltrasoundPlaying = false;
         private int currentOutgoingFrequency;
         public event Action DiagnosticsMessageReceived;
+        private string diagnosticsMessage = "";
 
         public FormRat()
         {
@@ -52,6 +54,7 @@ namespace RatClientApplication
             incomingParameters = new RoboRatToComputerMessage();
             outgoingParameters = new ComputerToRoboRatMessage();
             batteryController = new ProgressBarController(batteryProgressBar);
+            pheromoneController = new ProgressBarController(pheromoneProgressBar);
             this.Text = "Rat application";
             this.KeyPreview = true;
             ipTextBox.Text = "192.168.1.3";
@@ -89,14 +92,13 @@ namespace RatClientApplication
             }
             catch (Exception ex)
             {
-                tcpClient.OutputText = $"Unknown message format received. Error: {ex.Message}";
+                Debug.WriteLine($"Unknown message format received. Error: {ex.Message}");
                 return;
             }
             finally
             {
                 DisplayIncomingMessage(tcpClient.IncomingText);
             }
-
         }
 
         private void ResolveIncomingMessage(RoboRatToComputerMessage incomingMessage)
@@ -105,8 +107,6 @@ namespace RatClientApplication
             {
                 incomingParameters = incomingMessage;
                 //udpServer.OutputText += JsonConvert.SerializeObject(incomingMessage);
-                //pheromoneProgressBar.Value = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
-                // pheromoneLeftLabel.Text = incomingParameters.incoming_pheromones.stress_pheromone_volume_left.ToString() + " ml";
                 CheckForDiagnosticsParameters();
                 UpdateIncomingPheromones();
                 UpdateBatteryProgressBar();
@@ -122,13 +122,16 @@ namespace RatClientApplication
 
         private void OnDiagnosticsMessageReceived()
         {
-            udpServer.OutputText += $" Diagnostics message: {incomingParameters.diagnostics}";
+            diagnosticsMessage = $" Diagnostics message: {incomingParameters.diagnostics}";
         }
 
         private void UpdateIncomingPheromones()
         {
-            pheromoneProgressBar.Value = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
             pheromoneLeftLabel.Text = (incomingParameters.incoming_pheromones.stress_pheromone_volume_left * 1.0f).ToString("0.0") + " ml";
+            pheromoneController.Voltage = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
+            pheromoneController.ResolveColor();
+            pheromoneProgressBar.Value = pheromoneController.Voltage;
+            pheromoneProgressBar.Update();
         }
 
         private void UpdateBatteryProgressBar()
@@ -615,7 +618,14 @@ namespace RatClientApplication
 
         private void displayImage(Bitmap imageToDisplay)
         {
-            pictureBox1.Image = imageToDisplay;
+            try
+            {
+                pictureBox1.Image = imageToDisplay;
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)

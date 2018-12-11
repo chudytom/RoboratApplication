@@ -34,6 +34,7 @@ namespace RatClientApplication
         private UInt16 packageSize = 4096;
         private byte[] longBuffer;
         private bool isReadyToReceiveImage = false;
+        private string incorrectImageMessage = "The image received is incorrect";
 
         public UDPServer(ImageDisplay passedObject, int portNumber)
         {
@@ -102,7 +103,7 @@ namespace RatClientApplication
             }
             catch(SocketException)
             {
-                string closeMessage = "The image received is incorrect. Problems while receving images. Try decresing its resolution and connect again";
+                string closeMessage = incorrectImageMessage;
                 CloseConnection(closeMessage);
                 return;
             }
@@ -151,7 +152,7 @@ namespace RatClientApplication
             }
             catch (ArgumentException)
             {
-                string closeMessage = "The image received is incorrect. Problems while displaying. Try decresing its resolution and connect again";
+                string closeMessage = incorrectImageMessage;
                 CloseConnection(closeMessage);
                 return;
             }
