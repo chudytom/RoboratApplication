@@ -43,6 +43,7 @@ namespace RatClientApplication
         private int currentOutgoingFrequency;
         public event Action DiagnosticsMessageReceived;
         private string diagnosticsMessage = "";
+        const double maxPheromoneValue = 2.1;
 
         public FormRat()
         {
@@ -128,15 +129,16 @@ namespace RatClientApplication
         private void UpdateIncomingPheromones()
         {
             pheromoneLeftLabel.Text = (incomingParameters.incoming_pheromones.stress_pheromone_volume_left * 1.0f).ToString("0.0") + " ml";
-            pheromoneController.Voltage = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
+            int pheromoneValue = (int)(10 * incomingParameters.incoming_pheromones.stress_pheromone_volume_left);
+            pheromoneController.Percantage = Math.Min(100, (int)(100 * pheromoneValue / maxPheromoneValue / 10));
             pheromoneController.ResolveColor();
-            pheromoneProgressBar.Value = pheromoneController.Voltage;
+            pheromoneProgressBar.Value = pheromoneValue;
             pheromoneProgressBar.Update();
         }
 
         private void UpdateBatteryProgressBar()
         {
-            batteryController.Voltage = incomingParameters.battery_state.percentage;
+            batteryController.Percantage = incomingParameters.battery_state.percentage;
             batteryController.ResolveColor();
             batteryProgressBar.Value = incomingParameters.battery_state.percentage;
             batteryProgressBar.Update();

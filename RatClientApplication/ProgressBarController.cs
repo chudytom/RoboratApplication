@@ -10,7 +10,7 @@ namespace RatClientApplication
 {
     class ProgressBarController
     {
-        public int Voltage { get; set; }
+        public int Percantage { get; set; }
         ColorfulProgressBar batteryProgressBar;
         private int[] thresholds = new int[5] {27, 54, 67, 84, 100};
         private enum Levels { LowLow, Low, Medium, High, HighHigh }
@@ -20,12 +20,12 @@ namespace RatClientApplication
         }
         public void ResolveColor()
         {
-            if (Voltage >= 100)
-                Voltage = 99;
-            if (Voltage < 0)
-                Voltage = 0;
+            if (Percantage >= 100)
+                Percantage = 99;
+            if (Percantage < 0)
+                Percantage = 0;
             //batteryProgressBar.Value = Voltage;
-            Levels level = GetLevel(Voltage);
+            Levels level = GetLevel(Percantage);
             switch (level)
             {
                 case Levels.LowLow:
